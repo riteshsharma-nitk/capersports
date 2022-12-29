@@ -15,6 +15,10 @@ import { register, clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { NotificationManager } from 'react-notifications';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
+import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 const theme = createTheme();
 
 export default function Register() {
@@ -79,29 +83,51 @@ export default function Register() {
         }
       }, [dispatch, error, isAuthenticated, redirect]);
     
+      const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
 
   
 
   return (
-    <Box display='flex' sx={{marginTop:1}}> 
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+    <Grid container height='100vh'>
+                <Grid item md={8} sx={{backgroundColor:'rgb(240 239 246)', display:{xs:'none', md:'block'}}}>
+                <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', mt:5}}>
+                <Typography fontWeight='bold' fontSize='2rem'>Welcome to Caper Sports</Typography>
+                </Box>
+          </Grid>
+
+          <Grid item md={4} xs={12}>
+
+
         <Box
           sx={{
-            marginTop: 2,
-            marginBottom: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            pt:25,
+            pl:7,
+            pr:7,
+            mb:10,
+             display: 'flex',
+             flexDirection: 'column',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon fontSize='1.5rem'/>
-          </Avatar>
-          <Typography fontSize='1.5rem' fontWeight='medium'>
-            Sign up
-          </Typography>
+         
+         <Typography fontSize='1.5rem' fontWeight='bold'>
+                 Sign up to Caper Sports
+                 </Typography>
+                 <br></br>
+
+                 <Box sx={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+                 <Typography fontWeight='regular' fontSize='0.85rem'>Already have an account?</Typography>
+                 <Link underline='none' sx={{ml:1}} component={RouterLink} to="/login" variant="body2">
+                 <Typography fontWeight='bold' fontSize='0.85rem' color="#4caf50">Sign in</Typography>
+                </Link>
+                 </Box>
+
           <Box component="form" encType="multipart/form-data" onSubmit={registerSubmit} sx={{ mt: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -131,28 +157,49 @@ export default function Register() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name='password'
-                  label="Password"
-                 
-                
-                  fontSize='1rem'
+
+
+              <FormControl fullWidth variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                    <OutlinedInput
+                    id="outlined-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    fullWidth
+                    name='password'
+                    margin='normal'
+                    label="Password"
+                    fontSize='1rem'
                   value={password}
                   
-                  type='password'
+                 
                   onChange={registerDataChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                 
                 />
+              </FormControl>
+
+
               </Grid>
 
               <Grid gap={2} display='flex' justifyContent='flex-start' sx={{}} item xs={12}>
 
-              <Avatar  alt="Avatar Preview" src={avatarPreview} />
+              <Avatar sx={{ width: 56, height: 56 }} alt="Avatar Preview" src={avatarPreview} />
 
                 <Button
                 fullWidth
-                sx={{textTransform:'none'}}
+                sx={{textTransform:'none', color:'black', border:'1px solid black', pt:2, pb:2}}
                 fontSize='1rem'
                 variant='outlined'
                 component='label'
@@ -163,7 +210,7 @@ export default function Register() {
                   type="file"
                  
 >
-                    Upload File
+                    Upload profile picture
                     <input
                     type='file'
                    name='avatar'
@@ -177,27 +224,22 @@ export default function Register() {
 
 
             </Grid>
+            <br></br>
             <Button
              fontSize='1rem'
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, textTransform:'none', backgroundColor:"black", color:'white' }}
-            >
-              Sign Up
+              sx={{ pt: 2, pb: 2, fontWeight:'bold', textTransform:'none', borderRadius:2, backgroundColor:'rgb(33, 43, 54)', ":hover":{backgroundColor:'rgb(33, 43, 54)'} }}
+              >
+              Create Account
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link underline='none' sx={{ fontSize:'0.8rem'}} component={RouterLink} to="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
+            <br></br>
+            <br></br>
+            <Typography textAlign='center' fontSize='0.75rem' color='text.secondary'>By signing up, I agree to Terms of Service and Privacy Policy.</Typography>
           </Box>
         </Box>
-       
-      </Container>
-    </ThemeProvider>
-    </Box>
+        </Grid>
+       </Grid>
   );
 }

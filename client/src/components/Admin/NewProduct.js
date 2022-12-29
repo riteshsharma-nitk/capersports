@@ -26,14 +26,17 @@ function NewProduct() {
     const [imagesPreview, setImagesPreview] = useState([]);
 
     const categories = [
-        'T-Shirts',
-        'Hoodies',
-        'Sweatshirts',
-        'Jackets',
-        'Tracksuits',
-        'Shorts',
-        'Socks',
-      ]
+      'T-Shirts',
+      'Hoodies',
+      'Sweatshirts',
+     ' Jackets',
+      'Tracksuits',
+      'Shorts',
+      'Socks',
+      'Trouser',
+      'Cap',
+      'Basketball Kit'
+    ]
       
       useEffect(() => {
         if (error) {

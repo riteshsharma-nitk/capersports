@@ -25,6 +25,9 @@ const categories = [
   'Tracksuits',
   'Shorts',
   'Socks',
+  'Trouser',
+  'Cap',
+  'Basketball Kit'
 ]
 
 export default function Products() {

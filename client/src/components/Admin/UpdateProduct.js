@@ -39,11 +39,14 @@ const UpdateProduct = ({match}) => {
         'T-Shirts',
         'Hoodies',
         'Sweatshirts',
-        'Jackets',
+       ' Jackets',
         'Tracksuits',
         'Shorts',
         'Socks',
-    ]
+        'Trouser',
+        'Cap',
+        'Basketball Kit'
+      ]
     
     const {id} = useParams();
     const productId = id;
