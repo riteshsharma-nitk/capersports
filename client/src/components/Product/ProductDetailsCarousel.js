@@ -118,7 +118,55 @@ export default function ProductDetailsCarousel({ product }) {
         </Box>
       </Box>
 
-     
+      <Box
+        sx={{
+          my: 3,
+          mx: 'auto',
+          '& .slick-current .isActive': { opacity: 1 },
+          ...(product.images.length === 1 && { maxWidth: THUMB_SIZE * 1 + 16 }),
+          ...(product.images.length === 2 && { maxWidth: THUMB_SIZE * 2 + 32 }),
+          ...(product.images.length === 3 && { maxWidth: THUMB_SIZE * 3 + 48 }),
+          ...(product.images.length === 4 && { maxWidth: THUMB_SIZE * 3 + 48 }),
+          ...(product.images.length >= 5 && { maxWidth: THUMB_SIZE * 6 }),
+          ...(product.images.length > 2 && {
+            position: 'relative',
+            '&:before, &:after': {
+              top: 0,
+              zIndex: 9,
+              content: "''",
+              height: '100%',
+              position: 'absolute',
+              width: (THUMB_SIZE * 2) / 3,
+              backgroundImage: (theme) =>
+                `linear-gradient(to left, ${alpha(theme.palette.background.paper, 0)} 0%, ${
+                  theme.palette.background.paper
+                } 100%)`,
+            },
+            '&:after': { right: 0, transform: 'scaleX(-1)' },
+          }),
+        }}
+      >
+        <Slider {...settings2} asNavFor={nav1} ref={slider2}>
+          {product.images && product.images.map((img, index) => (
+            <Box key={img.url} sx={{ px: 0.75 }}>
+              <Image
+                disabledEffect
+                alt="thumb image"
+                src={img.url}
+                sx={{
+                  width: THUMB_SIZE,
+                  height: THUMB_SIZE,
+                  borderRadius: 1.5,
+                  cursor: 'pointer',
+                  ...(currentIndex === index && {
+                    border: (theme) => `solid 3px ${theme.palette.primary.main}`,
+                  }),
+                }}
+              />
+            </Box>
+          ))}
+        </Slider>
+      </Box>
 
 
       <LightboxModal
