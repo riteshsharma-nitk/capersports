@@ -56,6 +56,7 @@ export default function Products() {
   }
 
   useEffect(() => {
+    document.title = 'Products | Caper Sports'
     if(error){
       NotificationManager.error(error);
       dispatch(clearErrors())
@@ -308,11 +309,34 @@ export default function Products() {
 </Box>
 
 <div className='product_wrapper'> 
- <Grid container spacing={2}>
-  {products && products.map((product) => <ProductItems key={product._id} product={product}/>)}
-  </Grid>
+<Box
+      sx={{
+        display: 'grid',
+        gap: 3,
+        gridTemplateColumns: {
+          xs: 'repeat(1, 1fr)',
+          sm: 'repeat(2, 1fr)',
+          md: 'repeat(3, 1fr)',
+          lg: 'repeat(3, 1fr)',
+        },
+      }}
+    >
+  { products && products.map((product) => <ProductItems key={product._id} product={product}/>)}
+  </Box>
   </div>
+
+
+
+
+
 </div>
+
+
+
+
+
+
+
 
 {resultPerPage < count && 
 <Box xs={12} justifyContent='center' display='flex' sx={{paddingBottom:'16px'}}>

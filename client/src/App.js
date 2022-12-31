@@ -38,14 +38,17 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import UpdateUser from "./components/Admin/UpdateUser";
 import './App.css'
-import { Box, createTheme, ThemeProvider } from "@mui/material";
 import NotFound from "./components/Layout/NotFound";
 import About from "./components/About/About";
 import "@fontsource/montserrat";
 
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer } from 'react-notifications';
-import Wishlist from "./components/Wishlist/wishlist";
+
+import ThemeProvider from './theme';
+
+
+
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -67,14 +70,12 @@ function App() {
   // window.addEventListener("contextmenu", (e) => e.preventDefault());
   
   return (
+    <ThemeProvider>
   <Router>
-    <div className="Header">
       <NavBar/>
-    </div>
 
     <NotificationContainer/>
 
-    <div className='Main'>
       <Routes>
       <Route exact path="/about" element={<About/>}/>
       <Route exact path="/" element={<Home/>}/>
@@ -99,7 +100,6 @@ function App() {
       {isAuthenticated && <Route exact path="/shipping" element={<Shipping/>} />}
       {isAuthenticated && <Route exact path="/success" element={<OrderSuccess/>} />}
       {isAuthenticated && <Route exact path="/order/confirm" element={<ConfirmOrder/>} />} 
-      {isAuthenticated && <Route exact path="/favourite" element={<Wishlist/>} />}
 
       {isAuthenticated && user.role === "admin" && <Route exact path="/admin/dashboard" element={<Dashboard/>}/>}
       {isAuthenticated && user.role === "admin" && <Route exact path="/admin/products" element={<ProductList/>}/>}
@@ -114,12 +114,11 @@ function App() {
       <Route path='*' exact={true} element={<NotFound/>}/>
 
       </Routes>
-    </div>
 
-    <div className="Footer">
-      <Footer/>
-    </div>
+     
   </Router>
+  </ThemeProvider>
+ 
     );
 }
 

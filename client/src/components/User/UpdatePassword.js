@@ -54,29 +54,17 @@ function UpdatePassword() {
 
 
   return (
-    <Box display='flex' sx={{marginTop:1}}> 
+    <>
     {loading ? (<Loading/>):(
-            <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-              <CssBaseline />
-              <Box
-                sx={{
-                  marginTop: 7,
-                  marginBottom: 7,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                  <PasswordIcon fontSize="1.5rem" />
-                </Avatar>
-                <Typography fontSize="1.5rem" fontWeight='medium'>
-                  Update Password
-                </Typography>
-                <Box component="form" onSubmit={updatePasswordSubmit} sx={{ mt: 3 }}>
+                <Grid container rowSpacing={2} sx={{p:2}}>
+                <Grid item md={12} xs={12}>
+                <Typography fontSize="1.5rem" fontWeight='bold'>Change password</Typography>
+                <br></br>
+                </Grid>
+                <Grid md={12} xs={12} display='flex' alignItems='center' justifyContent='center' sx={{boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px', borderRadius:5}}>
+                <Box component="form" onSubmit={updatePasswordSubmit} sx={{ m: 2 }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid item md={12} xs={12}>
                       <TextField
                       type='password'
                         value={oldPassword}
@@ -109,7 +97,7 @@ function UpdatePassword() {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                         fullWidth
-                        label="Confirm Password"
+                        label="Confirm New Password"
                         fontSize="1rem" 
                                               />
                     </Grid>
@@ -121,18 +109,18 @@ function UpdatePassword() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ textTransform:'none', mt: 3, mb: 2, backgroundColor:"black", color:'white' }}
+                    sx={{fontWeight:'bold', textTransform:'none', mt: 3, mb: 2, backgroundColor:"rgb(1 171 85)", color:'white', borderRadius:2 }}
                   >
-                    Update Password
+                    Save Changes
                   </Button>
                  
                 </Box>
-              </Box>
+                </Grid>
+                </Grid>
              
-            </Container>
-          </ThemeProvider>
+             
         )}
-    </Box>
+    </>
   )
 }
 

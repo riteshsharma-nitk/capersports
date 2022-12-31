@@ -24,7 +24,7 @@ export default function Footer() {
   const theme = useTheme();
   return (
    
-      <Grid container component="footer" sx={{py:2, backgroundColor:'black', zIndex: theme.zIndex.drawer+1, position:'sticky'}}>
+      <Grid container component="footer" sx={{py:2, backgroundColor:'black', zIndex: theme.zIndex.drawer+1, position:'fixed'}}>
         
         <Grid item md={4} xs={12} sx={{textAlign:"center"}}>
         <br></br>

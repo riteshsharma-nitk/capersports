@@ -86,27 +86,18 @@ function UpdateProfile() {
     
   
     return (
-      <Box display='flex' sx={{marginTop:1}}> 
+      <> 
       {loading ? (<Loading/>):(
-            <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-              <CssBaseline />
-              <Box
-                sx={{
-                  marginTop: 8,
-                  marginBottom: 10,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                  <AccountCircleIcon  fontSize='1.5rem'/>
-                </Avatar>
-                <Typography fontSize='1.5rem' fontWeight='medium'>
-                  Update Profile
+        <Grid container>
+              <Grid container sx={{p:2}}>
+                <Grid md={12} xs={12}>
+                <Typography fontSize='1.5rem' fontWeight='bold'>
+                  Update profile
                 </Typography>
-                <Box component="form" onSubmit={updateProfileSubmit} sx={{ mt: 3 }}>
+                <br></br>
+                </Grid>
+                <Grid md={12} xs={12} display='flex' alignItems='center' justifyContent='center' sx={{boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px', borderRadius:5}}>
+                <Box component="form" onSubmit={updateProfileSubmit} sx={{ m: 2 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <TextField
@@ -171,18 +162,18 @@ function UpdateProfile() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2, backgroundColor:"black", color:'white', textTransform:"none" }}
+                    sx={{fontWeight:'bold', textTransform:'none', mt: 3, mb: 2, backgroundColor:"rgb(1 171 85)", color:'white', borderRadius:2 }}
                   >
-                    Save
+                    Save Changes
                   </Button>
                   
                 </Box>
-              </Box>
+                </Grid>
+              </Grid>
+              </Grid>
              
-            </Container>
-          </ThemeProvider>
         )}
-</Box>
+</>
     );
   }
 

@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Grid, ListItem, Rating, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, Divider, Grid, ListItem, Rating, TextField, Typography } from '@mui/material';
 import { Dialog,  DialogActions, DialogContent, DialogTitle,} from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
@@ -21,9 +21,15 @@ import { Carousel } from 'react-responsive-carousel';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { addItemsToWishlist } from '../../actions/wishlistAction';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ProductDetailsCarousel from './ProductDetailsCarousel';
 
 
-
+const RootStyle = styled('div')(({ theme }) => ({
+  padding: theme.spacing(3),
+  [theme.breakpoints.up(1368)]: {
+    padding: theme.spacing(5, 8),
+  },
+}));
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -110,8 +116,8 @@ export default function ProductDetails() {
     setOpen(false);
   };
 
-
   useEffect(() => {
+   
     if (error) {
       NotificationManager.error(error);
       dispatch(clearErrors());
@@ -131,16 +137,20 @@ export default function ProductDetails() {
 
  
 
+  // someJsonArray.map(({id}) => id)
 
 
   return (
     <Fragment>
       {loading? <Loader/> :
-       <>
-       <Grid backgroundColor='#f5f5f5' container spacing={2} sx={{p:{md:5, xs:2.5}}}>
-       <Grid item md={6} xs={12} sx={{display:'flex', justifyContent:"center", alignItems:'center'}}>
-        <Box maxWidth={550}>
-       <Carousel showStatus={false} dynamicHeight={true}>
+       <RootStyle>
+        <Card>
+        <Grid container>
+        <Grid item xs={12} md={6} lg={7}>
+        {product.images && <ProductDetailsCarousel product={product} />}
+        </Grid>
+
+       {/* <Carousel showStatus={false} dynamicHeight={true}>
        {product.images && product.images.map((item, i) => (
               <Box sx={{backgroundColor:'#eeeeee'}} key={item.url}>
                 <img style={{borderRadius:5}} 
@@ -150,29 +160,24 @@ export default function ProductDetails() {
               </Box>
             ))}
          </Carousel> 
-         </Box>     
-   </Grid>
+          */}
+ 
 
-   <Grid item md={6} xs={12}>
-           <Typography sx={{fontSize:'1.75rem'}} fontWeight={500}>{product.name}</Typography>
-           <Typography sx={{fontSize:'1.00rem'}} fontWeight={500}>{product.category}</Typography>
+ <Grid item xs={12} md={6} lg={5}>
+
+           <Typography variant='h4'>{product.name}</Typography>
+           <Typography variant='body2' >{product.category}</Typography>
            <br></br>
-           <Typography sx={{fontSize:'1.25rem'}} fontWeight={500}>{`MRP : ₹ ${product.price}`}</Typography>
+           
+           <Typography variant='h4'>{`MRP : ₹ ${product.price}`}</Typography>
 
            <br></br>
+           <Divider sx={{ borderStyle: 'dashed' }} />
            <br></br>
   
-           <Grid md={8} xs={12} sx={{m:1}}> 
-           <Typography sx={{fontSize:'1.05rem'}} fontWeight="medium">Select Size</Typography>
-           <Box
-           sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap:'wrap',
-            columnGap:1,
-            mt:1,
-        
-            }}>
+           <Grid md={12} xs={12} sx={{m:1}}> 
+           <Typography variant="subtitle1" sx={{ mb: 1 }}>Select Size</Typography>
+          
      
      <ToggleButtonGroup
       value={size}
@@ -181,7 +186,6 @@ export default function ProductDetails() {
       aria-label="Platform"
       fullWidth
       size='large'
-      sx={{backgroundColor:'white'}}
     >
       <ToggleButton  sx={{fontSize:'0.85rem'}}  value="S">S</ToggleButton>
       <ToggleButton  sx={{fontSize:'0.85rem'}}  value="M">M</ToggleButton>
@@ -194,40 +198,27 @@ export default function ProductDetails() {
      
     
      
-   </Box>
+ 
    </Grid>
    <br></br>
    
   
   <Grid container>
 
-<Grid item md={5.5} xs={12} sx={{m:1}}>
+<Grid item md={6} xs={12} sx={{p:1}}>
    <Button fullWidth  disabled={product.Stock < 1 ? true : false} onClick={addToCartHandler} 
-   sx={{
-    p:1.5,
-    fontSize:'0.95rem',
-    textTransform:'none', 
-    fontWeight:500, 
-    backgroundColor:'black', 
-    borderRadius:7,
-    ":hover":{backgroundColor:'black', opacity:0.5}
-  }} 
-    variant='contained'>
+   size="large"
+   color="warning"
+   variant="contained"
+ >
       Add to Bag
     </Button>
     </Grid>
-    <Grid item md={5.5} xs={12} sx={{m:1}}>
+    <Grid item md={6} xs={12} sx={{p:1}}>
 
    <Button fullWidth  onClick={addToWishlistHandler} 
-   sx={{
-    p:1.5,
-    fontSize:'0.95rem',
-    textTransform:'none', 
-    backgroundColor:'white', 
-    color:'black', borderRadius:7,
-    border: '1px solid black',
-  }} 
-    variant='outlined'>
+    size='large'
+    variant='contained'>
       Favourite&nbsp;
       { like ? <FavoriteIcon sx={{fontSize:'0.95rem'}}/>:
       <FavoriteBorderIcon sx={{fontSize:'0.95rem'}}/>}</Button>
@@ -395,7 +386,8 @@ export default function ProductDetails() {
      
      </Grid>
      </Grid>
-       </>}
+     </Card>
+       </RootStyle>}
     </Fragment>
 
    

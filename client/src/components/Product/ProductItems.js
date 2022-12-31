@@ -2,24 +2,31 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Link, Grid } from '@mui/material';
+import { Link, Grid, Box, Stack } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import Image from '../../helper/Image';
 
 const ProductItems = ({product, loading}) => {
   return (
-  <Grid item xs={6} md={4}>
-    {!loading && <Card sx={{ m:1}}>
-      <Link underline='none' component={RouterLink} to={`/product/${product._id}`}>
-        <CardMedia  sx={{ backgroundColor:'#eeeeee' }} component="img" image={product?.images[0]?.url} alt="product photo"/>
-        <CardContent>
-          <Typography fontWeight={500} sx={{fontSize:'1rem', color:'black'}}> {product.name} </Typography>
-          <Typography sx={{fontSize:'1rem'}} color="text.secondary"  fontWeight={500}>{product.category}</Typography>
-          <br></br>
+    <Card sx={{ m:1}}>
+      <Link color='inherit' underline='none' component={RouterLink} to={`/product/${product._id}`}>
+      <Box sx={{ position: 'relative', backgroundColor:'#eeeeee', m:1, borderRadius:1}}>
+      <Image alt='product images' src={product?.images[0]?.url} ratio="1/1" />
+      </Box>
+
+      <Stack spacing={2} sx={{ p: 3 }}>
+          <Typography variant='subtitle2'> {product.name} </Typography>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+
+          <Typography variant='subtitle2' color='text.secondary'>{product.category}</Typography>
+          <Stack direction="row" spacing={0.5}>
           <Typography sx={{fontSize:'1rem', color:'black'}} fontWeight={500}>{`MRP : ₹ ${product.price}`}</Typography>
-        </CardContent> 
+          </Stack>
+          </Stack>
+          </Stack>
+       
      </Link>
-    </Card>}
-</Grid>
+    </Card>
   )
 }
 

@@ -5,14 +5,14 @@
   "main": "server.js",
   "scripts": {
     "client-install": "npm i --prefix client",
-		"server-install": "npm i",
-		"install-all": "npm i && npm i --prefix client",
-		"start": "node server.js",
-		"backend": "nodemon server.js",
-		"client": "npm start --prefix client",
-		"dev": "concurrently -k \"npm run backend\" \"npm run client\"",
-		"lint": "eslint .; exit 0",
-		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"  
+    "server-install": "npm i",
+    "install-all": "npm i && npm i --prefix client",
+    "start": "node server.js",
+    "backend": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently -k \"npm run backend\" \"npm run client\"",
+    "lint": "eslint .; exit 0",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [
     "sports"
@@ -20,8 +20,10 @@
   "author": "Ritesh Sharma",
   "license": "MIT",
   "dependencies": {
+    "@iconify/react": "^4.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
+    "change-case": "^4.1.2",
     "cloudinary": "^1.32.0",
     "concurrently": "^7.6.0",
     "cookie-parser": "^1.4.6",
@@ -41,8 +43,11 @@
     "path": "^0.12.7",
     "react-alert": "^7.0.3",
     "react-card-carousel": "^1.1.3",
+    "react-image-lightbox": "^5.1.4",
     "react-image-zoom": "^1.3.1",
+    "react-lazy-load-image-component": "^1.5.6",
     "react-responsive-carousel": "^3.2.23",
+    "react-slick": "^0.29.0",
     "react-zoom-carousel": "^1.17.0",
     "stripe": "^11.3.0",
     "validator": "^13.7.0"

@@ -81,6 +81,8 @@ export default function Register() {
           
          
         }
+
+        document.title = "Register | Caper Sports"
       }, [dispatch, error, isAuthenticated, redirect]);
     
       const [showPassword, setShowPassword] = React.useState(false);
@@ -107,7 +109,7 @@ export default function Register() {
 
         <Box
           sx={{
-            pt:25,
+            pt:{md:25, xs:15},
             pl:7,
             pr:7,
             mb:10,

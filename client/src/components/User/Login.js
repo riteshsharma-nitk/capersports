@@ -1,15 +1,10 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import { useState } from 'react';
 import Loading from '../Layout/Loader'
@@ -20,9 +15,6 @@ import {useNavigate} from 'react-router-dom'
 import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-
-const theme = createTheme();
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -51,6 +43,8 @@ export default function Login() {
       navigate(redirect);
     }
 
+    document.title = 'Login | Caper Sports'
+
   }, [dispatch, error, navigate, redirect, isAuthenticated]);
 
 
@@ -66,30 +60,18 @@ export default function Login() {
   return (
     <React.Fragment> 
       {loading ? (<Loading/>) : (
-        <Grid container height='100vh'>
+        <Grid container minHeight='100vh'>
           <Grid item md={8} sx={{backgroundColor:'rgb(240 239 246)', display:{xs:'none', md:'block'}}}>
             <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', mt:5}}>
               <Typography fontWeight='bold' fontSize='2rem'>Hi, Welcome back</Typography>
-
             </Box>
           </Grid>
+
           <Grid item md={4} xs={12}>
-               <Box
-                 sx={{
-                  pt:25,
-                  pl:7,
-                  pr:7,
-                   display: 'flex',
-                   flexDirection: 'column',
-                   
-                 }}
-               >
-                
-                 <Typography fontSize='1.5rem' fontWeight='bold'>
-                 Sign in to Caper Sports
-                 </Typography>
-                 <br></br>
-                 <Box sx={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
+               <Box sx={{ pt:{md:25, xs:15}, pl:7, pr:7, display: 'flex', flexDirection: 'column'}}>
+                <Typography fontSize='1.5rem' fontWeight='bold'> Sign in to Caper Sports </Typography>
+                <br></br>
+              <Box sx={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
                  <Typography fontWeight='regular' fontSize='0.85rem'>New user?</Typography>
                  <Link  underline='none' sx={{ml:1}} component={RouterLink} to="/register">
                          <Typography fontWeight='bold' fontSize='0.85rem' color="#4caf50">{"Create an account"}</Typography>
@@ -104,7 +86,6 @@ export default function Login() {
                      name='email'
                      required
                      fullWidth
-                     margin='normal'
                      label="Email Address"
                      fontSize='1rem'
                      value={loginEmail}
@@ -123,7 +104,6 @@ export default function Login() {
                     required
                     fullWidth
                     name='password'
-                    margin='normal'
                     label="Password"
                     fontSize='1rem'
                     value={loginPassword}

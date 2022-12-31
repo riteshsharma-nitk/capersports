@@ -13,6 +13,7 @@ import {useNavigate } from 'react-router';
 import { NotificationManager } from 'react-notifications';
 import { logout } from "../../actions/userAction"
 import { useDispatch } from "react-redux";
+import { Divider, List, ListItem, ListItemText } from '@mui/material';
 
 export default function UserOptions({user}) {
 
@@ -22,7 +23,7 @@ export default function UserOptions({user}) {
     const options = [
         { icon: <ListAltIcon />, name: "Orders", func: orders },
         { icon: <PersonIcon />, name: "Profile", func: account },
-        { icon: <Logout />, name: "Logout", func: logoutUser },
+       
     ];
 
     if (user.role === "admin") {
@@ -89,6 +90,9 @@ export default function UserOptions({user}) {
             overflow: 'visible',
             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
             mt: 1.5,
+            pl:1.5,
+            pr:2.5,
+            borderRadius:4,
             '& .MuiAvatar-root': {
               width: 32,
               height: 32,
@@ -112,19 +116,34 @@ export default function UserOptions({user}) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        
+        <List>
+          <ListItem>
+            <ListItemText 
+            primaryTypographyProps={{fontSize:'0.85rem', fontWeight:'bold'}}
+            secondaryTypographyProps={{fontSize:"0.75rem"}}
+            primary={user.name}
+            secondary={user.email}
+
+            />
+          </ListItem>
+        </List>
+        <Divider style={{borderStyle:'dashed'}}/>
         
         {options.map((item) => (
-          <MenuItem 
+          <MenuItem
+          sx={{fontSize:'0.85rem'}}
             key={item.name}
             onClick={item.func}>
-              <ListItemIcon>
-                {item.icon}
-                </ListItemIcon>
                 {item.name}
-
             </MenuItem>
         ))}
+
+        <Divider style={{borderStyle:'dashed'}}/>
+        <MenuItem sx={{fontSize:'0.85rem'}} onClick={logoutUser} key={Logout}>
+          Logout
+ 
+        </MenuItem>
+      
       </Menu>
       </>     
        

@@ -28,6 +28,7 @@ export default function Dashboard()  {
     });
 
   useEffect(() => {
+    document.title = "Dashboard | Caper Sports"
     dispatch(getAdminProduct());
     dispatch(getAllOrders());
     dispatch(getAllUsers());

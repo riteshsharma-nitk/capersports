@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import { Link as RouterLink } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import logo from '../../images/logo.png'
-import {Badge, Link, useTheme } from '@mui/material';
+import {Badge, Link, ListItem, StyledEngineProvider, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
@@ -69,6 +69,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const LinkStyle = styled(Link)(({ theme }) => ({
+  ...theme.typography.subtitle1,
+  color: theme.palette.text.primary,
+  marginRight: theme.spacing(5),
+  transition: theme.transitions.create('opacity', {
+    duration: theme.transitions.duration.shorter,
+  }),
+  '&:hover': {
+    opacity: 0.48,
+    textDecoration: 'none',
+  },
+}));
+
+const ListItemStyle = styled(ListItem)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: 0,
+  marginTop: theme.spacing(3),
+  color: theme.palette.text.secondary,
+  transition: theme.transitions.create('color'),
+  '&:hover': {
+    color: theme.palette.text.primary,
+  },
+}));
+
 export default function Desktop() {
   const theme = useTheme();
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -99,9 +123,9 @@ export default function Desktop() {
 
       <Grid item md={4} display="flex" justifyContent="center" alignItems='center'>
         {pages.map((page) => (
-        <Link key={page} underline='none' component={RouterLink} to={(`/${page}`).toLowerCase()}>
-          <Button sx={{ color: 'black', textTransform:'none', fontWeight:500, fontSize:'1.1rem'}}>{page}</Button>
-        </Link> ))}
+        <LinkStyle  key={page} underline='none' component={RouterLink} to={(`/${page}`).toLowerCase()}>
+          {page}
+        </LinkStyle> ))}
       </Grid>
 
 

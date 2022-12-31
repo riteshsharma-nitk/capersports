@@ -104,6 +104,7 @@ function Sidebar() {
       <ListItemButton onClick={handleDrawer}>
       <ListItemIcon  sx={{
           minWidth: 0,
+          ml:1.6,
           mr: open ? 3 : 'auto',
           justifyContent: 'center',
         }}>
@@ -119,6 +120,7 @@ function Sidebar() {
        <ListItemButton sx={{borderRadius:2, backgroundColor:'#e0f2f1', ml:1, mr:1}} onClick={handleDrawer}>
        <ListItemIcon  sx={{
            minWidth: 0,
+           ml:1.6,
            mr: open ? 3 : 'auto',
            justifyContent: 'center',
          }}>
@@ -147,6 +149,8 @@ function Sidebar() {
          <ListItemIcon
           sx={{
             minWidth: 0,
+            ml:1.6,
+
             mr: open ? 3 : 'auto',
             justifyContent: 'center',
           }}>
@@ -168,6 +172,8 @@ function Sidebar() {
          <ListItemIcon
            sx={{
             minWidth: 0,
+            ml:1.6,
+
             mr: open ? 3 : 'auto',
             justifyContent: 'center',
           }}>
@@ -193,6 +199,8 @@ function Sidebar() {
          <ListItemIcon
          sx={{
           minWidth: 0,
+          ml:1.6,
+
           mr: open ? 3 : 'auto',
           justifyContent: 'center',
         }}>
@@ -215,6 +223,8 @@ function Sidebar() {
          <ListItemIcon
          sx={{
           minWidth: 0,
+          ml:1.6,
+
           mr: open ? 3 : 'auto',
           justifyContent: 'center',
         }}>
@@ -238,6 +248,8 @@ function Sidebar() {
          <ListItemIcon
          sx={{
           minWidth: 0,
+          ml:1.6,
+
           mr: open ? 3 : 'auto',
           justifyContent: 'center',
         }}>
