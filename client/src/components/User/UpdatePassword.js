@@ -7,13 +7,17 @@ import { NotificationManager } from 'react-notifications';
 import { UPDATE_PASSWORD_RESET } from "../../constants/userConstants";
 import { useNavigate } from 'react-router-dom';
 import PasswordIcon from '@mui/icons-material/Password';
-import { Avatar, Button, CssBaseline, Grid, TextField, Typography } from "@mui/material";
+import { Avatar, Button, CssBaseline, Grid, Stack, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useSnackbar } from 'notistack';
+
 
 const theme = createTheme();
 
 function UpdatePassword() {
+  const { enqueueSnackbar } = useSnackbar();
+
     const dispatch = useDispatch();
     const Navigate = useNavigate();
 
@@ -42,7 +46,7 @@ function UpdatePassword() {
     }
 
     if (isUpdated) {
-      NotificationManager.success("Profile Updated Successfully");
+      enqueueSnackbar("Update success");
 
       Navigate("/account");
 
@@ -53,6 +57,7 @@ function UpdatePassword() {
   }, [dispatch, error, isUpdated]);
 
 
+
   return (
     <>
     {loading ? (<Loading/>):(
@@ -61,10 +66,9 @@ function UpdatePassword() {
                 <Typography fontSize="1.5rem" fontWeight='bold'>Change password</Typography>
                 <br></br>
                 </Grid>
-                <Grid md={12} xs={12} display='flex' alignItems='center' justifyContent='center' sx={{boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px', borderRadius:5}}>
-                <Box component="form" onSubmit={updatePasswordSubmit} sx={{ m: 2 }}>
-                  <Grid container spacing={2}>
-                    <Grid item md={12} xs={12}>
+                <Grid md={12} xs={12} display='flex' alignItems='center' justifyContent='center' sx={{boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px', borderRadius:2}}>
+                <Box width='100%' component="form" onSubmit={updatePasswordSubmit} sx={{ m: 2 }}>
+                <Stack spacing={3} alignItems="flex-end">
                       <TextField
                       type='password'
                         value={oldPassword}
@@ -75,9 +79,7 @@ function UpdatePassword() {
                         label="Old Password"
                         fontSize="1rem" 
                       />
-                    </Grid>
                    
-                    <Grid item xs={12}>
                       <TextField
                       type='password'
                         value={newPassword}
@@ -87,9 +89,7 @@ function UpdatePassword() {
                         name="newPassword"
                         label="New Password"
                         fontSize="1rem"                       />
-                    </Grid>
 
-                    <Grid item xs={12}>
                       <TextField
                       type='password'
                         name="confirmPassword"
@@ -100,19 +100,15 @@ function UpdatePassword() {
                         label="Confirm New Password"
                         fontSize="1rem" 
                                               />
-                    </Grid>
                    
       
-                  </Grid>
                   <Button
-                  fontSize="1rem" 
                     type="submit"
-                    fullWidth
                     variant="contained"
-                    sx={{fontWeight:'bold', textTransform:'none', mt: 3, mb: 2, backgroundColor:"rgb(1 171 85)", color:'white', borderRadius:2 }}
                   >
                     Save Changes
                   </Button>
+                  </Stack>
                  
                 </Box>
                 </Grid>

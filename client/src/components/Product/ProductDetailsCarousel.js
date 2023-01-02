@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
 import Slider from 'react-slick';
+import PropTypes from 'prop-types';
+ 
 import { useState, useRef, useEffect } from 'react';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
@@ -21,12 +22,6 @@ const RootStyle = styled('div')(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
-
-ProductDetailsCarousel.propTypes = {
-  product: PropTypes.shape({
-    images: PropTypes.arrayOf(PropTypes.string),
-  }),
-};
 
 export default function ProductDetailsCarousel({ product }) {
    
@@ -91,7 +86,6 @@ export default function ProductDetailsCarousel({ product }) {
     slider2.current?.slickNext();
   };
 
-  // someJsonArray.map(({id}) => id)
 
   return (
     <RootStyle>
@@ -147,12 +141,12 @@ export default function ProductDetailsCarousel({ product }) {
         }}
       >
         <Slider {...settings2} asNavFor={nav1} ref={slider2}>
-          {product.images && product.images.map((img, index) => (
-            <Box key={img.url} sx={{ px: 0.75 }}>
+          {product.images && product.images.map(({url}, index) => (
+            <Box key={url} sx={{ px: 0.75 }}>
               <Image
                 disabledEffect
                 alt="thumb image"
-                src={img.url}
+                src={url}
                 sx={{
                   width: THUMB_SIZE,
                   height: THUMB_SIZE,

@@ -18,10 +18,15 @@ import Loading from '../Layout/Loader'
 import { useNavigate } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useEffect } from 'react';
+import { Stack } from '@mui/material';
+import { useSnackbar } from 'notistack';
+
 
 const theme = createTheme();
 
 function UpdateProfile() {
+  const { enqueueSnackbar } = useSnackbar();
+
     const dispatch = useDispatch();
     const Navigate = useNavigate();
   
@@ -71,8 +76,8 @@ function UpdateProfile() {
           }
       
           if (isUpdated) {
-            NotificationManager.success("Profile Updated Successfully");
-            dispatch(loadUser());
+            enqueueSnackbar('Update success!');
+                        dispatch(loadUser());
       
             Navigate("/account");
       
@@ -96,10 +101,9 @@ function UpdateProfile() {
                 </Typography>
                 <br></br>
                 </Grid>
-                <Grid md={12} xs={12} display='flex' alignItems='center' justifyContent='center' sx={{boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px', borderRadius:5}}>
-                <Box component="form" onSubmit={updateProfileSubmit} sx={{ m: 2 }}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                <Grid md={12} xs={12} display='flex' alignItems='center' justifyContent='center' sx={{boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px', borderRadius:2}}>
+                <Box width='100%' component="form" onSubmit={updateProfileSubmit} sx={{ m: 2 }}>
+                <Stack spacing={3} alignItems="flex-end">
                       <TextField
                       type='text'
                        
@@ -111,9 +115,7 @@ function UpdateProfile() {
                         label="Name"
                         fontSize='1rem'
                       />
-                    </Grid>
                    
-                    <Grid item xs={12}>
                       <TextField
                       type='email'
                         required
@@ -125,16 +127,15 @@ function UpdateProfile() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
-                    </Grid>
                    
       
-                    <Grid gap={2} display='flex' justifyContent='flex-start' sx={{}} item xs={12}>
+                    <Box gap={2} width='100%' display='flex' justifyContent='flex-start'>
       
                     <Avatar  alt="Avatar Preview" src={avatarPreview} />
       
                       <Button
-                      sx={{width:'90%', textTransform:'none', backgroundColor:'white', color:'black'}}
-                      
+                      color='inherit'
+                      fullWidth                      
                       variant='outlined'
                       component='label'
                         required
@@ -153,22 +154,18 @@ function UpdateProfile() {
                           />
                         </Button>
                       
-                    </Grid>
+                    </Box>
       
       
-                  </Grid>
                   <Button
-                  fontSize='1rem'
                     type="submit"
-                    fullWidth
                     variant="contained"
-                    sx={{fontWeight:'bold', textTransform:'none', mt: 3, mb: 2, backgroundColor:"rgb(1 171 85)", color:'white', borderRadius:2 }}
                   >
                     Save Changes
                   </Button>
-                  
+                  </Stack>
                 </Box>
-                </Grid>
+              </Grid>
               </Grid>
               </Grid>
              

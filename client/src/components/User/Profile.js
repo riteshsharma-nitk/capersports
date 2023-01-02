@@ -14,6 +14,8 @@ import MyOrders from '../Order/MyOrders';
 import UpdateProfile from './UpdateProfile';
 import { capitalCase } from 'change-case';
 import cssStyles from '../../utils/cssStyles';
+import HeaderBreadcrumbs from '../../helper/HeaderBreadcrumbs';
+
 
 const RootStyle = styled('div')(({ theme }) => ({
   '&:before': {
@@ -115,7 +117,15 @@ export default function Profile() {
   return (
     <>
     {loading ? (<Loading/>):(
-            <Container maxWidth='lg'>
+            <Container maxWidth='lg' sx={{mt:15}}>
+               <HeaderBreadcrumbs
+          heading="Profile"
+          links={[
+            { name: 'Dashboard', href: '/admin/dashboard' },
+            { name: 'User', href: '/user' },
+            { name: user?.name || '' },
+          ]}
+        />
                <Card sx={{ mb: 3, height: 280, position: 'relative'}}>
                 <RootStyle>
                   <InfoStyle>

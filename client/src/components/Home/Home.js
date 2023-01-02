@@ -12,6 +12,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import HomeShowcase from './HomeShowcase';
 import HomeFeatureProduct from './HomeFeatureProduct';
+import Page from '../../helper/Page';
 
 
 const RootStyle = styled('div')(() => ({
@@ -35,11 +36,12 @@ const Home = () => {
   
   
   return (
-   
+   <Page>
   
         <RootStyle>
+                   <SlideShow/>
+
            <ContentStyle>
-         <SlideShow/>
        
         <HomeShowcase/>
         <HomeFeatureProduct/>
@@ -47,6 +49,7 @@ const Home = () => {
            
         </ContentStyle>  
         </RootStyle>
+        </Page>
               
    
  

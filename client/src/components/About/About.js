@@ -7,6 +7,7 @@ import logo from '../../images/logo.png'
 import React from 'react';
 import AboutHero from './AboutHero';
 import AboutWhat from './AboutWhat';
+import Footer from '../Footer/Footer';
 
 const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: theme.spacing(8),
@@ -20,7 +21,7 @@ function About() {
   return (
   
        <RootStyle>
-        
+        <Footer/> 
        
        </RootStyle>
  

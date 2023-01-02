@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, getProduct } from '../../actions/productAction';
 import ProductCard from './ProductCard';
 import Carousel from 'react-multi-carousel';
-import { Box, Button, Link, styled, Typography } from '@mui/material';
+import { Box, Button, Container, Link, styled, Typography } from '@mui/material';
 import {Link as RouterLink} from 'react-router-dom'
+import { m } from 'framer-motion';
+import { MotionViewport, varFade } from '../../helper/animate';
 
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -33,16 +35,24 @@ function HomeFeatureProduct() {
   }, [dispatch, error])
   return (
    <RootStyle>
+          <Box component={MotionViewport}>
+
  <Box
           sx={{
             textAlign: 'center',
             mb: { xs: 1, md: 2 },
           }}
         >
+                    <m.div variants={varFade().inUp}>
+
             <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
               Caper Sports
             </Typography>
+            </m.div>
+            <m.div variants={varFade().inUp}>
+
             <Typography variant="h2">Featured Products</Typography>
+            </m.div>
 
 
         </Box>
@@ -115,8 +125,9 @@ function HomeFeatureProduct() {
  variant='contained'>Explore More</Button>
   </Link>
   </Box>
+  </Box>
   </RootStyle>
   )
 }
 
-export default HomeFeatureProduct
+export default HomeFeatureProduct;

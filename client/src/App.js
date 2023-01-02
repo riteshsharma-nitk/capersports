@@ -46,6 +46,14 @@ import 'react-notifications/lib/notifications.css';
 import { NotificationContainer } from 'react-notifications';
 
 import ThemeProvider from './theme';
+import ComingSoon from "./components/About/ComingSoon";
+import RtlLayout from './helper/RtlLayout';
+import MotionLazyContainer from './helper/animate/MotionLazyContainer';
+
+import NotistackProvider from './helper/NotistackProvider';
+import ThemeLocalization from './helper/ThemeLocalization';
+
+
 
 
 
@@ -71,6 +79,11 @@ function App() {
   
   return (
     <ThemeProvider>
+        <ThemeLocalization>
+      <RtlLayout>
+        <NotistackProvider>
+      
+        <MotionLazyContainer>
   <Router>
       <NavBar/>
 
@@ -79,6 +92,9 @@ function App() {
       <Routes>
       <Route exact path="/about" element={<About/>}/>
       <Route exact path="/" element={<Home/>}/>
+      <Route exact path="/cricket" element={<ComingSoon/>}/>
+      <Route exact path="/football" element={<ComingSoon/>}/>
+
       <Route exact path="/loader" element={<Loader/>}/>
       <Route exact path="/product/:id" element={<ProductDetails/>}/>
       <Route exact path="/products" element={<Products/>}/>
@@ -117,6 +133,10 @@ function App() {
 
      
   </Router>
+  </MotionLazyContainer>
+  </NotistackProvider>
+  </RtlLayout>
+  </ThemeLocalization>
   </ThemeProvider>
  
     );

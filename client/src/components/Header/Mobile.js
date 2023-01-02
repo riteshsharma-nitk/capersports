@@ -23,15 +23,6 @@ import {Badge, Box, Divider, Drawer, Link, List, ListItem, ListItemButton, ListI
 import { useSelector } from 'react-redux';
 import { Logout } from '@mui/icons-material';
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  '& .MuiBadge-badge': {
-    right: -3,
-    top: 13,
-    border: `2px solid ${theme.palette.background.paper}`,
-    padding: '0 4px',
-  },
-}));
-
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: 20,
@@ -267,17 +258,9 @@ if (user?.role === "admin") {
   );
 
   return (
-  <Box sx={{ flexGrow: 1 }}>
-  <AppBar style={{ background: '#ffffff', color:'black', boxShadow:'none', zIndex: theme.zIndex.drawer + 1 }} position="relative">
-         <Toolbar>
-          <Grid container>
-            <Grid item xs={3} display='flex' justifyContent='flex-start' alignItems='center'>
-               <Link component={RouterLink} to="/">
-                <Box component='img' src={logo} sx={{height:20}}></Box>
-              </Link>
-            </Grid>
+          <>
+          
 
-       <Grid item xs={6} display='flex' justifyContent="center" alignItems='center'>
         <form onSubmit={searchSubmitHandler}>
             <Search>
                 <SearchIconWrapper>
@@ -290,15 +273,13 @@ if (user?.role === "admin") {
               />
           </Search>
           </form>
-          </Grid>
 
-         <Grid item xs={3} display='flex' justifyContent='flex-end' alignItems='center'>
           {isAuthenticated ? ( 
           <Link component={RouterLink} to="/cart">
             <IconButton>
-            <StyledBadge badgeContent={cartItems.length} color="secondary">
+            <Badge badgeContent={cartItems.length} color="secondary">
               <LocalMallIcon style={{fontSize:"20"}}/>
-            </StyledBadge>
+            </Badge>
             </IconButton>
           </Link>):(<></>)}
           
@@ -313,11 +294,7 @@ if (user?.role === "admin") {
           >
             {list()}
           </Drawer>
-           </Grid>
-          </Grid>
-          </Toolbar>
-      </AppBar>
-    </Box>
+          </>
    
   );
 }

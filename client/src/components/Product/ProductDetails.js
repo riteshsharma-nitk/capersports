@@ -1,4 +1,4 @@
-import { Box, Button, Card, Divider, Grid, ListItem, Rating, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, Container, Divider, Grid, ListItem, Rating, TextField, Typography } from '@mui/material';
 import { Dialog,  DialogActions, DialogContent, DialogTitle,} from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
@@ -143,31 +143,17 @@ export default function ProductDetails() {
   return (
     <Fragment>
       {loading? <Loader/> :
-       <RootStyle>
+      <Container sx={{mt:{md:'100px', lg:'100px'}}} maxWidth='lg'>
         <Card>
         <Grid container>
         <Grid item xs={12} md={6} lg={7}>
         {product.images && <ProductDetailsCarousel product={product} />}
         </Grid>
-
-       {/* <Carousel showStatus={false} dynamicHeight={true}>
-       {product.images && product.images.map((item, i) => (
-              <Box sx={{backgroundColor:'#eeeeee'}} key={item.url}>
-                <img style={{borderRadius:5}} 
-                src={`${item.url}`}
-                srcSet={`${item.url}`}
-                alt={item.title}/>
-              </Box>
-            ))}
-         </Carousel> 
-          */}
- 
-
- <Grid item xs={12} md={6} lg={5}>
-
-           <Typography variant='h4'>{product.name}</Typography>
-           <Typography variant='body2' >{product.category}</Typography>
-           <br></br>
+        
+        <Grid item xs={12} md={6} lg={5} sx={{p:2}}>
+          <Typography variant='h4'>{product.name}</Typography>
+          <Typography variant='body2' >{product.category}</Typography>
+          <br></br>
            
            <Typography variant='h4'>{`MRP : ₹ ${product.price}`}</Typography>
 
@@ -304,6 +290,9 @@ export default function ProductDetails() {
          </Collapse>
 
        </Grid>
+
+       </Grid>
+       </Card>
        
      
 
@@ -342,10 +331,12 @@ export default function ProductDetails() {
              </Button>
            </DialogActions>
          </Dialog>
- 
         
+        <br></br>
+        
+        <Card>
         <Grid item md={12} xs={12}>
-         <Typography sx={{fontSize:'1.5rem'}} textAlign='center' fontWeight="bold">REVIEWS</Typography>
+         <Typography textAlign='center' sx={{mt:1, mb:1}} variant='h5' fontWeight="bold">Reviews</Typography>
          <Divider/>
         </Grid>
          <Grid item md={12} xs={12}>
@@ -359,7 +350,7 @@ export default function ProductDetails() {
            gap:'2vmax',
          
        
-           padding:2,
+           padding:1,
            borderRadius:2}}>
         {product.reviews && 
            product.reviews.map((review) => 
@@ -385,9 +376,11 @@ export default function ProductDetails() {
      }
      
      </Grid>
-     </Grid>
      </Card>
-       </RootStyle>}
+     <br></br>
+  
+     </Container>
+       }
     </Fragment>
 
    

@@ -17,7 +17,6 @@ const Product = require('../../models/Product');
 // @access Public
 
 router.get('/products', async(req, res) => {
-    const resultPerPage = 9;
     const productsCount = await Product.countDocuments();
     const apiFeature = new ApiFeatures(Product.find(), req.query)
     .search()
@@ -25,14 +24,12 @@ router.get('/products', async(req, res) => {
 
     let products = await apiFeature.query;
     let filteredProductsCount = products.length;
-    apiFeature.pagination(resultPerPage);
     products = await (apiFeature.query).clone();
 
     res.status(200).json({
         success:true,
         products,
         productsCount,
-        resultPerPage,
         filteredProductsCount,
     })
 })

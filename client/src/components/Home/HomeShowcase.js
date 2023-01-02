@@ -11,32 +11,39 @@ import Banner from '../../images/Banner.png'
 
 
 const RootStyle = styled('div')(({ theme }) => ({
-  padding: theme.spacing(10, 0),
-  backgroundColor: theme.palette.background.neutral,
+  paddingTop: theme.spacing(15),
   [theme.breakpoints.up('md')]: {
-    padding: theme.spacing(15, 0),
+    paddingBottom: theme.spacing(15),
   },
 }));
 function HomeShowcase() {
   return (
     <RootStyle>
-              <Box component={MotionViewport}>
+      <Box component={MotionViewport}>
               <Box
           sx={{
             textAlign: 'center',
-            mb: { xs: 1, md: 2 },
+            mb: { xs: 10, md: 25 },
           }}
         >
+                    <m.div variants={varFade().inUp}>
+
             <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
               Caper Sports
             </Typography>
+            </m.div>
+            <m.div variants={varFade().inUp}>
+
             <Typography variant="h2">Hunter Boyz</Typography>
+            </m.div>
 
 
         </Box>
        
-        
+       
+
         <Image alt="dark mode" src={Banner} />
+      
       
        
        
@@ -50,4 +57,4 @@ function HomeShowcase() {
   )
 }
 
-export default HomeShowcase
+export default HomeShowcase;

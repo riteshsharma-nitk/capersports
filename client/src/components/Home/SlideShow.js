@@ -1,19 +1,166 @@
-import { Box, Card, CardMedia, Stack, styled} from '@mui/material'
+import { Box, Card, CardMedia, Container, Grid, Link, Stack, styled, Typography} from '@mui/material'
 import React from 'react'
 import productImages1 from '../../images/banner6.jpg'
 import productImages2 from '../../images/banner7.jpeg'
 import Carousel from 'react-material-ui-carousel'
+import { m } from 'framer-motion';
+import { MotionContainer, varFade } from '../../helper/animate'
+import image1 from '../../images/003.png'
+import image2 from '../../images/005.png'
+import Image from '../../helper/Image'
+import TextIconLabel from '../../helper/TextIconLabel';
+import { Link as RouterLink } from 'react-router-dom';
+import useResponsive from '../../hooks/useResponsive'
+
+
+
+
+const RootStyle = styled(m.div)(({ theme }) => ({
+  position: 'relative',
+  backgroundColor: theme.palette.grey[400],
+  [theme.breakpoints.up('md')]: {
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100vh',
+    display: 'flex',
+    position: 'fixed',
+    alignItems: 'center',
+  },
+}));
+
+const HeroImgStyle = styled(m.img)(({ theme }) => ({
+ 
+  zIndex: 8,
+  width: '100%',
+  margin: 'auto',
+  position: 'absolute',
+  [theme.breakpoints.up('lg')]: {
+    right: '8%',
+    width: 'auto',
+    height: '100%',
+  },
+}));
+
+const HeroImgStyle1 = styled(m.img)(({ theme }) => ({
+  top: 0,
+  left: 0,
+  bottom: 0,
+  zIndex: 8,
+
+  width: '100%',
+  margin: 'auto',
+  position: 'absolute',
+  [theme.breakpoints.up('lg')]: {
+    left: '2%',
+    width: 'auto',
+    height: '100%',
+  },
+}));
+
+const HeroImgStyle2 = styled(m.img)(({ theme }) => ({
+  top: 0,
+  left: 0,
+  bottom: 0,
+  zIndex: 8,
+  width: '100%',
+  margin: 'auto',
+  position: 'absolute',
+  [theme.breakpoints.up('lg')]: {
+    left: '28%',
+    width: 'auto',
+    height: '100%',
+  },
+}));
+
+const HeroImgStyle3 = styled(m.img)(({ theme }) => ({
+  top: 0,
+  right: 0,
+  bottom: 0,
+  zIndex: 8,
+
+  width: '100%',
+  margin: 'auto',
+  position: 'absolute',
+  [theme.breakpoints.up('lg')]: {
+    right: '2%',
+    width: 'auto',
+    height: '100%',
+  },
+}));
+
+
+
+
+
 
 
 export default function SlideShow() {
+  const isDesktop = useResponsive('up', 'md');
+
   return (
-  <Carousel cycleNavigation={true} fullHeightHover indicators={false} duration={1500} animation='fade' autoplay>
-            {itemData.map((item) => (
-             <Card key={item.img} sx={{borderRadius:0}}>
-             <CardMedia component="img" image={item.img} alt="banner images"/>
-            </Card>
-            ))}
-          </Carousel>  
+    <MotionContainer>
+     <RootStyle>
+    
+    {isDesktop && 
+    <>
+<HeroImgStyle1
+          alt="hero"
+          src={image1}
+          variants={varFade().inLeft}
+        />
+        <HeroImgStyle2
+          alt="hero"
+          src={image2}
+          variants={varFade().inDown}
+        />
+        <HeroImgStyle3
+          alt="hero"
+          src={image1}
+          variants={varFade().inRight}
+        />
+    </>
+
+    
+
+  }
+
+    {!isDesktop && 
+
+    <Box>
+      <HeroImgStyle
+          alt="hero"
+          src={image1}
+          variants={varFade().inLeft}
+        />
+
+         <HeroImgStyle
+          alt="hero"
+          src={image2}
+          variants={varFade().inDown}
+        />
+
+         <HeroImgStyle
+          alt="hero"
+          src={image1}
+          variants={varFade().inRight}
+        />
+    </Box>
+    
+    }
+    
+       
+        
+     
+        
+
+   
+   </RootStyle>
+
+   <Box sx={{ height: { md: '100vh', sm:'100vh', xs:'40vh' } }} />
+
+    </MotionContainer>
+   
 
 
 

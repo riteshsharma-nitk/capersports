@@ -74,7 +74,9 @@ export default function UserOptions({user}) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar alt="Avatar Preview" src={user.avatar.url}  sx={{ width: 32, height: 32 }}>{(user.name).substr(0,1)}</Avatar>
+            <Avatar 
+            alt="Avatar Preview" 
+            src={user.avatar.url}>{(user.name).substr(0,1)}</Avatar>
           </IconButton>
     </Box>
          

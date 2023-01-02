@@ -3,9 +3,8 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import { Link as RouterLink } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import logo from '../../images/logo.png'
-import {Badge, Link, ListItem, StyledEngineProvider, useTheme } from '@mui/material';
+import {Badge, Link, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
@@ -14,18 +13,14 @@ import { useSelector } from 'react-redux';
 import {useNavigate} from 'react-router-dom'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
+import cssStyles from '../../utils/cssStyles'
+import { HEADER } from '../../config';
 import { Grid, Box } from '@mui/material';
+import { Stack } from '@mui/system';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const pages = ['Cricket', 'Football','Products', 'Contact', 'About'];
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  '& .MuiBadge-badge': {
-    right: -3,
-    top: 13,
-    border: `2px solid ${theme.palette.background.paper}`,
-    padding: '0 4px',
-  },
-}));
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -82,16 +77,10 @@ const LinkStyle = styled(Link)(({ theme }) => ({
   },
 }));
 
-const ListItemStyle = styled(ListItem)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: 0,
-  marginTop: theme.spacing(3),
-  color: theme.palette.text.secondary,
-  transition: theme.transitions.create('color'),
-  '&:hover': {
-    color: theme.palette.text.primary,
-  },
-}));
+
+
+
+
 
 export default function Desktop() {
   const theme = useTheme();
@@ -112,28 +101,18 @@ export default function Desktop() {
 }
 
   return (
-    <AppBar style={{ background: '#ffffff', color:'black', boxShadow:'none', zIndex: theme.zIndex.drawer + 1 }} position="relative">
-      <Toolbar sx={{p:0.5}}> 
-       <Grid container>
-        <Grid item md={4} display='flex' justifyContent='flex-start' alignItems='center'>
-        <Link underline='none' component={RouterLink} to="/">
-         <Box component='img' src={logo}  sx={{height:50}}></Box>
-        </Link>
-       </Grid> 
-
-      <Grid item md={4} display="flex" justifyContent="center" alignItems='center'>
-        {pages.map((page) => (
-        <LinkStyle  key={page} underline='none' component={RouterLink} to={(`/${page}`).toLowerCase()}>
+  <>
+  <Stack direction='row' alignItems='center'>
+  { pages.map((page) => (
+  <LinkStyle  key={page} underline='none' component={RouterLink} to={(`/${page}`).toLowerCase()}>
           {page}
         </LinkStyle> ))}
-      </Grid>
 
 
-      <Grid item md={4} display='flex' justifyContent="flex-end" alignItems='center'>
           <form onSubmit={searchSubmitHandler}>
           <Search>
             <SearchIconWrapper>
-              <SearchIcon />
+              <SearchIcon style={{color:'black'}} />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
@@ -147,22 +126,20 @@ export default function Desktop() {
           {isAuthenticated ? ( 
           <Link component={RouterLink} to="/cart">
             <IconButton>
-            <StyledBadge badgeContent={cartItems.length} color="secondary">
-              <LocalMallIcon style={{fontSize:"1.5rem", color:'#0097a7'}}/>
-            </StyledBadge>
+            <Badge badgeContent={cartItems.length} color="secondary">
+              <ShoppingCartIcon style={{color:'black'}}/>
+            </Badge>
             </IconButton>
           </Link>):(<></>)}
           
           {!isAuthenticated ? ( 
           <Link component={RouterLink} to="/login">
             <IconButton>
-              <PermIdentityIcon style={{fontSize:"1.5rem", color:'#00796b'}}/>
+              <PermIdentityIcon/>
             </IconButton>
            </Link>):(<UserOptions user={user}/>)}
-         </Grid>
-         </Grid>
-        </Toolbar>
-    </AppBar>   
+           </Stack>
+         </>
   );
 }
 
