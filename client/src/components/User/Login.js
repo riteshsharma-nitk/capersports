@@ -2,7 +2,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
@@ -12,11 +11,67 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../actions/userAction";
 import { NotificationManager } from 'react-notifications';
 import {useNavigate} from 'react-router-dom'
-import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper } from '@mui/material';
+import { Card, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, Stack, styled } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import useResponsive from '../../hooks/useResponsive';
+import loginImage from '../../images/undraw_secure_login_pdn4.svg'
+import Image from '../../helper/Image';
+import Logo from '../../helper/Logo';
+import Page from '../../helper/Page';
+import {LoadingButton} from '@mui/lab';
+
+const RootStyle = styled('div')(({ theme }) => ({
+  [theme.breakpoints.up('md')]: {
+    display: 'flex',
+  },
+}));
+
+const HeaderStyle = styled('header')(({ theme }) => ({
+  top: 0,
+  zIndex: 9,
+  lineHeight: 0,
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  position: 'absolute',
+  padding: theme.spacing(3),
+  justifyContent: 'space-between',
+  [theme.breakpoints.up('md')]: {
+    alignItems: 'flex-start',
+    padding: theme.spacing(7, 5, 0, 7),
+  },
+}));
+
+const SectionStyle = styled(Card)(({ theme }) => ({
+  width: '100%',
+  maxWidth: 464,
+  display: 'flex',
+  borderRadius:0,
+  minHeight: '100vh',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  padding: theme.spacing(15, 2),
+  [theme.breakpoints.up('md')]: {
+  padding: theme.spacing(30, 8, 0),
+  },
+}));
+
+const ContentStyle = styled('div')(({ theme }) => ({
+  maxWidth: 480,
+  margin: 'auto',
+  display: 'flex',
+  minHeight: '100vh',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  padding: theme.spacing(12, 0),
+}));
+
 
 export default function Login() {
+  const smUp = useResponsive('up', 'sm');
+  const mdUp = useResponsive('up', 'md');
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,6 +89,7 @@ export default function Login() {
   const redirect = window.location.search ? window.location.search.split("=")[1] : "/account";
 
   React.useEffect(() => {
+    document.title="Login | Caper Sports"
     if (error) {
       NotificationManager.error(error);
       dispatch(clearErrors());
@@ -43,7 +99,7 @@ export default function Login() {
       navigate(redirect);
     }
 
-    document.title = 'Login | Caper Sports'
+  
 
   }, [dispatch, error, navigate, redirect, isAuthenticated]);
 
@@ -58,28 +114,42 @@ export default function Login() {
 
 
   return (
-    <React.Fragment> 
-      {loading ? (<Loading/>) : (
-        <Grid container minHeight='100vh'>
-          <Grid item md={8} sx={{backgroundColor:'rgb(240 239 246)', display:{xs:'none', md:'block'}}}>
-            <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', mt:5}}>
-              <Typography fontWeight='bold' fontSize='2rem'>Hi, Welcome back</Typography>
-            </Box>
-          </Grid>
+        <RootStyle>
+          <HeaderStyle>
+          <Logo/>
+          </HeaderStyle>
+          
+        {mdUp && (
+        <ContentStyle>
+          <Typography variant="h3" sx={{ textAlign:'center', mt: 10, mb: 5 }}>
+            Hi, Welcome Back
+          </Typography> 
+          <Image
+              visibleByDefault
+              disabledEffect
+              alt="login"
+              src={loginImage}
+            />
+        </ContentStyle>)}
 
-          <Grid item md={4} xs={12}>
-               <Box sx={{ pt:{md:25, xs:15}, pl:7, pr:7, display: 'flex', flexDirection: 'column'}}>
-                <Typography fontSize='1.5rem' fontWeight='bold'> Sign in to Caper Sports </Typography>
-                <br></br>
-              <Box sx={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
-                 <Typography fontWeight='regular' fontSize='0.85rem'>New user?</Typography>
-                 <Link  underline='none' sx={{ml:1}} component={RouterLink} to="/register">
-                         <Typography fontWeight='bold' fontSize='0.85rem' color="#4caf50">{"Create an account"}</Typography>
-                 </Link>
-                 </Box>
-                 <br></br>
+
+ 
+        <SectionStyle>
+               
+                  <Stack spacing={2}>
+                  <Typography variant='h4'> Sign in to Caper Sports </Typography>
+                  <Typography variant='body2'>New user? {' '}
+                  <Link variant='subtitle2'   component={RouterLink} to="/register">
+                    Create an account
+                    </Link>
+                    </Typography>
+                  </Stack>
+
+                  <br></br>
 
                  <Box component="form" onSubmit={loginSubmit} sx={{ mt: 1 }}>
+                 <Stack spacing={3}>
+
                    <TextField
                     
                      type='email'
@@ -87,14 +157,11 @@ export default function Login() {
                      required
                      fullWidth
                      label="Email Address"
-                     fontSize='1rem'
                      value={loginEmail}
-                     
                      onChange={(e) => setLoginEmail(e.target.value)}
                     
                    />
-                   <br></br>
-                   <br></br>
+                  
                   
                   <FormControl fullWidth variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -141,34 +208,27 @@ export default function Login() {
 
 
 
-                       <br></br>
-                       <br></br>
+                      
                        <Link underline='none' sx={{fontSize:'0.8rem'}} component={RouterLink} to='/password/forgot' variant="body2">
                          <Typography fontSize='0.85rem' color='text.secondary' textAlign='right'>Forgot password?</Typography>
                        </Link>
                     
-                       <br></br>
-                   <Button
-                   margin='normal'
-                   fontSize='1rem'
+                      
+                   <LoadingButton
+                   size='large'
                      type="submit"
                      fullWidth
                      variant="contained"
-                     sx={{ pt: 2, pb: 2, fontWeight:'bold', textTransform:'none', borderRadius:2, backgroundColor:'rgb(33, 43, 54)', ":hover":{backgroundColor:'rgb(33, 43, 54)'} }}
+                     sx={{backgroundColor:'rgb(33, 43, 54)'}}
+                    
                    >
                      Login
-                   </Button>
-                   <Grid container>
-                     <Grid item>
-                       
-                     </Grid>
-                   </Grid>
+                   </LoadingButton>
+                   </Stack>
                  </Box>
-               </Box>
-             </Grid>
-           </Grid>)}
+                
+               </SectionStyle>    
+           </RootStyle>
 
-    </React.Fragment>
-   
   );
 }

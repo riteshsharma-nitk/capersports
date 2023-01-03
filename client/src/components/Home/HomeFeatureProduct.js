@@ -9,10 +9,9 @@ import {Link as RouterLink} from 'react-router-dom'
 import { m } from 'framer-motion';
 import { MotionViewport, varFade } from '../../helper/animate';
 
-
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(10, 0),
-  backgroundColor: theme.palette.grey[400],
+  backgroundColor: theme.palette.background.neutral,
   [theme.breakpoints.up('md')]: {
     padding: theme.spacing(15, 0),
   },

@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, redirect, useNavigate } from 'react-router-dom';
 import { register, clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
@@ -17,11 +17,65 @@ import { useDispatch, useSelector } from "react-redux";
 import { NotificationManager } from 'react-notifications';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import loginImage from '../../images/undraw_secure_login_pdn4.svg'
 
-import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+
+import { Card, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import Logo from '../../helper/Logo';
+import useResponsive from '../../hooks/useResponsive';
+import Image from '../../helper/Image';
 const theme = createTheme();
+const RootStyle = styled('div')(({ theme }) => ({
+  [theme.breakpoints.up('md')]: {
+    display: 'flex',
+  },
+}));
+
+const HeaderStyle = styled('header')(({ theme }) => ({
+  top: 0,
+  zIndex: 9,
+  lineHeight: 0,
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  position: 'absolute',
+  padding: theme.spacing(3),
+  justifyContent: 'space-between',
+  [theme.breakpoints.up('md')]: {
+    alignItems: 'flex-start',
+    padding: theme.spacing(7, 5, 0, 7),
+  },
+}));
+
+const SectionStyle = styled(Card)(({ theme }) => ({
+  width: '100%',
+  maxWidth: 464,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  borderRadius:0,
+  minHeight: '100vh',
+  padding: theme.spacing(15, 2),
+  [theme.breakpoints.up('md')]: {
+  padding: theme.spacing(30, 8, 0),
+  },
+
+}));
+
+const ContentStyle = styled('div')(({ theme }) => ({
+  maxWidth: 480,
+  margin: 'auto',
+  display: 'flex',
+  minHeight: '100vh',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  padding: theme.spacing(12, 0),
+}));
 
 export default function Register() {
+  const smUp = useResponsive('up', 'sm');
+
+  const mdUp = useResponsive('up', 'md');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -97,26 +151,30 @@ export default function Register() {
   
 
   return (
-    <Grid container height='100vh'>
-                <Grid item md={8} sx={{backgroundColor:'rgb(240 239 246)', display:{xs:'none', md:'block'}}}>
-                <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', mt:5}}>
-                <Typography fontWeight='bold' fontSize='2rem'>Welcome to Caper Sports</Typography>
-                </Box>
-          </Grid>
+    <RootStyle>
+      <HeaderStyle>
+        <Logo/>
+      </HeaderStyle>
+      {mdUp && (
+          <ContentStyle>
+            <Typography variant="h3" sx={{ textAlign:'center', mt: 10, mb: 5 }}>
+             Welcome to Caper Sports
+            </Typography>
+            <Image
+              visibleByDefault
+              disabledEffect
+              alt="register"
+              src={loginImage}
+            />
+          </ContentStyle>
+        )}
 
-          <Grid item md={4} xs={12}>
 
+               
 
-        <Box
-          sx={{
-            pt:{md:25, xs:15},
-            pl:7,
-            pr:7,
-            mb:10,
-             display: 'flex',
-             flexDirection: 'column',
-          }}
-        >
+    <SectionStyle>
+
+      
          
          <Typography fontSize='1.5rem' fontWeight='bold'>
                  Sign up to Caper Sports
@@ -201,8 +259,7 @@ export default function Register() {
 
                 <Button
                 fullWidth
-                sx={{textTransform:'none', color:'black', border:'1px solid black', pt:2, pb:2}}
-                fontSize='1rem'
+                size='large'
                 variant='outlined'
                 component='label'
                   required
@@ -228,20 +285,19 @@ export default function Register() {
             </Grid>
             <br></br>
             <Button
-             fontSize='1rem'
+            size='large'
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ pt: 2, pb: 2, fontWeight:'bold', textTransform:'none', borderRadius:2, backgroundColor:'rgb(33, 43, 54)', ":hover":{backgroundColor:'rgb(33, 43, 54)'} }}
-              >
+              sx={{backgroundColor:'rgb(33, 43, 54)'}}              >
               Create Account
             </Button>
             <br></br>
             <br></br>
             <Typography textAlign='center' fontSize='0.75rem' color='text.secondary'>By signing up, I agree to Terms of Service and Privacy Policy.</Typography>
           </Box>
-        </Box>
-        </Grid>
-       </Grid>
+       
+        </SectionStyle>
+        </RootStyle>
   );
 }

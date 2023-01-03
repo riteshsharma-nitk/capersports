@@ -1,18 +1,11 @@
-import { Box, Card, CardMedia, Container, Grid, Link, Stack, styled, Typography} from '@mui/material'
+import { Box, styled} from '@mui/material'
 import React from 'react'
-import productImages1 from '../../images/banner6.jpg'
-import productImages2 from '../../images/banner7.jpeg'
-import Carousel from 'react-material-ui-carousel'
 import { m } from 'framer-motion';
 import { MotionContainer, varFade } from '../../helper/animate'
-import image1 from '../../images/003.png'
-import image2 from '../../images/005.png'
-import Image from '../../helper/Image'
-import TextIconLabel from '../../helper/TextIconLabel';
-import { Link as RouterLink } from 'react-router-dom';
+import image1 from '../../images/003.webp'
+import image2 from '../../images/005.webp'
+import image3 from '../../images/007.webp'
 import useResponsive from '../../hooks/useResponsive'
-
-
 
 
 const RootStyle = styled(m.div)(({ theme }) => ({
@@ -29,8 +22,8 @@ const RootStyle = styled(m.div)(({ theme }) => ({
   },
 }));
 
+
 const HeroImgStyle = styled(m.img)(({ theme }) => ({
- 
   zIndex: 8,
   width: '100%',
   margin: 'auto',
@@ -116,7 +109,7 @@ export default function SlideShow() {
         />
         <HeroImgStyle3
           alt="hero"
-          src={image1}
+          src={image3}
           variants={varFade().inRight}
         />
     </>
@@ -167,13 +160,3 @@ export default function SlideShow() {
   )
 }
 
-const itemData = [
-  {
-    img: productImages1,
-    title: 'view1',
-  },
-  {
-    img: productImages2,
-    title: 'view2',
-  },
-  ];

@@ -12,6 +12,7 @@ import { getAllUsers } from "../../actions/userAction.js";
 import { getAllOrders } from "../../actions/orderAction.js";
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import Sidebar from './Sidebar'
+import NavBar from '../Header/NavBar'
 
 export default function Dashboard()  {
   const dispatch = useDispatch();
@@ -66,6 +67,8 @@ export default function Dashboard()  {
 
 
   return (
+    <>
+
   <Box display='flex' sx={{marginTop:1}}>
     <Sidebar/>
     <Grid container spacing={4} sx={{ p:{md:3.2, xs:2} }}>
@@ -142,6 +145,7 @@ export default function Dashboard()  {
 
 </Grid>
 </Box>
+</>
   )
 }
 

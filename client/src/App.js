@@ -84,8 +84,8 @@ function App() {
         <NotistackProvider>
       
         <MotionLazyContainer>
+         
   <Router>
-      <NavBar/>
 
     <NotificationContainer/>
 

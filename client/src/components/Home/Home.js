@@ -6,13 +6,13 @@ import { getProduct, clearErrors } from '../../actions/productAction';
 import { useSelector, useDispatch } from 'react-redux';
 import SlideShow from './SlideShow';
 import {Link as RouterLink} from 'react-router-dom'
-import Banner from '../../images/Banner.png'
 import Loading from '../Layout/Loader'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import HomeShowcase from './HomeShowcase';
 import HomeFeatureProduct from './HomeFeatureProduct';
 import Page from '../../helper/Page';
+import NavBar from '../Header/NavBar'
 
 
 const RootStyle = styled('div')(() => ({
@@ -36,7 +36,9 @@ const Home = () => {
   
   
   return (
-   <Page>
+    <>
+    <NavBar/>
+
   
         <RootStyle>
                    <SlideShow/>
@@ -49,7 +51,7 @@ const Home = () => {
            
         </ContentStyle>  
         </RootStyle>
-        </Page>
+      </>
               
    
  

@@ -6,7 +6,7 @@ import { Box, Card, Container, Typography } from '@mui/material';
 import Image from '../../helper/Image';
 import { MotionViewport, varFade } from '../../helper/animate';
 import React from 'react'
-import Banner from '../../images/Banner.png'
+import Banner from '../../images/Banner.webp'
 
 
 
@@ -23,7 +23,7 @@ function HomeShowcase() {
               <Box
           sx={{
             textAlign: 'center',
-            mb: { xs: 10, md: 25 },
+            mb: { xs: 2, md: 4 },
           }}
         >
                     <m.div variants={varFade().inUp}>

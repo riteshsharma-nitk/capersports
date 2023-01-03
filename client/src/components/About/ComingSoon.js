@@ -8,6 +8,7 @@ import SocialsButton from '../../helper/SocialsButton';
 
 // components
 
+import NavBar from '../Header/NavBar'
 
 
 
@@ -39,7 +40,8 @@ const SeparatorStyle = styled(Typography)(({ theme }) => ({
 export default function ComingSoon() {
 
   return (
-    <Page title="Coming Soon" sx={{ height: 1 }}>
+    <>
+    <NavBar/>
       <RootStyle>
         <Container>
           <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
@@ -72,6 +74,6 @@ export default function ComingSoon() {
           </Box>
         </Container>
       </RootStyle>
-    </Page>
+    </>
   );
 }

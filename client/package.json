@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.10.5",
     "@fontsource/montserrat": "^4.5.13",
     "@mui/icons-material": "^5.10.14",
+    "@mui/lab": "^5.0.0-alpha.114",
     "@mui/material": "^5.11.0",
     "@mui/x-data-grid": "^5.17.14",
     "@stripe/react-stripe-js": "^1.16.1",

@@ -18,7 +18,7 @@ import Toolbar from '@mui/material/Toolbar';
 import ShopTagFilterDesktop from './ShopTagFilterDesktop';
 import useResponsive from '../../hooks/useResponsive';
 import Iconify from '../../helper/Iconify';
-
+import NavBar from '../Header/NavBar'
 
 const categories = [
   'T-Shirts',
@@ -79,6 +79,7 @@ export default function Products() {
 
   return (
     <Fragment>
+      <NavBar/>
   
 
     {loading ? (

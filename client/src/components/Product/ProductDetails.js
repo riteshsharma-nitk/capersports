@@ -22,7 +22,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { addItemsToWishlist } from '../../actions/wishlistAction';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ProductDetailsCarousel from './ProductDetailsCarousel';
-
+import NavBar from '../Header/NavBar'
 
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
@@ -142,6 +142,7 @@ export default function ProductDetails() {
 
   return (
     <Fragment>
+      <NavBar/>
       {loading? <Loader/> :
       <Container sx={{mt:{md:'100px', lg:'100px'}}} maxWidth='lg'>
         <Card>
