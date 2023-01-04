@@ -6,7 +6,6 @@ import {
   getAllReviews,
   deleteReviews,
 } from "../../actions/productAction";
-import { NotificationManager } from 'react-notifications';
 import { Avatar, Button, Container, CssBaseline, Divider, Grid, Paper, TextField, Typography } from "@mui/material";
 
 import ReviewsIcon from '@mui/icons-material/Reviews';
@@ -49,17 +48,14 @@ const ProductReviews = () => {
       dispatch(getAllReviews(productId));
     }
     if (error) {
-      NotificationManager.error(error);
       dispatch(clearErrors());
     }
 
     if (deleteError) {
-      NotificationManager.error(deleteError);
       dispatch(clearErrors());
     }
 
     if (isDeleted) {
-      NotificationManager.success("Review Deleted Successfully");
       navigate("/admin/reviews");
       dispatch({ type: DELETE_REVIEW_RESET });
     }

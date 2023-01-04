@@ -10,7 +10,6 @@ import {
 } from "../../actions/orderAction";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../Layout/Loader";
-import { NotificationManager } from 'react-notifications';
 import { Button } from "@mui/material";
 import { UPDATE_ORDER_RESET } from "../../constants/orderConstants";
 import { useNavigate } from "react-router-dom";
@@ -42,15 +41,12 @@ const ProcessOrder = () => {
 
   useEffect(() => {
     if (error) {
-      NotificationManager.error(error);
       dispatch(clearErrors());
     }
     if (updateError) {
-      NotificationManager.error(updateError);
       dispatch(clearErrors());
     }
     if (isUpdated) {
-      NotificationManager.success("Order Updated Successfully");
       dispatch({ type: UPDATE_ORDER_RESET });
     }
 

@@ -10,7 +10,6 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Logout from '@mui/icons-material/Logout';
 import {useNavigate } from 'react-router';
-import { NotificationManager } from 'react-notifications';
 import { logout } from "../../actions/userAction"
 import { useDispatch } from "react-redux";
 import { Divider, List, ListItem, ListItemText } from '@mui/material';
@@ -61,7 +60,7 @@ export default function UserOptions({user}) {
 
   function logoutUser() {
     dispatch(logout());
-    NotificationManager.success("Logout Successfully");
+    // NotificationManager.success("Logout Successfully");
   }
 
   return (

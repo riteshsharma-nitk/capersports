@@ -16,10 +16,10 @@ const RootStyle = styled('div')(({ theme }) => ({
     paddingBottom: theme.spacing(15),
   },
 }));
-function HomeShowcase() {
+function HomePromotion() {
   return (
     <RootStyle>
-      <Box component={MotionViewport}>
+      <Container component={MotionViewport}>
               <Box
           sx={{
             textAlign: 'center',
@@ -34,7 +34,7 @@ function HomeShowcase() {
             </m.div>
             <m.div variants={varFade().inUp}>
 
-            <Typography variant="h2">Hunter Boyz</Typography>
+            <Typography variant="h2">Our Clients</Typography>
             </m.div>
 
 
@@ -48,7 +48,7 @@ function HomeShowcase() {
        
        
 
-                </Box>
+                </Container>
                 
 
         </RootStyle>
@@ -57,4 +57,4 @@ function HomeShowcase() {
   )
 }
 
-export default HomeShowcase;
+export default HomePromotion;

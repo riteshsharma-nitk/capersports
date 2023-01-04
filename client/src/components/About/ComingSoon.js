@@ -40,8 +40,6 @@ const SeparatorStyle = styled(Typography)(({ theme }) => ({
 export default function ComingSoon() {
 
   return (
-    <>
-    <NavBar/>
       <RootStyle>
         <Container>
           <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
@@ -74,6 +72,5 @@ export default function ComingSoon() {
           </Box>
         </Container>
       </RootStyle>
-    </>
   );
 }

@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useRef } from "react";
 import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Paper, Typography } from "@mui/material";
-import { NotificationManager } from 'react-notifications';
 
 import './Payment.css'
 import {
@@ -100,18 +99,17 @@ const Payment = () => {
 
           navigate("/success");
         } else {
-          NotificationManager.error("There's some issue while processing payment ");
+          // NotificationManager.error("There's some issue while processing payment ");
         }
       }
     } catch (error) {
       payBtn.current.disabled = false;
-      NotificationManager.error(error.response.data.message);
+      // NotificationManager.error(error.response.data.message);
     }
   };
 
   useEffect(() => {
     if (error) {
-      NotificationManager.error(error);
       dispatch(clearErrors());
     }
   }, [dispatch, error]);

@@ -9,7 +9,6 @@ import { useState } from 'react';
 import Loading from '../Layout/Loader'
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../actions/userAction";
-import { NotificationManager } from 'react-notifications';
 import {useNavigate} from 'react-router-dom'
 import { Card, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, Stack, styled } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
@@ -91,7 +90,7 @@ export default function Login() {
   React.useEffect(() => {
     document.title="Login | Caper Sports"
     if (error) {
-      NotificationManager.error(error);
+      // NotificationManager.error(error);
       dispatch(clearErrors());
     }
 

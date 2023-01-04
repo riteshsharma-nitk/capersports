@@ -2,7 +2,6 @@ import React, { Fragment, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { saveShippingInfo } from "../../actions/cartAction";
 import { Country, State } from "country-state-city";
-import { NotificationManager } from 'react-notifications';
 import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useNavigate } from "react-router";
 import { Box, ButtonBase, MenuItem, Select } from "@mui/material";
@@ -25,7 +24,7 @@ const Shipping = () => {
     e.preventDefault();
 
     if (phoneNo.length < 10 || phoneNo.length > 10) {
-      NotificationManager.error("Phone Number should be 10 digits Long");
+      // NotificationManager.error("Phone Number should be 10 digits Long");
       return;
     }
     dispatch(

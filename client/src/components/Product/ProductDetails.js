@@ -16,8 +16,6 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { addItemsToCart } from "../../actions/cartAction";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { addItemsToWishlist } from '../../actions/wishlistAction';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -142,7 +140,6 @@ export default function ProductDetails() {
 
   return (
     <Fragment>
-      <NavBar/>
       {loading? <Loader/> :
       <Container sx={{mt:{md:'100px', lg:'100px'}}} maxWidth='lg'>
         <Card>

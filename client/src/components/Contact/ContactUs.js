@@ -33,7 +33,6 @@ export default function ContactUs() {
 
 
        </Container>
-          <Footer/>
 
     </RootStyle>
    

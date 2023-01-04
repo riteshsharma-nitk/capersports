@@ -21,7 +21,7 @@ export default function Logo({ disabledLink = false, sx }) {
   const PRIMARY_DARK = theme.palette.primary.dark;
 
   const logo = (
-    <Box sx={{ width: 40, height: 40, ...sx }}>
+    <Box sx={{ width: {md:40, xs:25}, height: {md:40, xs:25}, ...sx }}>
      <Image
               visibleByDefault
               disabledEffect

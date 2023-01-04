@@ -20,25 +20,6 @@ import useResponsive from '../../hooks/useResponsive';
 import Iconify from '../../helper/Iconify';
 import NavBar from '../Header/NavBar'
 
-const categories = [
-  'T-Shirts',
-  'Hoodies',
-  'Sweatshirts',
- ' Jackets',
-  'Tracksuits',
-  'Shorts',
-  'Socks',
-  'Trouser',
-  'Cap',
-  'Basketball Kit'
-]
-
-const RootStyle = styled('div')({
-  flexGrow: 1,
-  display: 'flex',
-  flexWrap: 'wrap',
-  alignItems: 'center',
-});
 
 export default function Products() {
 
@@ -79,14 +60,13 @@ export default function Products() {
 
   return (
     <Fragment>
-      <NavBar/>
   
 
     {loading ? (
        <Loading/>       
        ):(
         <Fragment>
-        <Box display='flex' sx={{mt:'64px'}}> 
+        <Box display='flex' sx={{mt:'100px'}}> 
             <div className='container'>
               <AppBar style={{ background: '#ffffff', color:'black', boxShadow:'none'}} position="sticky">
                 <Toolbar>

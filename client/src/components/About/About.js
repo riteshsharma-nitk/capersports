@@ -14,12 +14,10 @@ const RootStyle = styled('div')(({ theme }) => ({
 function About() {
   return (
         
-    <>
-    <NavBar/>
+   
        <RootStyle>
-        <Footer/> 
        </RootStyle>
-    </>
+   
  
     )
 }

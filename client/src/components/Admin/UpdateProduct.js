@@ -9,7 +9,6 @@ import Sidebar from "./Sidebar";
 import { Avatar, Button, Container, CssBaseline, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextareaAutosize, TextField, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import InventoryIcon from '@mui/icons-material/Inventory';
-import { NotificationManager } from 'react-notifications';
 
 
 const theme = createTheme();
@@ -65,17 +64,14 @@ const UpdateProduct = ({match}) => {
             setInformation(product.information);
         }
         if (error) {
-            NotificationManager.error(error);
             dispatch(clearErrors());
         }
 
         if (updateError) {
-            NotificationManager.error(updateError);
             dispatch(clearErrors());
         }
 
         if (isUpdated) {
-            NotificationManager.success("Product Updated Successfully");
             navigate("/admin/products");
             dispatch({ type: UPDATE_PRODUCT_RESET });
         }

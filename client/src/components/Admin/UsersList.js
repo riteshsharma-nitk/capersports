@@ -10,7 +10,6 @@ import { DELETE_USER_RESET } from "../../constants/userConstants";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import EditIcon from '@mui/icons-material/Edit';
-import { NotificationManager } from 'react-notifications';
 
 
 
@@ -32,17 +31,14 @@ const UsersList = () => {
 
   useEffect(() => {
     if (error) {
-      NotificationManager.error(error);
       dispatch(clearErrors());
     }
 
     if (deleteError) {
-      NotificationManager.error(deleteError);
       dispatch(clearErrors());
     }
 
     if (isDeleted) {
-      NotificationManager.success(message);
       navigate("/admin/users");
       dispatch({ type: DELETE_USER_RESET });
     }

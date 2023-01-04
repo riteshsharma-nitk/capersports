@@ -9,7 +9,6 @@ import { Box, Container } from '@mui/system';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { Avatar, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextareaAutosize, TextField, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { NotificationManager } from 'react-notifications';
 const theme = createTheme();
 function NewProduct() {
     const dispatch = useDispatch();
@@ -40,12 +39,10 @@ function NewProduct() {
       
       useEffect(() => {
         if (error) {
-          NotificationManager.error(error);
           dispatch(clearErrors());
         }
     
         if (success) {
-          NotificationManager.success("Product Created Successfully");
           navigate("/admin/dashboard");
           dispatch({ type: NEW_PRODUCT_RESET });
         }

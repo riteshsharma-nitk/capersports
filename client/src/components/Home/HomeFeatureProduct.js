@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import { NotificationManager } from 'react-notifications';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, getProduct } from '../../actions/productAction';
 import ProductCard from './ProductCard';
 import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import { Box, Button, Container, Link, styled, Typography } from '@mui/material';
 import {Link as RouterLink} from 'react-router-dom'
 import { m } from 'framer-motion';
@@ -22,19 +22,17 @@ function HomeFeatureProduct() {
     const dispatch = useDispatch();
     const {loading, error, products } = useSelector((state)=>state.products)
 
-    
-
   useEffect(() => {
 
     if(error){
-       NotificationManager.error(error);
+      //  NotificationManager.error(error);
        dispatch(clearErrors())
     }
     dispatch(getProduct());
   }, [dispatch, error])
   return (
    <RootStyle>
-          <Box component={MotionViewport}>
+          <Container component={MotionViewport}>
 
  <Box
           sx={{
@@ -80,7 +78,7 @@ function HomeFeatureProduct() {
         max: 3000,
         min: 1024
       },
-      items: 4,
+      items: 3,
       partialVisibilityGutter: 40
     },
     mobile: {
@@ -124,7 +122,7 @@ function HomeFeatureProduct() {
  variant='contained'>Explore More</Button>
   </Link>
   </Box>
-  </Box>
+  </Container>
   </RootStyle>
   )
 }

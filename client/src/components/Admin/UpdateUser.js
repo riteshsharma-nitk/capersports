@@ -4,7 +4,6 @@ import { Avatar, Box, Button, Container, createTheme, FormControl, Grid, InputLa
 import PersonIcon from '@mui/icons-material/Person';
 import { useParams } from "react-router";
 import { UPDATE_USER_RESET } from "../../constants/userConstants";
-import { NotificationManager } from 'react-notifications';
 
 import {
   getUserDetails,
@@ -45,17 +44,14 @@ const UpdateUser = () => {
       setRole(user.role);
     }
     if (error) {
-      NotificationManager.error(error);
       dispatch(clearErrors());
     }
 
     if (updateError) {
-      NotificationManager.error(updateError);
       dispatch(clearErrors());
     }
 
     if (isUpdated) {
-      NotificationManager.success("User Updated Successfully");
       navigate("/admin/users");
       dispatch({ type: UPDATE_USER_RESET });
     }

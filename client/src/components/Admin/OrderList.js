@@ -3,7 +3,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useSelector, useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { Grid, Link, Typography } from "@mui/material";
-import { NotificationManager } from 'react-notifications';
 import { Button } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -32,17 +31,14 @@ const OrderList = () => {
 
   useEffect(() => {
     if (error) {
-      NotificationManager.error(error);
       dispatch(clearErrors());
     }
 
     if (deleteError) {
-      NotificationManager.error(deleteError);
       dispatch(clearErrors());
     }
 
     if (isDeleted) {
-      NotificationManager.success("Order Deleted Successfully");
       navigate("/admin/orders");
       dispatch({ type: DELETE_ORDER_RESET });
     }

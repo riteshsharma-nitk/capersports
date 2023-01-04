@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 // @mui
 import { useTheme, alpha } from '@mui/material/styles';
 import { Typography, GlobalStyles } from '@mui/material';

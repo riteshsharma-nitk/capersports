@@ -11,7 +11,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Sidebar from '../Admin/Sidebar'
 import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
 import { useNavigate } from 'react-router-dom';
-import { NotificationManager } from 'react-notifications';
 
 
 
@@ -30,17 +29,14 @@ function ProductList() {
 
   useEffect(() => {
     if (error) {
-      NotificationManager.error(error);
       dispatch(clearErrors());
     }
 
     if (deleteError) {
-      NotificationManager.error(deleteError);
       dispatch(clearErrors());
     }
 
     if (isDeleted) {
-      NotificationManager.success("Product Deleted Successfully");
       navigate("/admin/dashboard");
       dispatch({ type: DELETE_PRODUCT_RESET });
     }
