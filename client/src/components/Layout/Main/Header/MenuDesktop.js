@@ -89,17 +89,18 @@ export default function MenuDesktop({isOffset, isHome}) {
          
           {isAuthenticated ? ( 
           <Link component={RouterLink} to="/cart">
+            <IconButtonAnimate>
             <Badge badgeContent={cartItems.length} color="secondary">
-              <IconButtonAnimate>
-             <Iconify icon={'ic:sharp-add-shopping-cart'} width={25} height={25}/>
-             </IconButtonAnimate>
+             <Iconify icon={'ic:sharp-add-shopping-cart'} width={22} height={22}/>
             </Badge>
+            </IconButtonAnimate>
+
           </Link>):(<></>)}
           
           {!isAuthenticated ? ( 
           <Link component={RouterLink} to="/login">
               <IconButtonAnimate>
-              <Iconify icon={'material-symbols:account-circle-outline'}width={25} height={25}/>
+              <Iconify icon={'mdi:user'}width={24} height={24}/>
               </IconButtonAnimate>
 
            </Link>):(<UserOptions user={user}/>)}

@@ -1,29 +1,24 @@
 import { Suspense, lazy, useState, useEffect } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
-import Cart from '../components/Cart/Cart';
-import ConfirmOrder from '../components/Cart/ConfirmOrder';
-import OrderSuccess from '../components/Cart/OrderSuccess';
-import Shipping from '../components/Cart/Shipping';
+
+
+
 import GuestGuard from '../components/Guards/GuestGuard';
 import AuthGuard from '../components/Guards/AuthGuard';
 import RoleBasedGuard from '../components/Guards/RoleBasedGuard';
+
 import MainLayout from '../components/Layout/Main/MainLayout';
-import MyOrders from '../components/Order/MyOrders';
-import OrderDetails from '../components/Order/OrderDetails';
-import ProductDetails from '../components/Product/ProductDetails';
-import Products from '../components/Product/Products';
-import Search from '../components/Product/Search';
-import Profile from '../components/User/Profile';
-import UpdatePassword from '../components/User/UpdatePassword';
-import UpdateProfile from '../components/User/UpdateProfile';
+
+
+
 import LoadingScreen from '../helper/LoadingScreen';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from "@stripe/stripe-js";
-import { loadUser } from '../actions/userAction';
-import Payment from '../components/Cart/Payment';
+
+import DashboardLayout from '../components/Layout/Dashboard';
 import axios from 'axios';
 import store from '../store';
-import DashboardLayout from '../components/Layout/Dashboard';
+import { loadUser } from '../actions/userAction';
 
 
 const Loadable = (Component) => (props) => {
@@ -40,22 +35,22 @@ const Loadable = (Component) => (props) => {
 };
 
 export default function MyRouter(){
+
     const [stripeApiKey, setStripeApiKey] = useState("");
 
-    async function getStripeApiKey() {
-      const { data } = await axios.get("/api/v1/stripeapikey");
-  
-      setStripeApiKey(data.stripeApiKey);
-    }
-  
-    useEffect(() => {
-      store.dispatch(loadUser());
-      getStripeApiKey();
-  
-  
-    },[]);
-   
+  async function getStripeApiKey() {
+    const { data } = await axios.get("/api/v1/stripeapikey");
 
+    setStripeApiKey(data.stripeApiKey);
+  }
+
+  useEffect(() => {
+    store.dispatch(loadUser());
+    getStripeApiKey();
+
+
+  },[]);
+  
     return useRoutes([
         
             { 
@@ -74,7 +69,6 @@ export default function MyRouter(){
                 </GuestGuard>
             },
 
-           
 
             {
                 path:"me/update", 
@@ -89,14 +83,6 @@ export default function MyRouter(){
                 element:
                 <AuthGuard>
                     <UpdatePassword/>
-                </AuthGuard>
-            },
-
-            {
-                path:"cart",
-                element:
-                <AuthGuard>
-                    <Cart/>
                 </AuthGuard>
             },
 
@@ -116,13 +102,7 @@ export default function MyRouter(){
                  </AuthGuard>
             },
 
-            {
-                path:"shipping",
-                 element:
-                 <AuthGuard>
-                 <Shipping/>
-                 </AuthGuard>
-            },
+           
 
             {
                 path:"success", 
@@ -141,15 +121,7 @@ export default function MyRouter(){
                  } ,
 
 
-                 {
-                    path:"/process/payment",
-                     element:
-                     <AuthGuard>
-                     <Elements stripe={loadStripe(stripeApiKey)}><Payment/> </Elements>
-                     </AuthGuard>
-                       
-
-                 },
+                
 
 
              // Dashboard Routes
@@ -279,6 +251,34 @@ export default function MyRouter(){
                         <Profile/>
                     </AuthGuard>
                 },
+
+                {
+                    path:"cart",
+                    element:
+                    <AuthGuard>
+                        <Cart/>
+                    </AuthGuard>
+                },
+
+                {
+                    path:"shipping",
+                     element:
+                     <AuthGuard>
+                     <Shipping/>
+                     </AuthGuard>
+                },
+
+                {
+                    path:"/process/payment",
+                     element:
+                     <AuthGuard>
+                     <Elements stripe={loadStripe(stripeApiKey)}><Payment/> </Elements>
+                     </AuthGuard>
+                       
+
+                 },
+
+                
                   
                 ],
               },
@@ -320,5 +320,18 @@ const ResetPassword = Loadable(lazy(() => import( '../components/User/ResetPassw
 
 // 
 const LogoOnlyLayout = Loadable(lazy(()=> import('../components/Layout/LogoOnlyLayout')));
-
+const Cart = Loadable(lazy(()=> import( '../components/Cart/Cart')));
+const ConfirmOrder = Loadable(lazy(()=> import( '../components/Cart/ConfirmOrder')));
+const OrderSuccess = Loadable(lazy(()=> import( '../components/Cart/OrderSuccess')));
+const Shipping = Loadable(lazy(()=> import( '../components/Cart/Shipping')));
+const MyOrders = Loadable(lazy(()=> import( '../components/Order/MyOrders')));
+const OrderDetails = Loadable(lazy(()=> import( '../components/Order/OrderDetails')));
+const ProductDetails = Loadable(lazy(()=> import( '../components/Product/ProductDetails')));
+const Products = Loadable(lazy(()=> import( '../components/Product/Products')));
+const Search = Loadable(lazy(()=> import( '../components/Product/Search')));
+const Profile = Loadable(lazy(()=> import( '../components/User/Profile')));
+const UpdatePassword = Loadable(lazy(()=> import( '../components/User/UpdatePassword')));
+const UpdateProfile = Loadable(lazy(()=> import( '../components/User/UpdateProfile')));
+const Payment = Loadable(lazy(()=> import( '../components/Cart/Payment')));
+const CheckoutSteps = Loadable(lazy(()=> import( '../components/Cart/CheckoutSteps')));
 

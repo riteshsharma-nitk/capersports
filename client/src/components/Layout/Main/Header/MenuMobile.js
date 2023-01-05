@@ -207,11 +207,11 @@ if (user?.role === "admin") {
           {isAuthenticated ? ( 
           <Link component={RouterLink} to="/cart">
           
+          <IconButtonAnimate>
             <Badge badgeContent={cartItems.length} color="secondary">
-            <IconButtonAnimate>
-             <Iconify icon={'ic:sharp-add-shopping-cart'} width={25} height={25}/>
-             </IconButtonAnimate>            
-             </Badge>
+             <Iconify icon={'ic:sharp-add-shopping-cart'} width={22} height={22}/>
+            </Badge>
+            </IconButtonAnimate>
            
           </Link>):(<></>)}
           

@@ -4,11 +4,28 @@ import { saveShippingInfo } from "../../actions/cartAction";
 import { Country, State } from "country-state-city";
 import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useNavigate } from "react-router";
-import { Box, ButtonBase, MenuItem, Select } from "@mui/material";
+import { Box, ButtonBase, Card, MenuItem, Select } from "@mui/material";
 import {Button, Container, FormControl, Grid, InputLabel, Paper, TextField, Typography } from "@mui/material";
+import Iconify from "../../helper/Iconify";
+import { Link as RouterLink } from 'react-router-dom';
+import CheckoutSummary from "./CheckoutSummary";
+import Page from "../../helper/Page";
+import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
+import useSettings from "../../hooks/useSettings";
+
 
 
 const Shipping = () => {
+  const { themeStretch } = useSettings();
+
+  const { cartItems } = useSelector((state) => state.cart);
+
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.quantity * item.price, 0)
+  
+    const total = subtotal;
+    var discount = 0;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { shippingInfo } = useSelector((state) => state.cart);
@@ -20,6 +37,26 @@ const Shipping = () => {
   const [pinCode, setPinCode] = useState(shippingInfo.pinCode);
   const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
 
+
+  const shippingCharges = subtotal > 1000 ? 0 : 200;
+
+  const tax = subtotal * 0.05;
+
+  const totalPrice = subtotal + tax + shippingCharges;
+
+
+  const proceedToPayment = () => {
+    const data = {
+      subtotal,
+      shippingCharges,
+      tax,
+      totalPrice,
+    };
+
+    sessionStorage.setItem("orderInfo", JSON.stringify(data));
+
+  };
+
   const shippingSubmit = (e) => {
     e.preventDefault();
 
@@ -30,18 +67,27 @@ const Shipping = () => {
     dispatch(
       saveShippingInfo({ address, city, state, country, pinCode, phoneNo })
     );
-    navigate("/order/confirm");
+    proceedToPayment();
+    navigate("/process/payment");
   };
 
+
+
+
+ 
+
+
   return (
-    <Fragment>
+    <Page title="Ecommerce: Checkout">
+    <Container maxWidth={themeStretch ? false : 'lg' }  sx={{mt:'100px'}}>
 
-      <CheckoutSteps activeStep={0} />
+    <CheckoutSteps activeStep={1} />
 
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-      <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-               
-      <Typography fontSize='1.2rem' gutterBottom>
+      <Grid container spacing={3}>
+      <Grid item xs={12} md={8}>
+
+        <Card sx={{p:4}}>    
+      <Typography variant="h5">
         Shipping Details
       </Typography>
       <Box component="form" encType="multipart/form-data" onSubmit={shippingSubmit} sx={{ mt: 3 }}>
@@ -180,6 +226,7 @@ const Shipping = () => {
            
             sx={{ backgroundColor:'black', textTransform:'none' }}
               type="submit"
+              size="large"
               fullWidth
               value="Continue"
               disabled={state ? false : true}
@@ -191,9 +238,25 @@ const Shipping = () => {
      
      </Grid>
      </Box>
-        </Paper>
-        </Container>
-    </Fragment>
+     </Card>   
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button
+            component={RouterLink}
+              to='/cart'
+              size="small"
+              color="inherit"
+              startIcon={<Iconify icon={'eva:arrow-ios-back-fill'} />}
+            >
+              Back
+            </Button>
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <CheckoutSummary subtotal={subtotal} total={total} discount={discount} />
+        </Grid>
+        </Grid>
+    </Container>
+    </Page>
   );
 };
 

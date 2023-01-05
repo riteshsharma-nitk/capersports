@@ -7,10 +7,6 @@
     padding: 2%;
   }
   
-  .paymentForm {
-   
-  }
-  
   .paymentForm > p {
     color: rgba(0, 0, 0, 0.753);
     border-bottom: 1px solid rgba(0, 0, 0, 0.13);
@@ -48,6 +44,7 @@
     background-color: rgb(8, 2, 0);
     color: white;
     border-radius: 5px;
+    margin-top: 16px;
     width: 100%;
     padding: 0.8vmax;
     cursor: pointer;

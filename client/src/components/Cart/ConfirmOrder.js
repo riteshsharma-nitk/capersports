@@ -39,7 +39,6 @@ const ConfirmOrder = () => {
 
   return (
     <Fragment>
-      <CheckoutSteps activeStep={1} />
 
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
       <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>        <div>

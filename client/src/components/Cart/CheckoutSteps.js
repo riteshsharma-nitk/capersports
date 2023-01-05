@@ -1,10 +1,18 @@
 import React, { Fragment } from "react";
-import { Typography, Stepper, StepLabel, Step } from"@mui/material";
+import { Typography, Stepper, StepLabel, Step, Grid, Container } from"@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import Page from "../../helper/Page";
+import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
+import Cart from "./Cart";
+import Shipping from "./Shipping";
+import Payment from "./Payment";
+import useSettings from "../../hooks/useSettings";
 
 const CheckoutSteps = ({ activeStep }) => {
+  const { themeStretch } = useSettings();
+
   const steps = [
     {
       label: <Typography>Shipping Details</Typography>,
@@ -25,8 +33,26 @@ const CheckoutSteps = ({ activeStep }) => {
   };
 
   return (
-    <Fragment>
-      <Stepper alternativeLabel activeStep={activeStep} style={stepStyles}>
+    <Page title="Ecommerce: Checkout">
+      <Container maxWidth={themeStretch ? false : 'lg' }  sx={{mt:'100px'}}>
+      <HeaderBreadcrumbs
+          heading="Checkout"
+          links={[
+            { name: 'Home', href: '/' },
+            {
+              name: 'Products',
+              href: 'products',
+            },
+            { name: 'Checkout' },
+          ]}
+        />
+
+
+
+    <Grid container justifyContent='center'>
+      <Grid item xs={12} md={8} sx={{ mb: 5 }}>
+
+    <Stepper alternativeLabel activeStep={activeStep} style={stepStyles}>
         {steps.map((item, index) => (
           <Step
             key={index}
@@ -34,8 +60,9 @@ const CheckoutSteps = ({ activeStep }) => {
             completed={activeStep >= index ? true : false}
           >
             <StepLabel
-              style={{
-                color: activeStep >= index ? "tomato" : "rgba(0, 0, 0, 0.649)",
+              sx={{
+                color: activeStep >= index ? '#00AB55': "rgba(0, 0, 0, 0.649)",
+                typography:'subtitle2'
               }}
               icon={item.icon}
             >
@@ -44,7 +71,10 @@ const CheckoutSteps = ({ activeStep }) => {
           </Step>
         ))}
       </Stepper>
-    </Fragment>
+      </Grid>
+    </Grid>
+    </Container>
+    </Page>
   );
 };
 
