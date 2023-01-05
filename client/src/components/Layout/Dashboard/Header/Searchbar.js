@@ -35,7 +35,7 @@ const SearchbarStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Searchbar() {
+export default function Searchbar({setKeyword}) {
   const [isOpen, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -51,7 +51,7 @@ export default function Searchbar() {
       <div>
         {!isOpen && (
           <IconButtonAnimate onClick={handleOpen}>
-            <Iconify icon={'eva:search-fill'} width={20} height={20} />
+            <Iconify icon={'eva:search-fill'} width={25} height={25} />
           </IconButtonAnimate>
         )}
 
@@ -61,6 +61,7 @@ export default function Searchbar() {
               autoFocus
               fullWidth
               disableUnderline
+              onChange={(e)=>setKeyword(e.target.value)}
               placeholder="Search…"
               startAdornment={
                 <InputAdornment position="start">
@@ -72,9 +73,7 @@ export default function Searchbar() {
               }
               sx={{ mr: 1, fontWeight: 'fontWeightBold' }}
             />
-            <Button variant="contained" onClick={handleClose}>
-              Search
-            </Button>
+           
           </SearchbarStyle>
         </Slide>
       </div>

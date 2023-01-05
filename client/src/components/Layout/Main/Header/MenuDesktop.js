@@ -1,6 +1,8 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
+
 import IconButton from '@mui/material/IconButton';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import {Badge, Link, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
@@ -11,54 +13,18 @@ import {useNavigate} from 'react-router-dom'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import { Stack } from '@mui/system';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import UserOptions from '../../../Header/UserOptions';
 import Searchbar from '../../Dashboard/Header/Searchbar';
+import UserOptions from '../../Dashboard/UserOptions';
+import Iconify from '../../../../helper/Iconify';
+import { IconButtonAnimate } from '../../../../helper/animate';
 
-const pages = ['Home','Cricket', 'Football','Products'];
-
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: 25,
-  backgroundColor: alpha(theme.palette.common.black, 0.05),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.black, 0.10),
-  },
-  marginLeft: theme.spacing(2),
-  marginRight: theme.spacing(2),
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '10ch',
-      '&:focus': {
-        width: '20ch',
-      },
-    },
-  },
-}));
-
+const pages = [
+  { name:'Home',     link:'/' },
+  { name:'Cricket',  link:'/cricket-products' },
+  { name:'Football', link:'/football-products' },
+  { name:'Products', link:'/products' },
+  { name:'Contact', link:'contact-us'}
+];
 const LinkStyle = styled(Link)(({ theme }) => ({
   ...theme.typography.subtitle1,
   color: theme.palette.text.primary,
@@ -75,10 +41,13 @@ const LinkStyle = styled(Link)(({ theme }) => ({
 
 
 
-
+MenuDesktop.propTypes = {
+  isHome: PropTypes.bool,
+  isOffset: PropTypes.bool,
+};
 
 export default function MenuDesktop({isOffset, isHome}) {
-  const theme = useTheme();
+  const { pathname } = useLocation();
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [keyword, setKeyword] = React.useState("");
   const navigate=useNavigate()
@@ -99,41 +68,40 @@ export default function MenuDesktop({isOffset, isHome}) {
   <>
   <Stack direction='row' alignItems='center'>
   { pages.map((page) => (
-  <LinkStyle  key={page} underline='none' component={RouterLink} to={(`/${page}`).toLowerCase()}>
-          {page}
+  <LinkStyle  key={page.name} underline='none' component={RouterLink} to={page.link}
+  sx={{
+    ...(isHome && { color: 'common.white' }),
+    ...(isOffset && { color: 'text.primary' }),
+    '&.active': {
+      color: 'primary.main',
+    },
+  }}
+  >
+          {page.name}
         </LinkStyle> ))}
 
 
           <form onSubmit={searchSubmitHandler}>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon style={{color:'black'}} />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-              onChange = {(e) => setKeyword(e.target.value)}
-            />
-          </Search>
+          <Searchbar setKeyword={setKeyword}/>
           </form> 
 
          
          
-  
           {isAuthenticated ? ( 
           <Link component={RouterLink} to="/cart">
-            <IconButton>
             <Badge badgeContent={cartItems.length} color="secondary">
-              <ShoppingCartIcon style={{color:'black'}}/>
+              <IconButtonAnimate>
+             <Iconify icon={'ic:sharp-add-shopping-cart'} width={25} height={25}/>
+             </IconButtonAnimate>
             </Badge>
-            </IconButton>
           </Link>):(<></>)}
           
           {!isAuthenticated ? ( 
           <Link component={RouterLink} to="/login">
-            <IconButton>
-              <PermIdentityIcon/>
-            </IconButton>
+              <IconButtonAnimate>
+              <Iconify icon={'material-symbols:account-circle-outline'}width={25} height={25}/>
+              </IconButtonAnimate>
+
            </Link>):(<UserOptions user={user}/>)}
            </Stack>
          </>

@@ -13,8 +13,6 @@ import useResponsive from '../../../../hooks/useResponsive';
 // utils
 import cssStyles from '../../../../utils/cssStyles';
 
-
-
 import navConfig from './NavConfig';
 import NavbarAccount from './SidebarAccount';
 import CollapseButton from './CollapseButton';

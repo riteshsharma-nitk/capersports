@@ -9,7 +9,7 @@ import Logo from '../../../../helper/Logo';
 import useOffSetTop from '../../../../hooks/useOffSetTop';
 import { IconButtonAnimate } from '../../../../helper/animate';
 import Iconify from '../../../../helper/Iconify';
-import UserOptions from '../../../Header/UserOptions';
+import UserOptions from '../../Dashboard/UserOptions';
 import MenuDesktop from '../../Main/Header/MenuDesktop';
 import { useSelector } from 'react-redux';
 // hooks

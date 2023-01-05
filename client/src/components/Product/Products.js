@@ -4,21 +4,15 @@ import { clearErrors, getProduct } from '../../actions/productAction';
 import Loading from '../Layout/Loader';
 import ProductItems from './ProductItems';
 import { useParams } from 'react-router-dom';
-import Pagination from "react-js-pagination";
-import CancelIcon from '@mui/icons-material/Cancel';
 import {Box, Button, createTheme, CssBaseline, Divider, Drawer, GlobalStyles, Grid, IconButton, List, ListItem, ListItemButton, ListItemText, Skeleton, styled, SwipeableDrawer, TextField, ThemeProvider, Typography } from '@mui/material';
 import "./Products.css";
-import Slider from '@mui/material/Slider';
 import Collapse from '@mui/material/Collapse';
 import { NotificationManager } from 'react-notifications';
-import TuneIcon from '@mui/icons-material/Tune';
-import InputAdornment from '@mui/material/InputAdornment';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import ShopTagFilterDesktop from './ShopTagFilterDesktop';
 import useResponsive from '../../hooks/useResponsive';
 import Iconify from '../../helper/Iconify';
-import NavBar from '../Header/NavBar'
 
 
 export default function Products() {

@@ -1,14 +1,12 @@
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Button, Stack, Container, Typography, InputAdornment } from '@mui/material';
-import Page from '../../helper/Page';
 import InputStyle from '../../helper/InputStyle';
 import SocialsButton from '../../helper/SocialsButton';
 // hooks
 
 // components
 
-import NavBar from '../Header/NavBar'
 
 
 

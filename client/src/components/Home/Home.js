@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import {styled} from '@mui/material';
 import HomeHero from './HomeHero';
 import HomeFeatureProduct from './HomeFeatureProduct';
-import NavBar from '../Header/NavBar'
 import HomePromotion from './HomePromotion';
 
 const RootStyle = styled('div')(() => ({

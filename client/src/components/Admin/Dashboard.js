@@ -14,8 +14,6 @@ import { getAdminProduct } from "../../actions/productAction";
 import { getAllUsers } from "../../actions/userAction.js";
 import { getAllOrders } from "../../actions/orderAction.js";
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import Sidebar from './Sidebar'
-import NavBar from '../Header/NavBar'
 import ReactApexChart from 'react-apexcharts';
 import { BaseOptionChart } from '../../helper/chart';
 import { fNumber } from '../../utils/formatNumber';
@@ -172,7 +170,7 @@ export default function Dashboard()  {
     {/* <Sidebar/> */}
     <Grid container spacing={4} sx={{ p:{md:3.2, xs:2} }}>
       <Grid item md={12} xs={12}>
-        <Typography sx={{fontSize:'1.5rem', fontWeight:'bold', color:'#00796b'}}>{`Hello, ${(user.name).split(' ')[0]}!`}</Typography>
+        <Typography variant='h4'>{`Hello, ${(user.name).split(' ')[0]}!`}</Typography>
 
       </Grid>
       <Grid item xs={12} md={3}>
@@ -181,8 +179,8 @@ export default function Dashboard()  {
             <AccountBalanceWalletIcon fontSize='large' style={{ color:'#673ab7'}}/>
            </Box>
             <Box>
-            <Typography fontSize='1.45rem' fontWeight='bold'>{`₹${totalAmount}`}</Typography>
-            <Typography fontSize='1.05rem' color='text.secondary' fontWeight={500}>Total Amount</Typography>
+            <Typography variant='h3'>{`₹${totalAmount}`}</Typography>
+            <Typography variant='subtitle2'>Total Amount</Typography>
             </Box>
         </Card>    
       </Grid>    
@@ -195,8 +193,8 @@ export default function Dashboard()  {
           <ListIcon fontSize='large' style={{ color:'#3f51b5'}}/>
           </Box>
           <Box>
-          <Typography fontSize='1.45rem'  fontWeight='bold'>{orders?.length}</Typography>
-          <Typography fontSize='1.05rem' color='text.secondary' fontWeight={500} >Total Orders</Typography>
+          <Typography variant='h3' >{orders?.length}</Typography>
+          <Typography variant='subtitle2'  >Total Orders</Typography>
           </Box>
       </Card>  
     </Link>
@@ -209,8 +207,8 @@ export default function Dashboard()  {
           <InventoryIcon fontSize='large' style={{ color:'#e91e63'}}/>
           </Box>
           <Box>
-          <Typography fontSize='1.45rem' fontWeight='bold' >{products && products.length}</Typography>
-          <Typography fontSize='1.05rem' color='text.secondary'  fontWeight={500} >Total Product</Typography>
+          <Typography variant='h3' >{products && products.length}</Typography>
+          <Typography variant='subtitle2'  fontWeight={500} >Total Product</Typography>
           </Box>
       </Card>
       </Link>
@@ -223,8 +221,8 @@ export default function Dashboard()  {
           <GroupIcon  fontSize='large' style={{ color:'#009688'}}/>
           </Box>
           <Box>
-          <Typography fontSize='1.45rem'  fontWeight='bold' >{users && users?.length}</Typography>
-         <Typography fontSize='1.05rem' fontWeight={500} >Total Users</Typography>
+          <Typography variant='h3' >{users && users?.length}</Typography>
+         <Typography variant='subtitle2' >Total Users</Typography>
         </Box>
      </Card>
      </Link>

@@ -7,7 +7,6 @@ import Shipping from '../components/Cart/Shipping';
 import GuestGuard from '../components/Guards/GuestGuard';
 import AuthGuard from '../components/Guards/AuthGuard';
 import RoleBasedGuard from '../components/Guards/RoleBasedGuard';
-import LogoOnlyLayout from '../components/Header/LogoOnlyLayout';
 import MainLayout from '../components/Layout/Main/MainLayout';
 import MyOrders from '../components/Order/MyOrders';
 import OrderDetails from '../components/Order/OrderDetails';
@@ -75,13 +74,7 @@ export default function MyRouter(){
                 </GuestGuard>
             },
 
-            {
-                path:"account",
-                element:
-                <AuthGuard>
-                    <Profile/>
-                </AuthGuard>
-            },
+           
 
             {
                 path:"me/update", 
@@ -261,6 +254,9 @@ export default function MyRouter(){
                 { path: '*', element: <Navigate to="/404" replace /> },
                 { path: "password/forgot", element:<ForgotPassword/>},
                 { path: "password/reset/:token", element:<ResetPassword/>} ,
+                { path: "cricket-products", element:<ComingSoon/>} ,
+                { path: "football-products", element:<ComingSoon/>} ,
+
           
                 ],
             },
@@ -276,6 +272,13 @@ export default function MyRouter(){
                   { path: 'products', element:<Products/> },
                   { path: "products/:keyword", element:<Products/> }, 
                   { path: "/search", element: <Search/>},
+                  {
+                    path:"account",
+                    element:
+                    <AuthGuard>
+                        <Profile/>
+                    </AuthGuard>
+                },
                   
                 ],
               },
@@ -315,6 +318,7 @@ const ForgotPassword = Loadable(lazy(() => import( '../components/User/ForgotPas
 const ResetPassword = Loadable(lazy(() => import( '../components/User/ResetPassword')));
 
 
-
+// 
+const LogoOnlyLayout = Loadable(lazy(()=> import('../components/Layout/LogoOnlyLayout')));
 
 
