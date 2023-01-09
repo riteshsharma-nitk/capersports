@@ -1,24 +1,24 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
-import { useState } from 'react';
-import Loading from '../Layout/Loader'
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../actions/userAction";
 import {useNavigate} from 'react-router-dom'
-import { Card, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, Stack, styled } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Alert, Card, IconButton, InputAdornment, Stack, styled } from '@mui/material';
 import useResponsive from '../../hooks/useResponsive';
 import loginImage from '../../images/undraw_secure_login_pdn4.svg'
 import Image from '../../helper/Image';
 import Logo from '../../helper/Logo';
 import Page from '../../helper/Page';
 import {LoadingButton} from '@mui/lab';
+import * as Yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { RHFCheckbox, RHFTextField, FormProvider } from '../../helper/hook-form';
+import useIsMountedRef from '../../hooks/useIsMountedRef';
+import Iconify from '../../helper/Iconify';
+import { useSnackbar } from 'notistack';
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -68,7 +68,10 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 
 export default function Login() {
-  const smUp = useResponsive('up', 'sm');
+  const isMountedRef = useIsMountedRef();
+  const { enqueueSnackbar } = useSnackbar();
+
+
   const mdUp = useResponsive('up', 'md');
 
   const dispatch = useDispatch();
@@ -77,21 +80,51 @@ export default function Login() {
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user);
 
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-
-  const loginSubmit = (e) => {
-    e.preventDefault();
-    dispatch(login(loginEmail, loginPassword));
-  };
-
   const redirect = window.location.search ? window.location.search.split("=")[1] : "/account";
 
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    password: Yup.string().required('Password is required'),
+  });
+
+  const defaultValues = {
+    email: '',
+    password: '',
+    remember: true,
+  };
+  
+
+  const methods = useForm({
+    resolver: yupResolver(LoginSchema),
+    defaultValues,
+  });
+
+  const {
+    reset,
+    setError,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = methods;
+
+  const onSubmit = async (data) => {
+    try {
+      dispatch(login(data.email, data.password));
+
+    } catch (error) {
+      console.error(error);
+      reset();
+      if (isMountedRef.current) {
+        setError('afterSubmit', { ...error, message: error.message });
+      }
+    }
+  };
+
   React.useEffect(() => {
-    document.title="Login | Caper Sports"
     if (error) {
-      // NotificationManager.error(error);
+      console.log(error);
       dispatch(clearErrors());
+      // enqueueSnackbar(error);
+
     }
 
     if (isAuthenticated) {
@@ -105,14 +138,10 @@ export default function Login() {
 
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
 
   return (
+    <Page title="Login">
+
         <RootStyle>
           <HeaderStyle>
           <Logo/>
@@ -134,10 +163,9 @@ export default function Login() {
 
  
         <SectionStyle>
-               
-                  <Stack spacing={2}>
-                  <Typography variant='h4'> Sign in to Caper Sports </Typography>
-                  <Typography variant='body2'>New user? {' '}
+          <Stack spacing={2}>
+            <Typography variant='h4'> Sign in to Caper Sports </Typography>
+            <Typography variant='body2'>New user? {' '}
                   <Link variant='subtitle2'   component={RouterLink} to="/register">
                     Create an account
                     </Link>
@@ -146,88 +174,42 @@ export default function Login() {
 
                   <br></br>
 
-                 <Box component="form" onSubmit={loginSubmit} sx={{ mt: 1 }}>
-                 <Stack spacing={3}>
-
-                   <TextField
-                    
-                     type='email'
-                     name='email'
-                     required
-                     fullWidth
-                     label="Email Address"
-                     value={loginEmail}
-                     onChange={(e) => setLoginEmail(e.target.value)}
-                    
-                   />
-                  
-                  
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                    <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    fullWidth
-                    name='password'
-                    label="Password"
-                    fontSize='1rem'
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
+                  <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+                    <Stack spacing={3}>
+                      {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+                      <RHFTextField name="email" label="Email address" />
+                      
+                      <RHFTextField
+                      name="password"
+                      label="Password"
+                      type={showPassword ? 'text' : 'password'}
+                      InputProps={{
+                        endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                            </IconButton>
               </InputAdornment>
-            }
-           
-          />
-        </FormControl>
+            ),
+          }}
+        />
+      </Stack>
 
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+        <RHFCheckbox name="remember" label="Remember me" />
+        <Link component={RouterLink} variant="subtitle2" to={'/password/forgot'}>
+          Forgot password?
+        </Link>
+      </Stack>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      
-                       <Link underline='none' sx={{fontSize:'0.8rem'}} component={RouterLink} to='/password/forgot' variant="body2">
-                         <Typography fontSize='0.85rem' color='text.secondary' textAlign='right'>Forgot password?</Typography>
-                       </Link>
-                    
-                      
-                   <LoadingButton
-                   size='large'
-                     type="submit"
-                     fullWidth
-                     variant="contained"
-                     sx={{backgroundColor:'rgb(33, 43, 54)'}}
-                    
-                   >
-                     Login
-                   </LoadingButton>
-                   </Stack>
-                 </Box>
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+        Login
+      </LoadingButton>
+    </FormProvider>
                 
                </SectionStyle>    
            </RootStyle>
+           </Page>
 
   );
 }

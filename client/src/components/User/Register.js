@@ -14,7 +14,6 @@ import { Link as RouterLink, redirect, useNavigate } from 'react-router-dom';
 import { register, clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { NotificationManager } from 'react-notifications';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import loginImage from '../../images/undraw_secure_login_pdn4.svg'
@@ -126,7 +125,7 @@ export default function Register() {
 
       React.useEffect(() => {
         if (error) {
-          NotificationManager.error(error);
+          // NotificationManager.error(error);
           dispatch(clearErrors());
         }
     

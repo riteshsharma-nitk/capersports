@@ -1,9 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Avatar, Box, Button, Container, createTheme, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, ThemeProvider, Typography } from "@mui/material";
+import { Avatar, Box, Button, Card, Container, createTheme, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, ThemeProvider, Typography } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import { useParams } from "react-router";
 import { UPDATE_USER_RESET } from "../../constants/userConstants";
+import LoadingScreen from '../../helper/LoadingScreen'
+
 
 import {
   getUserDetails,
@@ -13,9 +15,14 @@ import {
 import Sidebar from "./Sidebar";
 import Loader from "../Layout/Loader";
 import { useNavigate } from "react-router";
+import Page from "../../helper/Page";
+import useSettings from "../../hooks/useSettings";
+import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
 
 
 const UpdateUser = () => {
+  const { themeStretch } = useSettings();
+
     const theme = createTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,9 +35,9 @@ const UpdateUser = () => {
     isUpdated,
   } = useSelector((state) => state.profile);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [role, setRole] = useState(user.role);
 
   const {id} = useParams();
   const  userId = id;
@@ -70,91 +77,71 @@ const UpdateUser = () => {
   };
 
   return (
-    <Box display='flex' sx={{marginTop:1 ,backgroundColor:'#f5f5f5'}}>
-         <Sidebar/>
-
-          {loading ? (
-            <Loader />
-          ) : (
-          <ThemeProvider theme={theme}>
-            <Grid backgroundColor='#f5f5f5' container rowSpacing={2}>
-                      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-                        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, boxShadow:'rgba(0, 0, 0, 0.35) -1px 10px 29px 0px' }}> 
+   <>
+    {
+      loading ? (<LoadingScreen/>):(
+    
+    <Page title="User: Create a new user">
+            <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs
+          heading={'Edit user'}
+          links={[
+            { name: 'Dashboard', href: '/admin/dashboard' },
+            { name: 'User', href: '/admin/users' },
+            { name : name },
+          ]}
+        />
         
-                      <Box
-                        sx={{
-                          marginTop: 2,
-                          marginBottom: 2,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                          <PersonIcon />
-                        </Avatar>
-                        <Typography fontSize='1.5rem' fontWeight='medium'>
-                          Update User
-                        </Typography>
+         <Box component="form" noValidate onSubmit={updateUserSubmitHandler} sx={{ mt: 3 }}>
+        <Card sx={{ py: 10, px: 3 }}>
 
-                        <Box component="form" noValidate onSubmit={updateUserSubmitHandler} sx={{ mt: 3 }}>
-
-           
-
-             
-                        <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <TextField
+        <Box
+              sx={{
+                display: 'grid',
+                rowGap: 3,
+                gridTemplateColumns:'repeat(1, 1fr)',
+              }}
+            >
+                <TextField
                       type='text'
-                      fontSize='1rem'
                         value={name}
                         required
                         onChange={(e) => setName(e.target.value)}
                         fullWidth
                       
-                        label="Product Name"
+                        label="Full Name"
                       
                       />
-                    </Grid>
 
 
              
                  
-                    <Grid item xs={12}>
                       <TextField
                   type="email"
                   placeholder="Email"
                   fullWidth
                   required
-                  fontSize='1rem'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-              </Grid>
 
 
-             <Grid item md={12} xs={12}>
                <FormControl fullWidth>
-                <InputLabel  fontSize='1rem'>Choose Role</InputLabel>
+                <InputLabel>Choose Role</InputLabel>
                 <Select
                  fontSize='1rem'
                 label='Choose Role'
                  value={role} onChange={(e) => setRole(e.target.value)}>
-                  <MenuItem  fontSize='1rem' value="">Choose Role</MenuItem>
-                  <MenuItem  fontSize='1rem' value="admin">Admin</MenuItem>
-                  <MenuItem  fontSize='1rem' value="user">User</MenuItem>
+                  <MenuItem  value="">Choose Role</MenuItem>
+                  <MenuItem  value="admin">Admin</MenuItem>
+                  <MenuItem  value="user">User</MenuItem>
                 </Select>
                 </FormControl>
-                </Grid>
-                </Grid>
-             <br></br>
                
               <Button
               fullWidth
-              fontSize='1rem'
+              size="large"
               variant="contained"
-              sx={{textTransform:'none', backgroundColor:'black'}}
-                id="createProductBtn"
                 type="submit"
                 disabled={
                   updateLoading ? true : false || role === "" ? true : false
@@ -163,20 +150,16 @@ const UpdateUser = () => {
                 Update
               </Button>
               </Box>
+              </Card>
               </Box>
-            
              
-
-              </Paper>
-        </Container>
-          </Grid>
-          </ThemeProvider>
             
-          )}
+         
         
-       
-       </Box>
-
+       </Container>
+       </Page>)}
+      
+       </>
   );
 };
 

@@ -20,6 +20,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { addItemsToWishlist } from '../../actions/wishlistAction';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ProductDetailsCarousel from './ProductDetailsCarousel';
+import Markdown from '../../helper/Markdown';
 
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
@@ -216,8 +217,7 @@ export default function ProductDetails() {
    <br></br>
    
    <Typography sx={{fontSize:'1.1rem'}} fontWeight="bold">Product Description</Typography>
-   <Typography sx={{fontSize:'0.95rem'}}>{product.description}</Typography>
-
+   <Markdown children={product.description} />
 <br></br>
          <Divider variant='middle'/>
 <br></br>
@@ -279,10 +279,7 @@ export default function ProductDetails() {
 
          <Collapse in={expandedInformation} timeout="auto" unmountOnExit>
 
-           <Typography sx={{fontSize:'0.95rem'}}>
-
-             {product.information}
-           </Typography>
+         <Markdown children={product.information} />
 
          </Collapse>
 

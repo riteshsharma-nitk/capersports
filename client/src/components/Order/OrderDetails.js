@@ -1,13 +1,26 @@
 import React, { Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import {Box, Card, CardContent, CardMedia, Container, Divider, Grid, Link, List, ListItem, ListItemText, Paper, Typography} from '@mui/material'
+import {Box, Button, Card, CardContent, CardHeader, CardMedia, Container, Divider, Grid, Link, List, ListItem, ListItemText, Paper, Stack, Typography, useTheme} from '@mui/material'
 import { getOrderDetails, clearErrors } from "../../actions/orderAction";
 import Loader from "../Layout/Loader";
 import { NotificationManager } from 'react-notifications';
 import { useParams } from "react-router-dom";
+import LoadingScreen from "../../helper/LoadingScreen";
+import Page from "../../helper/Page";
+import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
+import useSettings from "../../hooks/useSettings";
+import OrderProductList from "./OrderProductList";
+import Scrollbar from '../../helper/Scrollbar'
+import OrderBillingInfo from "./OrderBillingInfo";
+import Label from '../../helper/Label';
+
 
 const OrderDetails = () => {
+  const theme = useTheme();
+
+  const { themeStretch } = useSettings();
+
   const { order, error, loading } = useSelector((state) => state.orderDetails);
 
   const dispatch = useDispatch();
@@ -25,120 +38,116 @@ const OrderDetails = () => {
   return (
     <Fragment>
       {loading ? (
-        <Loader />
+        <LoadingScreen />
       ) : (
-        <Box display='flex' sx={{marginTop:1}}>
-            <Grid backgroundColor='#f5f5f5' container rowSpacing={2}>
-            <Grid item md={6} xs={12}>
-            <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-            <Typography fontSize='1.5rem' fontWeight='bold'>Details of your order</Typography>
-              <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}> 
-              <Box>
-                <List disablePadding>
-                  <ListItem  sx={{ py: 1, px: 0 }}>
-                    <ListItemText primaryTypographyProps={{fontSize:'1rem'}} primary="Order Number" secondary=""/>
-                    <Typography fontSize='0.85rem' variant="body2">{order && order._id} </Typography>
-                  </ListItem>
-              </List>
-              <br></br>
-              <Divider/>
-              <br></br>
-              <List>
-                  <ListItem  sx={{ py: 1, px: 0 }}>
-                    <ListItemText primaryTypographyProps={{fontSize:'1rem'}} primary="Nane" secondary=""/>
-                    <Typography fontSize='0.85rem' variant="body2"> {order.user && order.user.name} </Typography>
-                  </ListItem>
+        <Page title="Order:  Details">
+        <Container maxWidth={themeStretch ? false : 'lg'} sx={{pt:'88px'}}>
+          <HeaderBreadcrumbs
+            heading="Order Details"
+            links={[
+              { name: 'Account', href: '/account' },
+              {
+                name: 'Orders',
+                href: '/orders',
+              },
+              { name: 'Order' },
+            ]}
+          />  
+           <Grid container spacing={3}>
+      <Grid item xs={12} md={8}>
+        <Card sx={{ mb: 3 }}>
+          <CardHeader
+            title={
+              <Typography variant="h6">
+                Card
+                <Typography component="span" sx={{ color: 'text.secondary' }}>
+                  &nbsp;({order?.orderItems?.length} item)
+                </Typography>
+              </Typography>
+            }
+            sx={{ mb: 3 }}
+          />
 
-                  <ListItem  sx={{ py: 1, px: 0 }}>
-                    <ListItemText primaryTypographyProps={{fontSize:'1rem'}} primary="Phone" secondary=""/>
-                    <Typography fontSize='0.85rem' variant="body2"> {order.shippingInfo && order.shippingInfo.phoneNo} </Typography>
-                  </ListItem>
+<Scrollbar>
 
-                  <ListItem  sx={{ py: 1, px: 0 }}>
-                    <ListItemText primaryTypographyProps={{fontSize:'1rem'}} primary="Address" secondary=""/>
-                    <Typography fontSize='0.85rem' variant="body2"> {order.shippingInfo && `${order.shippingInfo.address}, ${order.shippingInfo.city}, ${order.shippingInfo.state}, ${order.shippingInfo.pinCode}, ${order.shippingInfo.country}`} </Typography>
-                  </ListItem>
-              </List>
-              <br></br>
-            <Divider/>
-            <br></br>
-            <List>
-            <ListItem  sx={{ py: 1, px: 0 }}>
-                    <ListItemText primaryTypographyProps={{fontSize:'1rem'}} primary="Payment" secondary=""/>
-                    <Typography fontSize='0.85rem' variant="body2"> {order.paymentInfo && order.paymentInfo.status === "succeeded" ? "Paid" : "Not Paid"} </Typography>
-                  </ListItem>
+          <OrderProductList 
+          products = {order?.orderItems}
+          /> 
+                      </Scrollbar>
 
-                  <ListItem  sx={{ py: 1, px: 0 }}>
-                    <ListItemText primaryTypographyProps={{fontSize:'1rem'}} primary="Amount" secondary=""/>
-                    <Typography fontSize='0.85rem' variant="body2"> {order.totalPrice && order.totalPrice} </Typography>
-                  </ListItem>
+         </Card>
+         </Grid>
 
-            </List>
-            <br></br>
-            <Divider/>
-            <br></br>
-            <List>
+         <Grid item xs={12} md={4}>
+          <OrderBillingInfo order = {order}/>
+          
+          <Card sx={{ mb: 3 }}>
+      <CardHeader
+        title="Order Summary"
+       
+      />
+          <Grid container>
+         <Grid item xs={12} sm={12} sx={{ mb: 5 }}>
 
-            <ListItem  sx={{ py: 1, px: 0 }}>
-                    <ListItemText primaryTypographyProps={{fontSize:'1rem'}} primary="Order Status" secondary=""/>
-                    <Typography fontSize='0.85rem' variant="body2"> 
-                {order.orderStatus && order.orderStatus} </Typography>
-                  </ListItem>
-        
-              
-            
+         <Box sx={{ textAlign: { sm: 'right' }, pr:2 }}>
+              <Label
+                variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                color={
+                  (order.orderStatus === 'Delivered' && 'success') ||
+                  (order.orderStatus === 'Shipped' && 'warning') ||
+                  (order.orderStatus === 'Processing' && 'error') ||
+                  'default'
+                }
+                sx={{ textTransform: 'uppercase', mb: 1 }}
+              >
+                {order.orderStatus}
+              </Label>
 
-              </List>
+              <Typography variant="body2">{order && order._id}</Typography>
             </Box>
-            </Paper>
-            </Container>
+            <CardContent>
+            <Stack spacing={2}>
+            <Stack direction="row" justifyContent="space-between">
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+             Payment status
+            </Typography>
+            <Typography variant="subtitle2"> {order.paymentInfo && order.paymentInfo.status === "succeeded" ? "Paid" : "Not Paid"}</Typography>
+
+              </Stack>
+
+              <Stack direction="row" justifyContent="space-between">
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Amount
+            </Typography>
+            <Typography variant="subtitle2">{order.totalPrice && `₹${order.totalPrice}`}</Typography>
+          </Stack>
+
+          
+        
 
 
+
+
+
+                  
+                </Stack>
+                </CardContent>
+        </Grid>
+        </Grid>
+              
+                </Card>  
+
+
+</Grid>
             
             </Grid>
 
 
-            <Grid item md={6} xs={12}>
-            <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-            <Typography fontSize='1.5rem' fontWeight='bold'>Order Items:</Typography>
-              <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}> 
-             
-             
-              <Box>
-                {order.orderItems &&
-                  order.orderItems.map((item) => (
-
-                    <Card key={item.product} sx={{ display: 'flex', marginBottom:1}}>
-              <CardMedia
-                component="img"
-                sx={{ width: 100}}
-                image={item.image}
-                alt="product"
-              />
-               <CardContent sx={{width:425}}>
-               <Grid width='100%' sx={{display:'flex',justifyContent:'space-between', flexDirection:'row'}}>
-               <Link underline="none" component={RouterLink} to={`/product/${item.product}`}>
-                  <Typography textAlign='left' sx={{color:'black', fontWeight:'medium', fontSize:'0.85rem'}}>
-                  {item.name}
-                  </Typography>
-                </Link>
-
-                <Typography textAlign='right' sx={{ fontSize:'0.85rem', fontWeight:'regular'}}>{`MRP: ₹ ${item.price * item.quantity}`}</Typography>
-
-                    
-                </Grid>
-          <Typography sx={{color:'text.secondary', fontSize:'0.75rem'}}>{item.category}</Typography>
-          <br></br>
-          <Typography sx={{color:'text.secondary', fontSize:'0.75rem'}}>{`Quantity: ${item.quantity}`}</Typography>
-      </CardContent>
-    </Card>
-                  ))}
-              </Box>
-              </Paper>
-              </Container>
-            </Grid>
-          </Grid>
-        </Box>
+           
+         
+         
+          </Container>
+          </Page>
       )}
     </Fragment>
   );

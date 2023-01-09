@@ -66,7 +66,7 @@ router.post('/admin/product/new', isAuthenticatedUser, authorizeRoles("admin"), 
     const imagesLinks = [];
 
     for (let i = 0; i < images?.length; i++) {
-      const result = await cloudinary.v2.uploader.upload(images[i], {
+      const result = await cloudinary.v2.uploader.upload(images[i]?.base64Image, {
         folder: "products",
       });
 
@@ -137,9 +137,17 @@ router.put('/admin/product/:id', isAuthenticatedUser, authorizeRoles("admin"), a
     const imagesLinks = [];
 
     for (let i = 0; i < images.length; i++) {
-      const result = await cloudinary.v2.uploader.upload(images[i], {
+      var result;
+      if(images[i]?.base64Image === undefined){
+          result = await cloudinary.v2.uploader.upload(images[i], {
+          folder: "products",
+        });
+
+      }else {
+        result = await cloudinary.v2.uploader.upload(images[i]?.base64Image, {
         folder: "products",
       });
+    }
 
       imagesLinks.push({
         public_id: result.public_id,

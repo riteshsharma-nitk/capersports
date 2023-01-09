@@ -3,65 +3,70 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useSelector, useDispatch } from "react-redux";
 import { clearErrors, myOrders } from "../../actions/orderAction";
 import Loader from "../Layout/Loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NotificationManager } from 'react-notifications';
 import Typography from "@mui/material/Typography";
 import LaunchIcon from "@mui/icons-material/Launch";
-import { Grid, Paper } from "@mui/material";
+import { Box, Card, Container, FormControlLabel, Grid, IconButton, Paper, Stack, Switch, Table, TableBody, TableContainer, TablePagination, Tooltip } from "@mui/material";
+import LoadingScreen from "../../helper/LoadingScreen";
+import Page from "../../helper/Page";
+import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
+import useSettings from "../../hooks/useSettings";
+import useTable, { emptyRows } from "../../hooks/useTable";
+import Scrollbar from "../../helper/Scrollbar";
+import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from "../../helper/table";
+import Iconify from "../../helper/Iconify";
+import ReviewTableRow from "../Admin/ReviewTableRow";
+import OrderTableRow from "./OrderTableRow";
 
 const MyOrders = () => {
+  const navigate = useNavigate();
+
+  const { themeStretch } = useSettings();
+
   const dispatch = useDispatch();
+
+  const {
+    dense,
+    page,
+    order,
+    orderBy,
+    rowsPerPage,
+    setPage,
+    //
+    selected,
+    setSelected,
+    onSelectRow,
+    onSelectAllRows,
+    //
+    onSort,
+    onChangeDense,
+    onChangePage,
+    onChangeRowsPerPage,
+  } = useTable({ defaultOrderBy: 'createDate' });
 
 
   const { loading, error, orders } = useSelector((state) => state.myOrders);
   const { user } = useSelector((state) => state.user);
 
-  const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 1 },
+  const denseHeight = dense ? 56 : 76;
 
-    {
-      field: "status",
-      headerName: "Status",
-      minWidth: 150,
-      flex: 1,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
-    },
-    {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 150,
-      flex: 1,
-    },
+  const TABLE_HEAD = [
+    { id: 'orderNumber', label: 'Order Id', align: 'left' },
+    { id: 'createDate', label: 'Create', align: 'left' },
+    { id: 'itemsQty', label: 'Items Qty', align: 'left' },
+    { id: 'price', label: 'Amount', align: 'center', width: 140 },
+    { id: 'status', label: 'Status', align: 'center', width: 140 },
 
-    {
-      field: "amount",
-      headerName: "Amount",
-      type: "number",
-      minWidth: 270,
-      flex: 1,
-    },
+    { id: '' },
 
-    {
-      field: "actions",
-      flex: 1,
-      headerName: "Actions",
-      minWidth: 150,
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <Link to={`/order/${params.getValue(params.id, "id")}`}>
-            <LaunchIcon />
-          </Link>
-        );
-      },
-    },
   ];
+
+  const handleEditRow = (id) => {
+    navigate(`/order/${id}`)
+  }
+
+  
   const rows = [];
 
   orders &&
@@ -71,6 +76,7 @@ const MyOrders = () => {
         id: item._id,
         status: item.orderStatus,
         amount: item.totalPrice,
+        createAt:item.createdAt
       });
     });
 
@@ -87,24 +93,111 @@ const MyOrders = () => {
     <Fragment>
 
       {loading ? (
-        <Loader />
+        <LoadingScreen />
       ) : (
-        <Grid container sx={{flexDirection:'column', p:2, justifyContent:'center'}}>
-          <Typography fontWeight='bold' fontSize='1.5rem'>Orders</Typography>
-          <br></br>
-          <DataGrid
-          sx={{p:1}}
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            className="myOrdersTable"
-            autoHeight
+        <Page title="My Orders: View">
+        <Container maxWidth={themeStretch ? false : 'lg'} sx={{pt:'88px'}}>
+          <HeaderBreadcrumbs
+            heading="My Orders"
+            links={[
+              { name: user?.name, href: '/account' },
+              {
+                name: 'Orders',
+                href: '/orders',
+              },
+            ]}
           />
+
+<Card sx={{ mb: 5 }}>
+        <Scrollbar>
+        <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
+              {selected.length > 0 && (
+                <TableSelectedActions
+                  dense={dense}
+                  numSelected={selected.length}
+                  rowCount={rows.length}
+                  onSelectAllRows={(checked) =>
+                    onSelectAllRows(
+                      checked,
+                      rows.map((row) => row.id)
+                    )
+                  }
+                  actions={
+                    <Stack spacing={1} direction="row">
+                      <Tooltip title="Delete">
+                        <IconButton color="primary">
+                          <Iconify icon={'eva:trash-2-outline'} />
+                        </IconButton>
+                      </Tooltip>
+                    </Stack>
+                  }
+                />
+              )}
+
+              <Table size={dense ? 'small' : 'medium'}>
+                <TableHeadCustom
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={rows.length}
+                  numSelected={selected.length}
+                  onSort={onSort}
+                  onSelectAllRows={(checked) =>
+                    onSelectAllRows(
+                      checked,
+                      rows.map((row) => row.id)
+                    )
+                  }
+                />
+
+                <TableBody>
+                  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                    <OrderTableRow
+                      key={row.id}
+                      row={row}
+                      selected={selected.includes(row.id)}
+                      onSelectRow={() => onSelectRow(row.id)}
+                      onViewRow={() => handleEditRow(row.id)}
+
+                    />
+                  ))}
+
+                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, rows.length)} />
+
+                  <TableNoData />
+                </TableBody>
+              </Table>
+            </TableContainer>
+          
+
+        </Scrollbar>
+        <Box sx={{ position: 'relative' }}>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={onChangePage}
+              onRowsPerPageChange={onChangeRowsPerPage}
+            />
+
+            <FormControlLabel
+              control={<Switch checked={dense} onChange={onChangeDense} />}
+              label="Dense"
+              sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
+            />
+          </Box>
+  
+        </Card>
+
+       
+         
+          </Container>
+          </Page>
         
 
         
-        </Grid>
       )}
     </Fragment>
   );

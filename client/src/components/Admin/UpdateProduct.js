@@ -1,68 +1,103 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import * as Yup from 'yup';
 import { clearErrors, updateProduct, getProductDetails,} from "../../actions/productAction";
 import { useParams } from 'react-router-dom';
 import {useNavigate} from "react-router-dom";
 import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
-import Box from '@mui/material/Box';
-import Sidebar from "./Sidebar";
-import { Avatar, Button, Container, CssBaseline, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextareaAutosize, TextField, Typography } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import InventoryIcon from '@mui/icons-material/Inventory';
+import { Card, Container, Grid, InputAdornment, Stack, Typography } from '@mui/material';
+import { createTheme, styled } from '@mui/material/styles';
+import useSettings from "../../hooks/useSettings";
+import Page from "../../helper/Page";
+import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
+import { yupResolver } from '@hookform/resolvers/yup';
 
+import {
+    FormProvider,
+    RHFSelect,
+    RHFEditor,
+    RHFTextField,
+    RHFUploadMultiFile,
+  } from '../../helper/hook-form';
 
-const theme = createTheme();
+import { useSnackbar } from "notistack";
+import { useForm } from "react-hook-form";
+import { LoadingButton } from '@mui/lab';
+  
 
-const UpdateProduct = ({match}) => {
+const CATEGORY_OPTION = [
+  { group:'Clothing', classify:['T-Shirts', 'Hoodies', 'Sweatshirts', 'Jackets', 'Tracksuits', 'Shorts', 'Socks', 'Trouser', 'Cap', 'Basketball Kit'] }]
+
+const LabelStyle = styled(Typography)(({ theme }) => ({
+    ...theme.typography.subtitle2,
+    color: theme.palette.text.secondary,
+    marginBottom: theme.spacing(1),
+  }));
+
+const UpdateProduct = () => {
+    const { themeStretch } = useSettings();
+    const { enqueueSnackbar } = useSnackbar();
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { error, product } = useSelector((state) => state.productDetails);
-    const {
-        loading,
-        error: updateError,
-        isUpdated,
-    } = useSelector((state) => state.product);
+    const { loading, error: updateError, isUpdated,} = useSelector((state) => state.product);
 
+    const NewProductSchema = Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        description: Yup.string().required('Description is required'),
+        information: Yup.string().required('Information is required'),
+        images: Yup.array().min(1, 'Images is required'),
+        price: Yup.number().moreThan(0, 'Price should not be $0.00'),
+        category: Yup.string().required('Category is required'),
+        Stock:Yup.number().required('Stock is required')
+      });
 
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState(0);
-    const [description, setDescription] = useState("");
-    const [category, setCategory] = useState("");
-    const [Stock, setStock] = useState(0);
-    const [images, setImages] = useState([]);
-    const [oldImages, setOldImages] = useState([]);
-    const [imagesPreview, setImagesPreview] = useState([]);
-    const [information, setInformation] = useState("");
+      const defaultValues = useMemo(
+        () => ({
+          name: product?.name || '',
+          description: product?.description || '',
+          information: product?.information || '',
+          images: product?.images?.map(({url})=>url) || [],
+          price: product?.price || 0,
+          Stock: product?.Stock || 0,
+          category: product?.category || '',
+        }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [product]
+      );
 
-    const categories = [
-        'T-Shirts',
-        'Hoodies',
-        'Sweatshirts',
-       ' Jackets',
-        'Tracksuits',
-        'Shorts',
-        'Socks',
-        'Trouser',
-        'Cap',
-        'Basketball Kit'
-      ]
+      const methods = useForm({
+        resolver: yupResolver(NewProductSchema),
+        defaultValues,
+      });
+
+      const {
+        reset,
+        watch,
+        control,
+        setValue,
+        getValues,
+        handleSubmit,
+        formState: { isSubmitting },
+      } = methods;
+
+      const values = watch();
+      
+      
+
     
     const {id} = useParams();
     const productId = id;
 
     useEffect(() => {
-        console.log(productId)
+
         if (product && product._id !== productId) {
             dispatch(getProductDetails(productId));
-        } else {
-            setName(product.name);
-            setDescription(product.description);
-            setPrice(product.price);
-            setCategory(product.category);
-            setStock(product.Stock);
-            setOldImages(product.images);
-            setInformation(product.information);
-        }
+          }
+
+        reset(defaultValues)
+      
         if (error) {
             dispatch(clearErrors());
         }
@@ -72,6 +107,7 @@ const UpdateProduct = ({match}) => {
         }
 
         if (isUpdated) {
+            localStorage.clear();
             navigate("/admin/products");
             dispatch({ type: UPDATE_PRODUCT_RESET });
         }
@@ -82,222 +118,183 @@ const UpdateProduct = ({match}) => {
         productId,
         product,
         updateError,
+
     ]);
 
-    const updateProductSubmitHandler = (e) => {
-        e.preventDefault();
-        const myForm = new FormData();
-        myForm.set("name", name);
-        myForm.set("price", price);
-        myForm.set("description", description);
-        myForm.set("information", information);
-        myForm.set("category", category);
-        myForm.set("Stock", Stock);
+ 
 
-        images.forEach((image) => {
-            myForm.append("images", image);
-        });
+  
 
+    const onSubmit = async () => {
+        try {
         
-        dispatch(updateProduct(productId, myForm));
-    };
+          await new Promise((resolve) => setTimeout(resolve, 500));
+    
+           console.log(values)
+       
+          dispatch(updateProduct(productId, values));
+          reset();
+          enqueueSnackbar('Update success!');
+          navigate('/admin/products');
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
-    const updateProductImagesChange = (e) => {
-        const files = Array.from(e.target.files);
-
-        setImages([]);
-        setImagesPreview([]);
-        setOldImages([]);
-
-        files.forEach((file) => {
-            const reader = new FileReader();
-
-            reader.onload = () => {
-                if (reader.readyState === 2) {
-                    setImagesPreview((old) => [...old, reader.result]);
-                    setImages((old) => [...old, reader.result]);
-                }
-            };
-
-            reader.readAsDataURL(file);
+      const convertToBase64 = (files) => {
+        return new Promise((resolve, reject) => {
+          files.map((file) => {
+          const fileReader = new FileReader();
+          fileReader.onload = () => {
+            resolve(fileReader.result);
+            localStorage.setItem(file.path, fileReader.result);
+          }
+          fileReader.readAsDataURL(file);
+          fileReader.onerror = (error) => {
+            reject(error);
+          };
         });
-    };
+      })
+      };
+
+      const handleDrop = useCallback(
+        (acceptedFiles) => {
+          convertToBase64(acceptedFiles)
+                setValue('images',
+                  acceptedFiles.map((file) =>
+                    Object.assign(file, {
+                      preview: URL.createObjectURL(file),
+                      base64Image: localStorage.getItem(file.path),
+                    })
+                  )
+                )
+              
+            },[setValue]
+      )
+
+
+      const handleRemoveAll = () => {
+        setValue('images', []);
+      };
+    
+      const handleRemove = (file) => {
+        const filteredItems = values.images?.filter((_file) => _file !== file);
+        setValue('images', filteredItems);
+      };
+
+
 
     return (
+    <Page title="Ecommerce: Update a new product">
+      <Container maxWidth={themeStretch ? false : 'lg'}>
+      <HeaderBreadcrumbs
+          heading={'Edit product'}
+          links={[
+            { name: 'Dashboard', href: '/admin/dashboard' },
+            {
+              name: 'Caper Sports',
+              href: '/products',
+            },
+            { name: product.name },
+          ]}
+        />
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
 
-        <Box display='flex' sx={{marginTop:1 ,backgroundColor:'#f5f5f5'}}>
-             <Sidebar/>
-             <ThemeProvider theme={theme}>
-                    <Grid backgroundColor='#f5f5f5' container rowSpacing={2}>
-              <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-                <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, boxShadow:'rgba(0, 0, 0, 0.35) -1px 10px 29px 0px' }}> 
-                        
-                        <Box
-                        sx={{
-                           
-                            marginTop: 2,
-                            marginBottom: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent:'center',
-                            alignItems: 'center',
-                        }}>
-                            
-                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main', fontSize:'1.5rem' }}>
-                                <InventoryIcon />
-                            </Avatar>
-                            
-                            <Typography fontSize='1.5rem' fontWeight='medium'>
-                                Update Product
-                            </Typography>
-                            
-                            <Box encType="multipart/form-data" component="form" onSubmit={updateProductSubmitHandler} sx={{ mt: 3 }}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12}>
-                                        <TextField
-                                        type='text'
-                                        name="name"
-                                        fontSize='1rem'
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        fullWidth
-                                        label="Product Name"
-                                        />
-                                        
-                                </Grid>
-                                
-                                <Grid item xs={12}>
-                                    <TextField
-                                    type='number'
-                                    fullWidth
-                                    name="price"
-                                    fontSize='1rem'
-                                    label="Price"
-                                    value={price}
-                                   
-                                    onChange={(e) => setPrice(e.target.value)}
-                                    />
-                                
-                                </Grid>
-                                
-                                
-                                <Grid item xs={12}>
-                                    <TextField
-                                    multiline
-                                    fullWidth
-                                    name="description"
-                                    value={description}
-                                    fontSize='1rem'
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    
-                                    label="Product Description"
-                                    />
-                                    
-                                </Grid>
- 
-                                <Grid item xs={12}>
-                                     <TextField
-                                     multiline
-                                     fullWidth
-                                  
-                                    value={information}
-                                    name="information"
-                                    onChange={(e) => setInformation(e.target.value)}       
-                                    fontSize='1rem'
-                                    label="Product Information"
-                                    />
-                                </Grid>
+    <Grid container spacing={3}>
+        <Grid item xs={12} md={8}>
+          <Card sx={{ p: 3 }}>
+            <Stack spacing={3}>
+              <RHFTextField name="name" label="Product Name" />
 
-                                <Grid item  md={6} xs={12}>
-                                    <FormControl fullWidth>
-                                        <InputLabel  fontSize='1rem'>Category</InputLabel>
+              <div>
+                <LabelStyle>Description</LabelStyle>
+                <RHFEditor simple name="description" />
+              </div>
 
-                                    <Select
-                                     fontSize='1rem'
-                                    label="Category"
-                                    name="category"
-                                    value={category}
-                                     onChange={(e) => setCategory(e.target.value)}>
-                                        <MenuItem  fontSize='1rem' value="">Choose Category</MenuItem>
-                                        {categories.map((cate) => (
-                                        <MenuItem  fontSize='1rem' key={cate} value={cate}>
-                                            {cate}
-                                        </MenuItem>
-                                        ))}
-                                    </Select>
-                                    </FormControl>
-                        
-                                </Grid>
+              <div>
+                <LabelStyle>Information</LabelStyle>
+                <RHFEditor simple name="information" />
+              </div>
 
-                                <Grid item md={6} xs={12}>
-                                    <TextField
-                                    type='number'
-                                    fullWidth
-                                    label="Stock"
-                                    name="Stock"
-                                    fontSize='1rem'
-                                    value={Stock}
-                                    onChange={(e) => setStock(e.target.value)}
-                                    
-                                />
-                                </Grid>
+              <div>
+                <LabelStyle>Images</LabelStyle>
+                <RHFUploadMultiFile
+                  name="images"
+                  showPreview
+                  accept="image/*"
+                  maxSize={3145728}
+                  onDrop={handleDrop}
+                  onRemove={handleRemove}
+                  onRemoveAll={handleRemoveAll}
+                  
+                />
+              </div>
+       </Stack>
+       </Card>
+       </Grid>
+       <Grid item xs={12} md={4}>
+          <Stack spacing={3}>
+            <Card sx={{ p: 3 }}>
+            <Stack spacing={3} mt={2}>
 
-                                <Grid item xs={12}>
-                                    <Button
-                                    fullWidth
-                                    variant='contained'
-                                    component='label'
-                                    required
-                                    sx={{textTransform:'none'}}
-                                   
-                                    label="image"
-                                    type="file"
-                                   
-                                    fontSize='1rem'>
-                                    Upload File
-                                    <input
-                                    type='file'
-                                     name="images"
-                                    accept='image/*'
-                                    onChange={updateProductImagesChange}                          
-                                    multiple
-                                    hidden
-                                    />
-                                    </Button>
-                                </Grid>
-                                
-                                
-                                <Grid gap={2} display='flex' justifyContent='center' overflow='auto' item xs={12}>
-                                    {oldImages && oldImages.map((image, index) => (
-                                    <Avatar key={index} src={image?.url} alt="Old Product Preview" />))}
-                                </Grid>
-                                
-                                <Grid gap={2} display='flex' justifyContent='center' overflow='auto' item xs={12}>
-                                    {imagesPreview.map((image, index) => (
-                                    <Avatar key={index} src={image} alt="Product Preview" />))}
-                                </Grid>
-                                
-                            </Grid>    
-                              
-                            
-                            <Button
-                                type="submit"
-                                fullWidth
-                                fontSize='1rem'
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2, backgroundColor:"black", color:'white', textTransform:'none' }}
-                                disabled={loading ? true : false}
-                            >
-                                Update
-                            </Button>
-                  </Box>
-                  </Box>
-              
-             </Paper>
+            <RHFTextField name="Stock" label="Stock" />
+
+            <RHFSelect name="category" label="Category">
+                  {CATEGORY_OPTION.map((category) => (
+                    <optgroup key={category.group} label={category.group}>
+                    {category.classify.map((classify) => (
+                      <option key={classify} value={classify}>
+                        {classify}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+                </RHFSelect>
+
+               </Stack>
+
+              </Card>
+
+              <Card sx={{ p: 3 }}>
+              <Stack spacing={3} mb={2}>
+                <RHFTextField
+                  name="price"
+                  label="Regular Price"
+                  placeholder="0.00"
+                  value={getValues('price') === 0 ? '' : getValues('price')}
+                  onChange={(event) => setValue('price', Number(event.target.value))}
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                    type: 'number',
+                  }}
+                />
+                </Stack>
+                </Card>
+
+                <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
+             Save Changes
+            </LoadingButton>
+            </Stack>
+            
+
+
+
+
+              </Grid>
+       </Grid>
+       </FormProvider>
+
+
+
+
+
+
+       
+           
+        
             </Container>
-            </Grid>
-          </ThemeProvider>
-          </Box>
+            </Page>
        
     );
 };

@@ -86,21 +86,9 @@ export default function MyRouter(){
                 </AuthGuard>
             },
 
-            {
-                path:"orders", 
-                element:
-                <AuthGuard>
-                <MyOrders/>
-                </AuthGuard>
-            },
+          
 
-            {
-                path:"order/:id",
-                 element:
-                 <AuthGuard>
-                 <OrderDetails/>
-                 </AuthGuard>
-            },
+           
 
            
 
@@ -276,7 +264,24 @@ export default function MyRouter(){
                      </AuthGuard>
                        
 
+
                  },
+
+                 {
+                    path:"orders", 
+                    element:
+                    <AuthGuard>
+                    <MyOrders/>
+                    </AuthGuard>
+                },
+
+                {
+                    path:"order/:id",
+                     element:
+                     <AuthGuard>
+                     <OrderDetails/>
+                     </AuthGuard>
+                },
 
                 
                   

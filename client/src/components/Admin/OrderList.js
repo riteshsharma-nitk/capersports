@@ -2,11 +2,15 @@ import React, { Fragment, useEffect } from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import { useSelector, useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { Grid, Link, Typography } from "@mui/material";
+import sumBy from 'lodash/sumBy';
+
+import { Card, Container, Divider, FormControlLabel, Grid, IconButton, Link, Stack, Switch, Table, TableBody, TableContainer, TablePagination, Tabs, Tooltip, Typography } from "@mui/material";
 import { Button } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from "react-router-dom";
+import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
+
 import {
   deleteOrder,
   getAllOrders,
@@ -15,19 +19,73 @@ import {
 import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
 import Sidebar from "./Sidebar";
 import { Box } from "@mui/system";
+import Page from "../../helper/Page";
+import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
+import Iconify from "../../helper/Iconify";
+import useSettings from "../../hooks/useSettings";
+import Scrollbar from '../../helper/Scrollbar';
+import InvoiceAnalytic from "./InvoiceAnalytic";
+
+import { useTheme } from '@mui/material/styles';
+import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from "../../helper/table";
+import InvoiceTableRow from "./InvoiceTableRow";
+
+const TABLE_HEAD = [
+  { id: 'orderId', label: 'Order Id', align: 'left' },
+  { id: 'createDate', label: 'Create', align: 'left' },
+  { id: 'price', label: 'Amount', align: 'center', width: 140 },
+  { id: 'itemQty', label: 'Item Quantity', align: 'center', width: 140 },
+  { id: 'status', label: 'Status', align: 'left' },
+  { id: '' },
+];
+
+
 
 const OrderList = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
+  const { themeStretch } = useSettings();
 
   const navigate = useNavigate()
+
+  const {
+    dense,
+    page,
+    order,
+    orderBy,
+    rowsPerPage,
+    setPage,
+    //
+    selected,
+    setSelected,
+    onSelectRow,
+    onSelectAllRows,
+    //
+    onSort,
+    onChangeDense,
+    onChangePage,
+    onChangeRowsPerPage,
+  } = useTable({ defaultOrderBy: 'createDate' });
 
   const { error, orders } = useSelector((state) => state.allOrders);
 
   const { error: deleteError, isDeleted } = useSelector((state) => state.order);
 
+  const denseHeight = dense ? 56 : 76;
+
+  const handleEditRow = (id) => {
+    navigate(`/admin/order/${id}`)
+  }
+
   const deleteOrderHandler = (id) => {
     dispatch(deleteOrder(id));
   };
+
+  const handleDeleteRows = (selected) => {
+    for(let i=0;i<selected.length;i++){
+      deleteOrderHandler(selected[i])
+    }
+  }
 
   useEffect(() => {
     if (error) {
@@ -46,63 +104,10 @@ const OrderList = () => {
     dispatch(getAllOrders());
   }, [dispatch, error, deleteError, isDeleted]);
 
-  const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
+  
+  
 
-    {
-      field: "status",
-      headerName: "Status",
-      minWidth: 150,
-      flex: 0.5,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
-    },
-    {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 150,
-      flex: 0.4,
-    },
-
-    {
-      field: "amount",
-      headerName: "Amount",
-      type: "number",
-      minWidth: 270,
-      flex: 0.5,
-    },
-
-    {
-      field: "actions",
-      flex: 0.3,
-      headerName: "Actions",
-      minWidth: 150,
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <Fragment>
-            <Link underline="none" component={RouterLink} to={`/admin/order/${params.getValue(params.id, "id")}`}>
-              <EditIcon />
-            </Link>
-
-            <Button
-              onClick={() =>
-                deleteOrderHandler(params.getValue(params.id, "id"))
-              }
-            >
-              <DeleteIcon />
-            </Button>
-          </Fragment>
-        );
-      },
-    },
-  ];
-
+            
   const rows = [];
 
   orders &&
@@ -112,33 +117,183 @@ const OrderList = () => {
         itemsQty: item.orderItems.length,
         amount: item.totalPrice,
         status: item.orderStatus,
+        createDate: item.createdAt,
       });
     });
 
+    const getLengthByStatus = (status) => rows.filter((item) => item.status === status).length;
+    const getTotalPriceByStatus = (status) => sumBy(rows.filter((item) => item.status === status),'amount');
+    const getPercentByStatus = (status) => (getLengthByStatus(status) / rows.length) * 100;
+
+    const TABS = [
+      { value: 'all', label: 'All', color: 'info', count: rows.length },
+      { value: 'processing', label: 'Processing', color: 'success', count: getLengthByStatus('processing') },
+      { value: 'shipped', label: 'Shipped', color: 'warning', count: getLengthByStatus('shipped') },
+      { value: 'delivered', label: 'Delivered', color: 'error', count: getLengthByStatus('delivered') },
+    ];
+
+
+
   return (
+      <Page title="Invoice: List">
+        <Container maxWidth={themeStretch ? false : 'lg'}>
+          <HeaderBreadcrumbs
+            heading="Order List"
+            links={[
+              { name: 'Dashboard', href: '/admin/dashboard' },
+              { name: 'Orders', href: 'admin/orders' },
+              { name: 'List' },
+            ]}
+          />    
+          <Card sx={{mb:5}}>
+          <Scrollbar>
 
-    <Box display='flex' sx={{marginTop:1}}>
-      <Sidebar/>
-    
-      
-      <Grid backgroundColor='#f5f5f5' container rowSpacing={2} borderRadius={2} padding={2}>
-      <Grid  item md={12} xs={12}>
+          <Stack
+              direction="row"
+              divider={<Divider orientation="vertical" flexItem sx={{ borderStyle: 'dashed' }} />}
+              sx={{ py: 2 }}
+            >
+              <InvoiceAnalytic
+                title="Total"
+                total={rows?.length}
+                percent={100}
+                price={sumBy(rows, 'amount')}
+                icon="ic:round-receipt"
+                color={theme.palette.info.main}
+              />
+              <InvoiceAnalytic
+                title="Delivered"
+                total={getLengthByStatus('Delivered')}
+                percent={getPercentByStatus('Delivered')}
+                price={getTotalPriceByStatus('Delivered')}
+                icon="eva:checkmark-circle-2-fill"
+                color={theme.palette.success.main}
+              />
+              <InvoiceAnalytic
+                title="Shipped"
+                total={getLengthByStatus('Shipped')}
+                percent={getPercentByStatus('Shipped')}
+                price={getTotalPriceByStatus('Shipped')}
+                icon="eva:clock-fill"
+                color={theme.palette.warning.main}
+              />
+              <InvoiceAnalytic
+                title="Processing"
+                total={getLengthByStatus('Processing')}
+                percent={getPercentByStatus('Processing')}
+                price={getTotalPriceByStatus('Processing')}
+                icon="eva:bell-fill"
+                color={theme.palette.error.main}
+              />
+            </Stack>
+          </Scrollbar>
+          </Card>
 
-          <Typography fontSize='1.5rem' textAlign='center'>All Orders</Typography>
-          </Grid>
-          <Grid item md={12} xs={12}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            className="productListTable"
-            autoHeight
-          />
-          </Grid>
-          </Grid>
+          <Card>
+            <Scrollbar>
+            <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
+              {selected.length > 0 && (
+                <TableSelectedActions
+                  dense={dense}
+                  numSelected={selected.length}
+                  rowCount={rows.length}
+                  onSelectAllRows={(checked) =>
+                    onSelectAllRows(
+                      checked,
+                      rows.map((row) => row.id)
+                    )
+                  }
+                  actions={
+                    <Stack spacing={1} direction="row">
+                      <Tooltip title="Sent">
+                        <IconButton color="primary">
+                          <Iconify icon={'ic:round-send'} />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="Download">
+                        <IconButton color="primary">
+                          <Iconify icon={'eva:download-outline'} />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="Print">
+                        <IconButton color="primary">
+                          <Iconify icon={'eva:printer-fill'} />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="Delete">
+                        <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
+                          <Iconify icon={'eva:trash-2-outline'} />
+                        </IconButton>
+                      </Tooltip>
+                    </Stack>
+                  }
+                />
+              )}
+
+              <Table size={dense ? 'small' : 'medium'}>
+                <TableHeadCustom
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={rows.length}
+                  numSelected={selected.length}
+                  onSort={onSort}
+                  onSelectAllRows={(checked) =>
+                    onSelectAllRows(
+                      checked,
+                      rows.map((row) => row.id)
+                    )
+                  }
+                />
+
+                <TableBody>
+                  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                    <InvoiceTableRow
+                      key={row.id}
+                      row={row}
+                      selected={selected.includes(row.id)}
+                      onSelectRow={() => onSelectRow(row.id)}
+                      onEditRow={() => handleEditRow(row.id)}
+                      onDeleteRow={() => deleteOrderHandler(row.id)}
+                    />
+                  ))}
+
+                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, rows.length)} />
+
+                  <TableNoData />
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            </Scrollbar>
+            <Box sx={{ position: 'relative' }}>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={onChangePage}
+              onRowsPerPageChange={onChangeRowsPerPage}
+            />
+
+            <FormControlLabel
+              control={<Switch checked={dense} onChange={onChangeDense} />}
+              label="Dense"
+              sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
+            />
+          </Box>
+
+          </Card>
       
-      </Box>
+
+         
+      
+      </Container>
+      </Page>
 
   );
 };

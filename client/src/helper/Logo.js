@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Box } from '@mui/material';
-import logoImage from '../images/logo.svg'
+import logoImage from '../images/logo.png'
 import Image from './Image';
 
 

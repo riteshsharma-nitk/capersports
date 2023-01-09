@@ -32,7 +32,7 @@ const navConfig = [
   {
     subheader: 'general',
     items: [
-      { title: 'dashboard', path: 'admin/dashboard', icon: ICONS.dashboard },
+      { title: 'dashboard', path: '/admin/dashboard', icon: ICONS.dashboard },
     ],
   },
 
@@ -47,7 +47,7 @@ const navConfig = [
         path: 'admin',
         icon: ICONS.user,
         children: [
-          { title: 'list', path: '/users' },
+          { title: 'list', path: 'users' },
         ],
       },
 
@@ -57,8 +57,8 @@ const navConfig = [
         path: 'admin',
         icon: ICONS.cart,
         children: [
-          { title: 'list', path: '/products' },
-          { title: 'create', path: '/add-product'},
+          { title: 'list', path: 'products' },
+          { title: 'create', path: 'product'},
         ],
       },
 
@@ -78,7 +78,7 @@ const navConfig = [
         path: 'admin',
         icon: ICONS.blog,
         children: [
-          { title: 'review', path: '/review' },
+          { title: 'review', path: 'reviews' },
         ],
       },
     ],

@@ -1,8 +1,15 @@
 
+// highlight
+import './utils/highlight';
 
 // scroll bar
 import 'simplebar/src/simplebar.css';
+
 import 'react-image-lightbox/style.css';
+
+// editor
+import 'react-quill/dist/quill.snow.css';
+
 
 // slick-carousel
 import 'slick-carousel/slick/slick.css';
@@ -22,6 +29,8 @@ import './index.css';
 import App from './App';
 import {Provider} from "react-redux"
 import store from "./store"
+
+// @mui
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { SettingsProvider } from './contexts/SettingsContext';
@@ -36,8 +45,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
    <HelmetProvider>
-     <StyledEngineProvider injectFirst>
+
       <SettingsProvider>
+        
         <CollapseDrawerProvider>
       <BrowserRouter>
       <App/>
@@ -45,7 +55,6 @@ root.render(
       </CollapseDrawerProvider>
       </SettingsProvider>
    
-    </StyledEngineProvider>
     </HelmetProvider>
    </Provider>
 );
