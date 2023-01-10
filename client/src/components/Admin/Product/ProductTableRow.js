@@ -4,11 +4,11 @@ import { sentenceCase } from 'change-case';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { TableRow, Checkbox, TableCell, Typography, MenuItem } from '@mui/material';
-import Image from '../../helper/Image';
-import { fDate } from '../../utils/formatTime';
-import Label from '../../helper/Label';
-import { TableMoreMenu } from '../../helper/table';
-import Iconify from '../../helper/Iconify';
+import Image from '../../../helper/Image';
+import { fDate } from '../../../utils/formatTime';
+import Label from '../../../helper/Label';
+import { TableMoreMenu } from '../../../helper/table';
+import Iconify from '../../../helper/Iconify';
 // utils
 
 

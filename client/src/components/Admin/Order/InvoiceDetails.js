@@ -17,12 +17,12 @@ import {
 } from '@mui/material';
 
 // components
-import Label from '../../helper/Label';
-import Scrollbar from '../../helper/Scrollbar';
+import Label from '../../../helper/Label';
+import Scrollbar from '../../../helper/Scrollbar';
 //
 import InvoiceToolbar from './InvoiceToolbar';
-import { fDate } from '../../utils/formatTime';
-import Logo from '../../helper/Logo';
+import { fDate } from '../../../utils/formatTime';
+import Logo from '../../../helper/Logo';
 
 // ----------------------------------------------------------------------
 

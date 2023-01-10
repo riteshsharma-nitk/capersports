@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, getProduct } from '../../actions/productAction';
 import ProductCard from './ProductCard';
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-import { Box, Button, Container, Link, styled, Typography } from '@mui/material';
+import { Box, Button, Container, Link, styled, Typography, useTheme } from '@mui/material';
 import {Link as RouterLink} from 'react-router-dom'
 import { m } from 'framer-motion';
 import { MotionViewport, varFade } from '../../helper/animate';
+import { CarouselArrows } from '../../helper/carousel';
+import Slider from 'react-slick';
+import Iconify from '../../helper/Iconify';
 
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(10, 0),
@@ -19,8 +20,42 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 
 function HomeFeatureProduct() {
+  const carouselRef = useRef(null);
+  const theme = useTheme();
+
     const dispatch = useDispatch();
     const {loading, error, products } = useSelector((state)=>state.products)
+
+
+  const settings = {
+    arrows: false,
+    slidesToShow: 4,
+    centerMode: true,
+    centerPadding: '0px',
+    rtl: Boolean(theme.direction === 'rtl'),
+    responsive: [
+      {
+        breakpoint: 1279,
+        settings: { slidesToShow: 4 },
+      },
+      {
+        breakpoint: 959,
+        settings: { slidesToShow: 2 },
+      },
+      {
+        breakpoint: 600,
+        settings: { slidesToShow: 1 },
+      },
+    ],
+  };
+
+  const handlePrevious = () => {
+    carouselRef.current?.slickPrev();
+  };
+
+  const handleNext = () => {
+    carouselRef.current?.slickNext();
+  };
 
   useEffect(() => {
 
@@ -31,98 +66,40 @@ function HomeFeatureProduct() {
     dispatch(getProduct());
   }, [dispatch, error])
   return (
-   <RootStyle>
-          <Container component={MotionViewport}>
+    <RootStyle>
+    <Box component={MotionViewport} sx={{ pb: 10, textAlign: 'center', p:{lg:4, md:3, sm:2, xs:1}}}>
+        <m.div variants={varFade().inDown}>
+          <Typography component="p" variant="overline" sx={{ mb: 2, color: 'text.secondary' }}>Caper Sports</Typography>
+        </m.div>
+        
+        <m.div variants={varFade().inUp}>
+          <Typography variant="h2" sx={{ mb: 3 }}>Featured products</Typography>
+        </m.div>
+                   
+      <Box sx={{ position: 'relative' }}>
+        <CarouselArrows filled onNext={handleNext} onPrevious={handlePrevious}>
+          <Slider ref={carouselRef} {...settings}>
+          { products && products.map((product) => (
+          <Box key={product._id} component={m.div} variants={varFade().in} sx={{ py: 10 }}>
+           <ProductCard  product={product}/>
+           </Box>)
+           ) } 
+          </Slider>
+        </CarouselArrows>
+      </Box>
 
- <Box
-          sx={{
-            textAlign: 'center',
-            mb: { xs: 1, md: 2 },
-          }}
-        >
-                    <m.div variants={varFade().inUp}>
-
-            <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
-              Caper Sports
-            </Typography>
-            </m.div>
-            <m.div variants={varFade().inUp}>
-
-            <Typography variant="h2">Featured Products</Typography>
-            </m.div>
-
-
-        </Box>
-
-{ products &&   <Carousel
-  additionalTransfrom={0}
-  arrows
-  autoPlaySpeed={3000}
-  centerMode={false}
-  className=""
-  containerClass="container-with-dots"
-  dotListClass=""
-  draggable
-  focusOnSelect={false}
-  infinite
-  itemClass=""
-  keyBoardControl
-  minimumTouchDrag={80}
-  pauseOnHover
-  renderArrowsWhenDisabled={false}
-  renderButtonGroupOutside={false}
-  renderDotsOutside={false}
-  responsive={{
-    desktop: {
-      breakpoint: {
-        max: 3000,
-        min: 1024
-      },
-      items: 3,
-      partialVisibilityGutter: 40
-    },
-    mobile: {
-      breakpoint: {
-        max: 464,
-        min: 0
-      },
-      items: 1,
-      partialVisibilityGutter: 30
-    },
-    tablet: {
-      breakpoint: {
-        max: 1024,
-        min: 464
-      },
-      items: 2,
-      partialVisibilityGutter: 30
-    }
-  }}
-  rewind={false}
-  rewindWithAnimation={false}
-  rtl={false}
-  shouldResetAutoplay
-  showDots={false}
-  sliderClass=""
-  slidesToSlide={1}
-  swipeable
->
-  
-  { products && products.map((product) => <ProductCard key={product._id} product={product}/>) } 
-</Carousel>}
-
-  <Box sx={{
-    display:'flex',
-    justifyContent:'center',  
-    mt:2       
-  }}>
-    
-  <Link underline='none' component={RouterLink} to="/products">
-    <Button                 size="large"
- variant='contained'>Explore More</Button>
-  </Link>
+        <Button
+        component={RouterLink}
+        to="/products"
+        variant="outlined"
+        color="inherit"
+        size="large"
+        endIcon={<Iconify icon={'ic:round-arrow-right-alt'} width={24} height={24} />}
+        sx={{ mx: 'auto' }}
+      >
+        Explore more
+      </Button>
   </Box>
-  </Container>
   </RootStyle>
   )
 }

@@ -3,13 +3,10 @@ import { styled } from '@mui/material/styles';
 import { Box, Button, Stack, Container, Typography, InputAdornment } from '@mui/material';
 import InputStyle from '../../helper/InputStyle';
 import SocialsButton from '../../helper/SocialsButton';
+import Page from '../../helper/Page';
 // hooks
 
 // components
-
-
-
-
 
 // ----------------------------------------------------------------------
 
@@ -21,23 +18,13 @@ const RootStyle = styled('div')(({ theme }) => ({
   paddingBottom: theme.spacing(10),
 }));
 
-const CountdownStyle = styled('div')({
-  display: 'flex',
-  justifyContent: 'center',
-});
-
-const SeparatorStyle = styled(Typography)(({ theme }) => ({
-  margin: theme.spacing(0, 1),
-  [theme.breakpoints.up('sm')]: {
-    margin: theme.spacing(0, 2.5),
-  },
-}));
 
 // ----------------------------------------------------------------------
 
 export default function ComingSoon() {
 
   return (
+    <Page title='Coming Soon'>
       <RootStyle>
         <Container>
           <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
@@ -70,5 +57,6 @@ export default function ComingSoon() {
           </Box>
         </Container>
       </RootStyle>
+      </Page>
   );
 }

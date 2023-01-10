@@ -5,18 +5,18 @@ import { Link as RouterLink } from "react-router-dom";
 import { Box, Card, Container, FormControlLabel, Grid, IconButton, Link, Switch, Table, TableBody, TableContainer, TablePagination, Tooltip, Typography } from "@mui/material";
 import { Button } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getAllUsers, clearErrors, deleteUser } from "../../actions/userAction";
-import { DELETE_USER_RESET } from "../../constants/userConstants";
+import { getAllUsers, clearErrors, deleteUser } from "../../../actions/userAction";
+import { DELETE_USER_RESET } from "../../../constants/userConstants";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import Sidebar from "../Sidebar";
 import EditIcon from '@mui/icons-material/Edit';
-import Page from "../../helper/Page";
-import useSettings from "../../hooks/useSettings";
-import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
-import Iconify from "../../helper/Iconify";
-import Scrollbar from "../../helper/Scrollbar";
-import {TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions} from '../../helper/table'
-import useTable, { emptyRows } from "../../hooks/useTable";
+import Page from "../../../helper/Page";
+import useSettings from "../../../hooks/useSettings";
+import HeaderBreadcrumbs from "../../../helper/HeaderBreadcrumbs";
+import Iconify from "../../../helper/Iconify";
+import Scrollbar from "../../../helper/Scrollbar";
+import {TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions} from '../../../helper/table'
+import useTable, { emptyRows } from "../../../hooks/useTable";
 import UserTableRow from "./UserTableRow";
 import UserTableToolbar from "./UserTableToolbar";
 

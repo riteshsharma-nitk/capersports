@@ -8,7 +8,7 @@ import ReviewItems from './ReviewItems' ;
 import Loader from '../Layout/Loader';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { NotificationManager } from 'react-notifications';
+// import { NotificationManager } from 'react-notifications';
 import {NEW_REVIEW_RESET} from "../../constants/productConstants";
 import {styled} from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -83,7 +83,7 @@ export default function ProductDetails() {
 
   const addToCartHandler = () => {
     dispatch(addItemsToCart(id, quantity, size));
-    NotificationManager.success("Item Added To Cart");
+    // NotificationManager.success("Item Added To Cart");
   };
 
   const submitReviewToggle = () => {
@@ -97,7 +97,7 @@ export default function ProductDetails() {
   
   const addToWishlistHandler = () => {
     dispatch(addItemsToWishlist(product._id));
-    NotificationManager.success("Item Added To Wishlist");
+    // NotificationManager.success("Item Added To Wishlist");
     setLike(!like)
   };
   
@@ -117,17 +117,17 @@ export default function ProductDetails() {
   useEffect(() => {
    
     if (error) {
-      NotificationManager.error(error);
+      // NotificationManager.error(error);
       dispatch(clearErrors());
     }
 
     if (reviewError) {
-      NotificationManager.error(reviewError);
+      // NotificationManager.error(reviewError);
       dispatch(clearErrors());
     }
 
     if (success) {
-      NotificationManager.success("Review Submitted Successfully");
+      // NotificationManager.success("Review Submitted Successfully");
       dispatch({ type: NEW_REVIEW_RESET });
     }
     dispatch(getProductDetails(id));

@@ -283,6 +283,12 @@ export default function MyRouter(){
                      </AuthGuard>
                 },
 
+                {
+                    path:"about-us",
+                     element:
+                     <About/>
+                },
+
                 
                   
                 ],
@@ -303,14 +309,14 @@ const Register = Loadable(lazy(() => import('../components/User/Register')));
 
 // DASHBOARD
 const Dashboard = Loadable(lazy(() => import( '../components/Admin/Dashboard')));
-const NewProduct = Loadable(lazy(() => import( '../components/Admin/NewProduct')));
-const OrderList = Loadable(lazy(() => import( '../components/Admin/OrderList')));
-const ProcessOrder = Loadable(lazy(() => import( '../components/Admin/ProcessOrder')));
-const ProductList = Loadable(lazy(() => import( '../components/Admin/ProductList')));
-const ProductReviews = Loadable(lazy(() => import( '../components/Admin/ProductReviews')));
-const UpdateProduct = Loadable(lazy(() => import( '../components/Admin/UpdateProduct')));
-const UpdateUser = Loadable(lazy(() => import( '../components/Admin/UpdateUser')));
-const UsersList = Loadable(lazy(() => import( '../components/Admin/UsersList')));
+const NewProduct = Loadable(lazy(() => import( '../components/Admin/Product/NewProduct')));
+const OrderList = Loadable(lazy(() => import( '../components/Admin/Order/OrderList')));
+const ProcessOrder = Loadable(lazy(() => import( '../components/Admin/Order/ProcessOrder')));
+const ProductList = Loadable(lazy(() => import( '../components/Admin/Product/ProductList')));
+const ProductReviews = Loadable(lazy(() => import( '../components/Admin/Product/ProductReviews')));
+const UpdateProduct = Loadable(lazy(() => import( '../components/Admin/Product/UpdateProduct')));
+const UpdateUser = Loadable(lazy(() => import( '../components/Admin/User/UpdateUser')));
+const UsersList = Loadable(lazy(() => import( '../components/Admin/User/UsersList')));
 
 // Product
 // Main
@@ -338,5 +344,4 @@ const Profile = Loadable(lazy(()=> import( '../components/User/Profile')));
 const UpdatePassword = Loadable(lazy(()=> import( '../components/User/UpdatePassword')));
 const UpdateProfile = Loadable(lazy(()=> import( '../components/User/UpdateProfile')));
 const Payment = Loadable(lazy(()=> import( '../components/Cart/Payment')));
-const CheckoutSteps = Loadable(lazy(()=> import( '../components/Cart/CheckoutSteps')));
 

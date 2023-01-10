@@ -12,14 +12,14 @@ const ProductCard = ({product, loading}) => {
     return (
       <Fragment>
         {!loading &&
-         <Card sx={{ m:1}}>
+         <Card sx={{ m:1, textAlign:'left'}}>
          <Link color='inherit' underline='none' component={RouterLink} to={`/product/${product._id}`}>
          <Box sx={{ position: 'relative', backgroundColor:'#eeeeee', m:1, borderRadius:1}}>
          <Image alt='product images' src={product?.images[0]?.url} ratio="1/1" />
          </Box>
    
          <Stack spacing={2} sx={{ p: 3 }}>
-             <Typography variant='subtitle2'> {product.name} </Typography>
+             <Typography variant='subtitle2' noWrap> {product.name} </Typography>
              <Stack direction="row" alignItems="center" justifyContent="space-between">
    
              <Typography variant='subtitle2' color='text.secondary'>{product.category}</Typography>

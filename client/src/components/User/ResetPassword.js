@@ -11,7 +11,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { resetPassword, clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { NotificationManager } from 'react-notifications';
 import Loading from '../Layout/Loader'
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -48,12 +47,12 @@ function ResetPassword() {
 
   useEffect(() => {
     if (error) {
-      NotificationManager.error(error);
+      // NotificationManager.error(error);
       dispatch(clearErrors());
     }
 
     if (success) {
-      NotificationManager.success("Password Updated Successfully");
+      // NotificationManager.success("Password Updated Successfully");
 
       Navigate("/login");
     }

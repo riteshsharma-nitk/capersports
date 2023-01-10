@@ -15,7 +15,7 @@ const ProductItems = ({product, loading}) => {
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
-          <Typography variant='subtitle2'> {product.name} </Typography>
+          <Typography variant='subtitle2' noWrap> {product.name} </Typography>
           <Stack direction="row" alignItems="center" justifyContent="space-between">
 
           <Typography variant='subtitle2' color='text.secondary'>{product.category}</Typography>

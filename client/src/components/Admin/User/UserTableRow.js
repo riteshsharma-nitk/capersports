@@ -3,9 +3,9 @@ import { useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Checkbox, TableRow, TableCell, Typography, MenuItem } from '@mui/material';
-import Iconify from '../../helper/Iconify';
-import Label from '../../helper/Label';
-import { TableMoreMenu } from '../../helper/table';
+import Iconify from '../../../helper/Iconify';
+import Label from '../../../helper/Label';
+import { TableMoreMenu } from '../../../helper/table';
 // components
 
 

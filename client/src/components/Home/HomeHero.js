@@ -88,7 +88,7 @@ export default function HomeHero() {
 
          <HeroImgStyle
           alt="hero"
-          src={image1}
+          src={image3}
           variants={varFade().inRight}
         />
         </>

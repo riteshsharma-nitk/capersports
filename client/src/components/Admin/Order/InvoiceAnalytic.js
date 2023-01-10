@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 // @mui
 import { Stack, Typography, Box, CircularProgress } from '@mui/material';
+import { fShortenNumber } from '../../../utils/formatNumber';
+import Iconify from '../../../helper/Iconify';
 // utils
-import { fShortenNumber, fCurrency } from '../../utils/formatNumber';
-import Iconify from '../../helper/Iconify';
 // components
 
 

@@ -1,18 +1,13 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import IconButton from '@mui/material/IconButton';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import {Badge, Link, useTheme } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
 
 import { useSelector } from 'react-redux';
 import {useNavigate} from 'react-router-dom'
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import { Stack } from '@mui/system';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Searchbar from '../../Dashboard/Header/Searchbar';
 import UserOptions from '../../Dashboard/UserOptions';
 import Iconify from '../../../../helper/Iconify';

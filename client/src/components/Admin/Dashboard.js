@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {Link as RouterLink} from 'react-router-dom'
 import {Link, Box, Card, Typography, Grid, CardHeader, TextField, useTheme, styled } from '@mui/material'
-import { Doughnut, Line } from "react-chartjs-2";
-import 'chart.js/auto';
 import merge from 'lodash/merge';
 
 

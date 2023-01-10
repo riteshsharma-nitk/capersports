@@ -2,8 +2,8 @@ import React from 'react'
 import * as Yup from 'yup';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { clearErrors, createProduct } from "../../actions/productAction";
-import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
+import { clearErrors, createProduct } from "../../../actions/productAction";
+import { NEW_PRODUCT_RESET } from "../../../constants/productConstants";
 import { useNavigate } from 'react-router';
 import { Container } from '@mui/system';
 import { Card, Grid, InputAdornment, Stack, styled, Typography } from '@mui/material';
@@ -15,14 +15,14 @@ import {
   RHFEditor,
   RHFTextField,
   RHFUploadMultiFile,
-} from '../../helper/hook-form';
+} from '../../../helper/hook-form';
 
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import { LoadingButton } from '@mui/lab';
-import useSettings from '../../hooks/useSettings';
-import HeaderBreadcrumbs from '../../helper/HeaderBreadcrumbs';
-import Page from '../../helper/Page';
+import useSettings from '../../../hooks/useSettings';
+import HeaderBreadcrumbs from '../../../helper/HeaderBreadcrumbs';
+import Page from '../../../helper/Page';
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,

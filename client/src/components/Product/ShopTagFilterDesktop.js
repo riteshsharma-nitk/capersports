@@ -1,5 +1,5 @@
-import { Box, Button, Chip, Divider, FormControlLabel, IconButton, Radio, RadioGroup, Rating, Stack, styled, Typography } from '@mui/material';
-import React from 'react'
+import { Box, Button, Chip, Divider, FormControl, FormControlLabel, IconButton, Radio, RadioGroup, Rating, Stack, styled, Typography } from '@mui/material';
+import React, { useEffect } from 'react'
 import { sentenceCase } from 'change-case';
 import Iconify from '../../helper/Iconify';
 import Scrollbar from '../../helper/Scrollbar';
@@ -27,14 +27,44 @@ export const FILTER_PRICE_OPTIONS = [
   { value: 'above', label: 'Above ₹1000' },
 ];
 
+function labelPriceRange(range) {
+  if (range === 'below') {
+    return 'Below $25';
+  }
+  if (range === 'between') {
+    return 'Between $25 - $75';
+  }
+  return 'Above $75';
+}
 
 
-function ShopTagFilterDesktop({setCategory}) {
+function ShopTagFilterDesktop({setCategory, setPrice, setRatings}) {
   const [value, setValue] = React.useState('below');
+
+  const handlePrice = () => {
+    if(value === 'below'){
+      setPrice([0, 500])
+    }else
+
+    if(value === 'between'){
+      setPrice([500, 1000])
+    }else
+
+    if(value === 'above'){
+      setPrice([1000, 25000])
+    }
+  }
 
   const handleChange = (event) => {
     setValue(event.target.value);
   };
+
+ 
+
+
+
+
+
 
   return (
     <div className='sidebar_body'>
@@ -64,16 +94,21 @@ function ShopTagFilterDesktop({setCategory}) {
 
       <Stack spacing={1}>
               <Typography variant="subtitle1">Price</Typography>
+              <FormControl>
       <RadioGroup
+      aria-labelledby="demo-controlled-radio-buttons-group"
+        name="controlled-radio-buttons-group"
         value={value}
         onChange={handleChange}
       > 
       {FILTER_PRICE_OPTIONS.map((item) => (
-        <FormControlLabel value={item.value} control={<Radio />} label={item.label} />
+        <FormControlLabel value={item.value} onClick={()=>handlePrice} control={<Radio/>} label={item.label} />
       ))}
 
     
       </RadioGroup>
+      </FormControl>
+
             </Stack>
 
 

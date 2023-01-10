@@ -1,25 +1,13 @@
 import PropTypes from 'prop-types';
 
 import * as React from 'react';
-import MuiAppBar from '@mui/material/AppBar';
 import { styled, useTheme, alpha } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import InfoIcon from '@mui/icons-material/Info';
+
 import { useDispatch } from "react-redux";
-import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import { logout } from "../../../../actions/userAction"
-import MenuIcon from '@mui/icons-material/Menu';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {Badge, Box, Divider, Drawer, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Avatar, Collapse, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { Logout } from '@mui/icons-material';
 import Searchbar from '../../Dashboard/Header/Searchbar';
 import Iconify from '../../../../helper/Iconify';
 import { IconButtonAnimate } from '../../../../helper/animate';
@@ -46,7 +34,7 @@ const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
   };
   
 
-function MenuMobile(isOffset, isHome) {
+  export default function MenuMobile({isOffset, isHome}) {
   const theme = useTheme();
 
   const dispatch = useDispatch();
@@ -180,7 +168,7 @@ if (user?.role === "admin") {
     
     <List>{
       generalOptions.map((item) => (
-        <ListItemStyle to={item.link} component={RouterLink}>
+        <ListItemStyle key={item.name} to={item.link} component={RouterLink}>
             <ListItemIcon>
              {item.icon}
             </ListItemIcon>
@@ -247,4 +235,4 @@ if (user?.role === "admin") {
    
   );
 }
-export default MenuMobile;
+

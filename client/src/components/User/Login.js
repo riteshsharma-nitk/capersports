@@ -71,14 +71,12 @@ export default function Login() {
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar } = useSnackbar();
 
-
   const mdUp = useResponsive('up', 'md');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { error, loading, isAuthenticated } = useSelector(
-    (state) => state.user);
+  const { error, loading, isAuthenticated } = useSelector((state) => state.user);
 
   const redirect = window.location.search ? window.location.search.split("=")[1] : "/account";
 
@@ -121,9 +119,7 @@ export default function Login() {
 
   React.useEffect(() => {
     if (error) {
-      console.log(error);
       dispatch(clearErrors());
-      // enqueueSnackbar(error);
 
     }
 
@@ -177,6 +173,7 @@ export default function Login() {
                   <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
                     <Stack spacing={3}>
                       {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+
                       <RHFTextField name="email" label="Email address" />
                       
                       <RHFTextField

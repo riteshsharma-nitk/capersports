@@ -4,20 +4,17 @@ import { clearErrors, getProduct } from '../../actions/productAction';
 import Loading from '../Layout/Loader';
 import ProductItems from './ProductItems';
 import { useParams } from 'react-router-dom';
-import {Box, Button, createTheme, CssBaseline, Divider, Drawer, GlobalStyles, Grid, IconButton, List, ListItem, ListItemButton, ListItemText, Skeleton, styled, SwipeableDrawer, TextField, ThemeProvider, Typography } from '@mui/material';
+import {Box, Button, createTheme, Drawer, Typography } from '@mui/material';
 import "./Products.css";
 import Collapse from '@mui/material/Collapse';
-import { NotificationManager } from 'react-notifications';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import ShopTagFilterDesktop from './ShopTagFilterDesktop';
 import useResponsive from '../../hooks/useResponsive';
 import Iconify from '../../helper/Iconify';
-
+import Page from '../../helper/Page';
 
 export default function Products() {
-
-  const theme = createTheme();
   
   const dispatch = useDispatch();
   const [price, setPrice] = useState([0, 25000]);
@@ -37,9 +34,8 @@ export default function Products() {
   }
 
   useEffect(() => {
-    document.title = 'Products | Caper Sports'
     if(error){
-      NotificationManager.error(error);
+      // NotificationManager.error(error);
       dispatch(clearErrors())
     }
 
@@ -53,7 +49,7 @@ export default function Products() {
   const isDesktop = useResponsive('up', 'md');
 
   return (
-    <Fragment>
+    <Page title = 'Producrs'>
   
 
     {loading ? (
@@ -85,7 +81,7 @@ export default function Products() {
           <div className='body_wrapper'>
             {isDesktop &&  <Collapse sx={{ marginLeft:( filterOptionLarge ? '40px' : '0px')}}  orientation="horizontal" in={filterOptionLarge}>
 
-                <ShopTagFilterDesktop setCategory = {setCategory}/>
+                <ShopTagFilterDesktop setCategory = {setCategory} setPrice = {setPrice} setRatings = {setRatings}/>
 
               </Collapse>}
             
@@ -130,7 +126,7 @@ export default function Products() {
      </Fragment>
           )}
    
-      </Fragment>
+      </Page>
      
   )
 }

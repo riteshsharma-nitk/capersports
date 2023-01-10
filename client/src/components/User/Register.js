@@ -1,29 +1,24 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink, redirect, useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { register, clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import loginImage from '../../images/undraw_secure_login_pdn4.svg'
-
-
 import { Card, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import Logo from '../../helper/Logo';
 import useResponsive from '../../hooks/useResponsive';
 import Image from '../../helper/Image';
-const theme = createTheme();
+import Page from '../../helper/Page';
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex',
@@ -135,7 +130,6 @@ export default function Register() {
          
         }
 
-        document.title = "Register | Caper Sports"
       }, [dispatch, error, isAuthenticated, redirect]);
     
       const [showPassword, setShowPassword] = React.useState(false);
@@ -150,6 +144,7 @@ export default function Register() {
   
 
   return (
+    <Page title="Register">
     <RootStyle>
       <HeaderStyle>
         <Logo/>
@@ -298,5 +293,6 @@ export default function Register() {
        
         </SectionStyle>
         </RootStyle>
+        </Page>
   );
 }

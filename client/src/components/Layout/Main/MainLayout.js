@@ -34,8 +34,7 @@ export default function MainLayout() {
   
               <Typography variant="caption" component="p">
                 © All rights reserved
-                <br /> made by &nbsp;
-                Caper Sports
+                <br /> Caper Sports
               </Typography>
             </Container>
           </Box>

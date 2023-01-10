@@ -3,21 +3,21 @@ import {Fragment, useEffect} from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import {clearErrors, getAdminProduct, deleteProduct} from '../../actions/productAction'
+import {clearErrors, getAdminProduct, deleteProduct} from '../../../actions/productAction'
 import {Link as RouterLink} from 'react-router-dom'
 import {Box, Button, Card, Container, FormControlLabel, Grid, IconButton, Link, Switch, Table, TableBody, TableContainer, TablePagination, Tooltip, Typography} from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Sidebar from '../Admin/Sidebar'
-import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
+import Sidebar from '../Sidebar'
+import { DELETE_PRODUCT_RESET } from "../../../constants/productConstants";
 import { useNavigate } from 'react-router-dom';
-import Page from '../../helper/Page';
-import HeaderBreadcrumbs from '../../helper/HeaderBreadcrumbs';
-import Iconify from '../../helper/Iconify';
-import useSettings from '../../hooks/useSettings';
-import Scrollbar from '../../helper/Scrollbar';
-import useTable, { emptyRows } from '../../hooks/useTable';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../helper/table';
+import Page from '../../../helper/Page';
+import HeaderBreadcrumbs from '../../../helper/HeaderBreadcrumbs';
+import Iconify from '../../../helper/Iconify';
+import useSettings from '../../../hooks/useSettings';
+import Scrollbar from '../../../helper/Scrollbar';
+import useTable, { emptyRows } from '../../../hooks/useTable';
+import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../helper/table';
 import ProductTableRow from './ProductTableRow';
 
 const TABLE_HEAD = [

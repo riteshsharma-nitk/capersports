@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as Yup from 'yup';
-import { clearErrors, updateProduct, getProductDetails,} from "../../actions/productAction";
+import { clearErrors, updateProduct, getProductDetails,} from "../../../actions/productAction";
 import { useParams } from 'react-router-dom';
 import {useNavigate} from "react-router-dom";
-import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
+import { UPDATE_PRODUCT_RESET } from "../../../constants/productConstants";
 import { Card, Container, Grid, InputAdornment, Stack, Typography } from '@mui/material';
 import { createTheme, styled } from '@mui/material/styles';
-import useSettings from "../../hooks/useSettings";
-import Page from "../../helper/Page";
-import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
+import useSettings from "../../../hooks/useSettings";
+import Page from "../../../helper/Page";
+import HeaderBreadcrumbs from "../../../helper/HeaderBreadcrumbs";
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import {
@@ -18,7 +18,7 @@ import {
     RHFEditor,
     RHFTextField,
     RHFUploadMultiFile,
-  } from '../../helper/hook-form';
+  } from '../../../helper/hook-form';
 
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";

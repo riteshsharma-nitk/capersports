@@ -11,7 +11,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { NotificationManager } from 'react-notifications';
 import { UPDATE_PROFILE_RESET } from "../../constants/userConstants";
 import {updateProfile, loadUser } from "../../actions/userAction";
 import Loading from '../Layout/Loader'
@@ -71,7 +70,7 @@ function UpdateProfile() {
           }
       
           if (error) {
-            NotificationManager.error(error);
+            // NotificationManager.error(error);
             dispatch(clearErrors());
           }
       

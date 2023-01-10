@@ -5,8 +5,10 @@ import { Box, Card, Container, Typography } from '@mui/material';
 // components
 import Image from '../../helper/Image';
 import { MotionViewport, varFade } from '../../helper/animate';
-import React from 'react'
+import React, { useRef } from 'react'
 import Banner from '../../images/Banner.webp'
+import { CarouselArrows } from '../../helper/carousel';
+import Slider from 'react-slick';
 
 
 
@@ -17,44 +19,54 @@ const RootStyle = styled('div')(({ theme }) => ({
   },
 }));
 function HomePromotion() {
+  const carouselRef = useRef(null);
+  const theme = useTheme();
+
+
+  const settings = {
+    arrows: false,
+    slidesToShow: 1,
+    centerMode: true,
+    centerPadding: '0px',
+    rtl: Boolean(theme.direction === 'rtl'),
+  };
+
+  const handlePrevious = () => {
+    carouselRef.current?.slickPrev();
+  };
+
+  const handleNext = () => {
+    carouselRef.current?.slickNext();
+  };
   return (
     <RootStyle>
-      <Container component={MotionViewport}>
-              <Box
-          sx={{
-            textAlign: 'center',
-            mb: { xs: 2, md: 4 },
-          }}
-        >
-                    <m.div variants={varFade().inUp}>
+    <Box component={MotionViewport} sx={{ pb: 10, textAlign: 'center', p:{lg:4, md:3, sm:2, xs:1}}}>
+        <m.div variants={varFade().inDown}>
+          <Typography component="p" variant="overline" sx={{ mb: 2, color: 'text.secondary' }}>Caper Sports</Typography>
+        </m.div>
+        
+        <m.div variants={varFade().inUp}>
+          <Typography variant="h2" sx={{ mb: 3 }}>Our clients</Typography>
+        </m.div>
+                   
+      <Box sx={{ position: 'relative' }}>
+        <CarouselArrows filled onNext={handleNext} onPrevious={handlePrevious}>
+          <Slider ref={carouselRef} {...settings}>
+          <Box component={m.div} variants={varFade().in} sx={{ p: 6, }}>
+            <Image alt="dark mode" src={Banner} />
+</Box>
+           
+          </Slider>
+        </CarouselArrows>
+      </Box>
 
-            <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
-              Caper Sports
-            </Typography>
-            </m.div>
-            <m.div variants={varFade().inUp}>
-
-            <Typography variant="h2">Our Clients</Typography>
-            </m.div>
-
-
-        </Box>
-       
-       
-
-        <Image alt="dark mode" src={Banner} />
       
-      
-       
-       
-
-                </Container>
-                
-
-        </RootStyle>
-
+  </Box>
+  </RootStyle>
     
   )
 }
 
 export default HomePromotion;
+
+

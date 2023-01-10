@@ -3,7 +3,6 @@ import React, {useState, useEffect } from "react";
 import Loading from "../Layout/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, updatePassword } from "../../actions/userAction";
-import { NotificationManager } from 'react-notifications';
 import { UPDATE_PASSWORD_RESET } from "../../constants/userConstants";
 import { useNavigate } from 'react-router-dom';
 import PasswordIcon from '@mui/icons-material/Password';
@@ -41,7 +40,7 @@ function UpdatePassword() {
 
   useEffect(() => {
     if (error) {
-      NotificationManager.error(error);
+      // NotificationManager.error(error);
       dispatch(clearErrors());
     }
 

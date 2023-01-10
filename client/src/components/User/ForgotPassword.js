@@ -11,7 +11,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { forgotPassword, clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { NotificationManager } from 'react-notifications';
 import Loading from '../Layout/Loader'
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import { useEffect } from 'react';
@@ -37,12 +36,12 @@ function ForgotPassword() {
   
     useEffect(() => {
       if (error) {
-        NotificationManager.error(error);
+        // NotificationManager.error(error);
         dispatch(clearErrors());
       }
   
       if (message) {
-        NotificationManager.success(message);
+        // NotificationManager.success(message);
       }
     }, [dispatch, error, message]);
     return (

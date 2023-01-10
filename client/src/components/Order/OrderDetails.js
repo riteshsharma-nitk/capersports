@@ -4,7 +4,7 @@ import { Link as RouterLink } from "react-router-dom";
 import {Box, Button, Card, CardContent, CardHeader, CardMedia, Container, Divider, Grid, Link, List, ListItem, ListItemText, Paper, Stack, Typography, useTheme} from '@mui/material'
 import { getOrderDetails, clearErrors } from "../../actions/orderAction";
 import Loader from "../Layout/Loader";
-import { NotificationManager } from 'react-notifications';
+// import { NotificationManager } from 'react-notifications';
 import { useParams } from "react-router-dom";
 import LoadingScreen from "../../helper/LoadingScreen";
 import Page from "../../helper/Page";
@@ -29,7 +29,7 @@ const OrderDetails = () => {
 
   useEffect(() => {
     if (error) {
-      NotificationManager.error(error);
+      // NotificationManager.error(error);
       dispatch(clearErrors());
     }
 

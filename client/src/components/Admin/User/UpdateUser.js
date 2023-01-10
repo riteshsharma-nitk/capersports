@@ -3,21 +3,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { Avatar, Box, Button, Card, Container, createTheme, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, ThemeProvider, Typography } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import { useParams } from "react-router";
-import { UPDATE_USER_RESET } from "../../constants/userConstants";
-import LoadingScreen from '../../helper/LoadingScreen'
+import { UPDATE_USER_RESET } from "../../../constants/userConstants";
+import LoadingScreen from '../../../helper/LoadingScreen'
 
 
 import {
   getUserDetails,
   updateUser,
   clearErrors,
-} from "../../actions/userAction";
-import Sidebar from "./Sidebar";
-import Loader from "../Layout/Loader";
+} from "../../../actions/userAction";
+import Sidebar from "../Sidebar";
+import Loader from "../../Layout/Loader";
 import { useNavigate } from "react-router";
-import Page from "../../helper/Page";
-import useSettings from "../../hooks/useSettings";
-import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
+import Page from "../../../helper/Page";
+import useSettings from "../../../hooks/useSettings";
+import HeaderBreadcrumbs from "../../../helper/HeaderBreadcrumbs";
 
 
 const UpdateUser = () => {

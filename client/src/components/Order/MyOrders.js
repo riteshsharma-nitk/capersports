@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearErrors, myOrders } from "../../actions/orderAction";
 import Loader from "../Layout/Loader";
 import { Link, useNavigate } from "react-router-dom";
-import { NotificationManager } from 'react-notifications';
+// import { NotificationManager } from 'react-notifications';
 import Typography from "@mui/material/Typography";
 import LaunchIcon from "@mui/icons-material/Launch";
 import { Box, Card, Container, FormControlLabel, Grid, IconButton, Paper, Stack, Switch, Table, TableBody, TableContainer, TablePagination, Tooltip } from "@mui/material";
@@ -16,7 +16,7 @@ import useTable, { emptyRows } from "../../hooks/useTable";
 import Scrollbar from "../../helper/Scrollbar";
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from "../../helper/table";
 import Iconify from "../../helper/Iconify";
-import ReviewTableRow from "../Admin/ReviewTableRow";
+import ReviewTableRow from "../Admin/Product/ReviewTableRow";
 import OrderTableRow from "./OrderTableRow";
 
 const MyOrders = () => {
@@ -82,7 +82,7 @@ const MyOrders = () => {
 
   useEffect(() => {
     if (error) {
-      NotificationManager.error(error);
+      // NotificationManager.error(error);
       dispatch(clearErrors());
     }
 

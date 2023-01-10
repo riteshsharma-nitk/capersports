@@ -5,24 +5,24 @@ import {
   clearErrors,
   getAllReviews,
   deleteReviews,
-} from "../../actions/productAction";
+} from "../../../actions/productAction";
 import { Avatar, Button, Card, Container, CssBaseline, Divider, FormControlLabel, Grid, IconButton, Paper, Stack, Switch, Table, TableBody, TableContainer, TablePagination, TextField, Tooltip, Typography } from "@mui/material";
 
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { DELETE_REVIEW_RESET } from "../../constants/productConstants";
+import { DELETE_REVIEW_RESET } from "../../../constants/productConstants";
 import { useNavigate } from "react-router";
 import Box from '@mui/material/Box';
-import Sidebar from "./Sidebar";
+import Sidebar from "../Sidebar";
 
 import { createTheme, ThemeProvider } from '@mui/material';
-import Page from "../../helper/Page";
-import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
-import useSettings from "../../hooks/useSettings";
-import Scrollbar from "../../helper/Scrollbar";
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from "../../helper/table";
-import Iconify from "../../helper/Iconify";
-import useTable, { emptyRows } from "../../hooks/useTable";
+import Page from "../../../helper/Page";
+import HeaderBreadcrumbs from "../../../helper/HeaderBreadcrumbs";
+import useSettings from "../../../hooks/useSettings";
+import Scrollbar from "../../../helper/Scrollbar";
+import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from "../../../helper/table";
+import Iconify from "../../../helper/Iconify";
+import useTable, { emptyRows } from "../../../hooks/useTable";
 import ReviewTableRow from "./ReviewTableRow";
 const theme = createTheme();
 

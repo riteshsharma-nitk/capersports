@@ -42,8 +42,8 @@ const LINKS = [
   {
     headline: 'Caper Sports',
     children: [
-      { name: 'About us', href: '/about' },
-      { name: 'Contact us', href: '/contact' },
+      { name: 'About us', href: '/about-us' },
+      { name: 'Contact us', href: '/contact-us' },
       { name: 'FAQs', href: 'faqs' },
     ],
   },
