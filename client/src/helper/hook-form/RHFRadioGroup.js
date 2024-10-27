@@ -13,7 +13,7 @@ RHFRadioGroup.propTypes = {
 };
 
 export default function RHFRadioGroup({ name, options, getOptionLabel, ...other }) {
-  const control  = useFormContext();
+  const { control }  = useFormContext();
 
   return (
     <Controller

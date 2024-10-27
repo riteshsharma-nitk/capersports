@@ -1,10 +1,8 @@
 import React, { Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addItemsToWishlist, removeItemsFromWishlist } from "../../actions/wishlistAction";
-import { Button, Card, CardContent, CardMedia, Container, createTheme, Divider, Grid, IconButton, Link, Paper, ThemeProvider, Typography } from"@mui/material";
-import { useNavigate } from "react-router-dom";
+import { removeItemsFromWishlist } from "../../actions/wishlistAction";
+import { Card, CardContent, IconButton, Link, Typography } from"@mui/material";
 import { Box } from "@mui/material";
-import ProductItems from "../Product/ProductItems";
 import {Link as RouterLink} from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Image from '../../helper/Image';
@@ -13,10 +11,8 @@ import Image from '../../helper/Image';
 
 
 const Wishlist = () => {
-  const theme = createTheme()
   const dispatch = useDispatch();
   const { wishlistItems } = useSelector((state) => state.wishlist);
-  const navigate = useNavigate();
 
 
   const deleteWishlistItems = (id) => {
@@ -48,9 +44,9 @@ const Wishlist = () => {
         },
       }}
     >
-            {wishlistItems && wishlistItems.map((item) => (
+            {wishlistItems && wishlistItems.map((item, index) => (
                   
-                 <Card sx={{m:1}}>
+                 <Card sx={{m:1}} key={index}>
                 <Link underline='none' color='inherit' component={RouterLink} to={`/product/${item.product}`}>
                 <Box sx={{ position: 'relative', backgroundColor:'#eeeeee', m:1, borderRadius:1}}>
       <Image alt='product images' src={item?.image} ratio="1/1" />

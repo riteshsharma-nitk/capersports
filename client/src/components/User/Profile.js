@@ -1,7 +1,6 @@
 import {Avatar, Box, Card, Container, createTheme, styled, Tab, Tabs, Typography } from '@mui/material'
 import { useSelector } from 'react-redux';
 import React, { useEffect } from 'react'
-import Loading from "../Layout/Loader";
 import {useNavigate } from 'react-router';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
@@ -15,6 +14,10 @@ import UpdateProfile from './UpdateProfile';
 import { capitalCase } from 'change-case';
 import cssStyles from '../../utils/cssStyles';
 import HeaderBreadcrumbs from '../../helper/HeaderBreadcrumbs';
+import LoadingScreen from '../../helper/LoadingScreen';
+import Account from './Account';
+import useTabs from '../../hooks/useTabs';
+
 
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -65,6 +68,8 @@ export default function Profile() {
     const { user, loading, isAuthenticated } = useSelector((state) => state.user);
 
     const [value, setValue] = React.useState(0);
+    const { currentTab, onChangeTab } = useTabs('profile');
+
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -89,26 +94,26 @@ export default function Profile() {
         {
           value: 'profile',
           icon: <AccountBoxIcon style={{width:20, height:20}}/>,
-          component: <></>,
+          component: <Account/>,
         },
         {
-          value: 'Favorite',
+          value: 'favorite',
           icon: <FavoriteIcon style={{width:20, height:20}}/>,
           component: <Wishlist/>,
         },
         {
-          value: 'Orders',
+          value: 'orders',
           icon: <ShoppingBagIcon style={{width:20, height:20}}/>,
           component: <MyOrders/>,
         },
         {
-          value: 'Change password',
+          value: 'change_password',
           icon: <KeyIcon style={{width:20, height:20}}/>,
           component: <UpdatePassword/>,
         },
 
         {
-          value: 'Update profile',
+          value: 'update_profile',
           icon: <PersonIcon style={{width:20, height:20}}/>,
           component: <UpdateProfile/>,
         },
@@ -116,7 +121,7 @@ export default function Profile() {
 
   return (
     <>
-    {loading ? (<Loading/>):(
+    {loading ? (<LoadingScreen/>):(
             <Container maxWidth='lg' sx={{mt:15}}>
                <HeaderBreadcrumbs
           heading="Profile"
@@ -129,7 +134,7 @@ export default function Profile() {
                <Card sx={{ mb: 3, height: 280, position: 'relative'}}>
                 <RootStyle>
                   <InfoStyle>
-                    <Avatar src={user.avatar.url} sx={{ mx: 'auto', borderWidth: 2, borderStyle: 'solid', borderColor: 'common.white', width: { xs: 80, md: 128 }, height: { xs: 80, md: 128 }}}/>
+                    <Avatar src={user?.avatar?.url} sx={{ mx: 'auto', borderWidth: 2, borderStyle: 'solid', borderColor: 'common.white', width: { xs: 80, md: 128 }, height: { xs: 80, md: 128 }}}/>
                     <Box sx={{ ml: { md: 3 }, mt: { xs: 1, md: 0 }, color: 'common.white', textAlign: { xs: 'center', md: 'left' }}}>
                       <Typography variant="h4">{user?.name}</Typography>
                       <Typography sx={{ opacity: 0.72 }}>Caper Sports Member Since {String(user.CreatedAt).substr(0, 10)}</Typography>
@@ -140,8 +145,8 @@ export default function Profile() {
                 <TabsWrapperStyle>
                   <Tabs
                   allowScrollButtonsMobile
-                  value={value}
-                  onChange={handleChange}
+                  value={currentTab}
+                  onChange={onChangeTab}
                   variant="scrollable"
                   scrollButtons="auto"
                   >
@@ -153,7 +158,7 @@ export default function Profile() {
             </Card>
    
           {PROFILE_TABS.map((tab) => {
-          const isMatched = tab.value === value;
+          const isMatched = tab.value === currentTab;
           return isMatched && <Box key={tab.value}>{tab.component}</Box>;
         })}
 </Container>

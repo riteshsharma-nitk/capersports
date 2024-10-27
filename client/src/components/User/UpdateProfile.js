@@ -1,27 +1,20 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { UPDATE_PROFILE_RESET } from "../../constants/userConstants";
 import {updateProfile, loadUser } from "../../actions/userAction";
-import Loading from '../Layout/Loader'
 import { useNavigate } from 'react-router-dom';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useEffect } from 'react';
 import { Stack } from '@mui/material';
 import { useSnackbar } from 'notistack';
-
-
-const theme = createTheme();
+import LoadingScreen from '../../helper/LoadingScreen';
 
 function UpdateProfile() {
   const { enqueueSnackbar } = useSnackbar();
@@ -66,7 +59,7 @@ function UpdateProfile() {
           if (user) {
             setName(user.name);
             setEmail(user.email);
-            setAvatarPreview(user.avatar.url);
+            setAvatarPreview(user?.avatar?.url);
           }
       
           if (error) {
@@ -91,16 +84,16 @@ function UpdateProfile() {
   
     return (
       <> 
-      {loading ? (<Loading/>):(
+      {loading ? (<LoadingScreen/>):(
         <Grid container>
               <Grid container sx={{p:2}}>
-                <Grid md={12} xs={12}>
+                <Grid item md={12} xs={12}>
                 <Typography fontSize='1.5rem' fontWeight='bold'>
                   Update profile
                 </Typography>
                 <br></br>
                 </Grid>
-                <Grid md={12} xs={12} display='flex' alignItems='center' justifyContent='center' sx={{boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px', borderRadius:2}}>
+                <Grid item md={12} xs={12} display='flex' alignItems='center' justifyContent='center' sx={{boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px', borderRadius:2}}>
                 <Box width='100%' component="form" onSubmit={updateProfileSubmit} sx={{ m: 2 }}>
                 <Stack spacing={3} alignItems="flex-end">
                       <TextField

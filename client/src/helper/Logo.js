@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import logoImage from '../images/logo.png'
 import Image from './Image';
 
@@ -21,7 +21,7 @@ export default function Logo({ disabledLink = false, sx }) {
   const PRIMARY_DARK = theme.palette.primary.dark;
 
   const logo = (
-    <Box sx={{ width: {md:40, xs:25}, height: {md:40, xs:25}, ...sx }}>
+    <Box sx={{ width: {md:50, xs:25}, height: {md:50, xs:25}, ...sx }}>
      <Image
               visibleByDefault
               disabledEffect

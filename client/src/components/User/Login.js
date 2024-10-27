@@ -69,8 +69,8 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function Login() {
   const isMountedRef = useIsMountedRef();
-  const { enqueueSnackbar } = useSnackbar();
 
+  const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
 
   const dispatch = useDispatch();
@@ -119,8 +119,9 @@ export default function Login() {
 
   React.useEffect(() => {
     if (error) {
-      dispatch(clearErrors());
-
+      console.log(error)
+      
+      // dispatch(clearErrors());
     }
 
     if (isAuthenticated) {
@@ -137,11 +138,10 @@ export default function Login() {
 
   return (
     <Page title="Login">
-
-        <RootStyle>
-          <HeaderStyle>
+      <RootStyle>
+        <HeaderStyle>
           <Logo/>
-          </HeaderStyle>
+        </HeaderStyle>
           
         {mdUp && (
         <ContentStyle>
@@ -160,32 +160,38 @@ export default function Login() {
  
         <SectionStyle>
           <Stack spacing={2}>
-            <Typography variant='h4'> Sign in to Caper Sports </Typography>
+            <Typography variant='h4'> Sign in </Typography>
+            {smUp && (
             <Typography variant='body2'>New user? {' '}
                   <Link variant='subtitle2'   component={RouterLink} to="/register">
                     Create an account
                     </Link>
-                    </Typography>
-                  </Stack>
+                    
+            </Typography>)}
+          </Stack>
 
-                  <br></br>
+<br></br>
+       
+          {error && <Alert severity="error">{error}</Alert>}
 
-                  <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-                    <Stack spacing={3}>
-                      {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-                      <RHFTextField name="email" label="Email address" />
+          <br></br>
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={3}>
+              {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+
+              <RHFTextField name="email" label="Email address" />
                       
-                      <RHFTextField
-                      name="password"
-                      label="Password"
-                      type={showPassword ? 'text' : 'password'}
-                      InputProps={{
-                        endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                            </IconButton>
+              <RHFTextField
+              name="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
               </InputAdornment>
             ),
           }}
@@ -203,6 +209,13 @@ export default function Login() {
         Login
       </LoadingButton>
     </FormProvider>
+
+    {!smUp && (
+            <Typography textAlign='center' sx={{mt:1}} variant='body2'>New user? {' '}
+                  <Link variant='subtitle2'   component={RouterLink} to="/register">
+                    Create an account
+                    </Link>
+            </Typography>)}
                 
                </SectionStyle>    
            </RootStyle>

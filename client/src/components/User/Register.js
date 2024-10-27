@@ -1,9 +1,10 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { useForm } from 'react-hook-form';
+import { FormProvider, RHFTextField } from '../../helper/hook-form';
+import { LoadingButton } from '@mui/lab';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -11,14 +12,16 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { register, clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import loginImage from '../../images/undraw_secure_login_pdn4.svg'
-import { Card, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import { Alert, Card, IconButton, InputAdornment, Stack } from '@mui/material';
 import Logo from '../../helper/Logo';
 import useResponsive from '../../hooks/useResponsive';
 import Image from '../../helper/Image';
+import useIsMountedRef from '../../hooks/useIsMountedRef';
+
 import Page from '../../helper/Page';
+import default_profile_picture from '../../images/default_profile_picture.png'
+import Iconify from '../../helper/Iconify';
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex',
@@ -68,60 +71,73 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function Register() {
   const smUp = useResponsive('up', 'sm');
-
   const mdUp = useResponsive('up', 'md');
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const isMountedRef = useIsMountedRef();
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
   );
 
-    const [user, setUser] = React.useState({
-        name: "",
-        email: "",
-        password: "",
-      });
-    
-      const { name, email, password } = user;
-      const [avatar, setAvatar] = useState("/Profile.png");
-      const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 
-      const redirect = window.location.search ? window.location.search.split("=")[1] : "/account";
+  const [showPassword, setShowPassword] = useState(false);
 
-      const registerSubmit = (e) => {
-        e.preventDefault();
-    
-        const myForm = new FormData();
-    
-        myForm.set("name", name);
-        myForm.set("email", email);
-        myForm.set("password", password);
-        myForm.set("avatar", avatar);
-        dispatch(register(myForm));
-      };
+  const RegisterSchema = Yup.object().shape({
+    name: Yup.string().required('Full name required'),
+    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    password: Yup.string().required('Password is required'),
+  });
 
-      const registerDataChange = (e) => {
-        if (e.target.name === "avatar") {
-          const reader = new FileReader();
-    
-          reader.onload = () => {
-            if (reader.readyState === 2) {
-              setAvatarPreview(reader.result);
-              setAvatar(reader.result);
-            }
-          };
-    
-          reader.readAsDataURL(e.target.files[0]);
-        } else {
-          setUser({ ...user, [e.target.name]: e.target.value });
-        }
-      };
+  const defaultValues = {
+    name: '',
+    email: '',
+    password: '',
+  };
+
+  const methods = useForm({
+    resolver: yupResolver(RegisterSchema),
+    defaultValues,
+  });
+
+  const {
+    reset,
+
+    setError,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = methods;
+
+
+  const onSubmit = async (data) => {
+    try {
+      console.log(data)
+      dispatch(register(data.name, data.email, data.password));
+    } catch (error) {
+      console.error(error);
+      reset();
+      if (isMountedRef.current) {
+        setError('afterSubmit', { ...error, message: error.message });
+      }
+    }
+  };
+
+
+ 
+ 
+
+  const redirect = window.location.search ? window.location.search.split("=")[1] : "/account";
+
+      
+
+      
 
       React.useEffect(() => {
         if (error) {
           // NotificationManager.error(error);
-          dispatch(clearErrors());
+          // dispatch(clearErrors());
         }
     
         if (isAuthenticated) {
@@ -132,14 +148,8 @@ export default function Register() {
 
       }, [dispatch, error, isAuthenticated, redirect]);
     
-      const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
+ 
 
   
 
@@ -171,128 +181,68 @@ export default function Register() {
       
          
          <Typography fontSize='1.5rem' fontWeight='bold'>
-                 Sign up to Caper Sports
+                 Sign up
                  </Typography>
                  <br></br>
 
+{smUp && (
                  <Box sx={{display:'flex', justifyContent:'flex-start', alignItems:'center'}}>
                  <Typography fontWeight='regular' fontSize='0.85rem'>Already have an account?</Typography>
                  <Link underline='none' sx={{ml:1}} component={RouterLink} to="/login" variant="body2">
-                 <Typography fontWeight='bold' fontSize='0.85rem' color="#4caf50">Sign in</Typography>
+                 <Typography fontWeight='bold' fontSize='0.85rem'>Sign in</Typography>
                 </Link>
-                 </Box>
-
-          <Box component="form" encType="multipart/form-data" onSubmit={registerSubmit} sx={{ mt: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                type='text'
-                  value={name}
-                  required
-                  name='name'
-                  onChange={registerDataChange}
-                  fullWidth
-                  fontSize='1rem'
-                  label="Name"
-                 
-                />
-              </Grid>
-             
-              <Grid item xs={12}>
-                <TextField
-                type='email'
-                  required
-                  fullWidth
-                name='email'
-                  label="Email Address"
-                  fontSize='1rem'
-                  value={email}
-                  onChange={registerDataChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
+                 </Box>)}
+                 <br></br>
+                 {error && <Alert severity="error">{error}</Alert>}
+                 <br></br>
 
 
-              <FormControl fullWidth variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                    <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    fullWidth
-                    name='password'
-                    margin='normal'
-                    label="Password"
-                    fontSize='1rem'
-                  value={password}
-                  
-                 
-                  onChange={registerDataChange}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                 
-                />
-              </FormControl>
+                 <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <Stack spacing={3}>
+        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <RHFTextField name="name" label="Full name" />
+        </Stack>
 
-              </Grid>
+        <RHFTextField name="email" label="Email address" />
 
-              <Grid gap={2} display='flex' justifyContent='flex-start' sx={{}} item xs={12}>
+        <RHFTextField
+          name="password"
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
+                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
 
-              <Avatar sx={{ width: 56, height: 56 }} alt="Avatar Preview" src={avatarPreview} />
+        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+          Register
+        </LoadingButton>
+      </Stack>
+    </FormProvider>
+    <br></br>
+    <Typography textAlign='center' fontSize='0.75rem' color='text.secondary'>By signing up, I agree to Terms of Service and Privacy Policy.</Typography>
 
-                <Button
-                fullWidth
-                size='large'
-                variant='outlined'
-                component='label'
-                  required
-                
-                
-                  label="image"
-                  type="file"
-                 
->
-                    Upload profile picture
-                    <input
-                    type='file'
-                   name='avatar'
-                    accept='image/*'
-                    onChange={registerDataChange}
-                    hidden
-                    />
-                  </Button>
-                
-              </Grid>
-
-
-            </Grid>
-            <br></br>
-            <Button
-            size='large'
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{backgroundColor:'rgb(33, 43, 54)'}}              >
-              Create Account
-            </Button>
-            <br></br>
-            <br></br>
-            <Typography textAlign='center' fontSize='0.75rem' color='text.secondary'>By signing up, I agree to Terms of Service and Privacy Policy.</Typography>
-          </Box>
+    {!smUp && (
+                 <Box sx={{display:'flex', justifyContent:'center', alignItems:'center', mt:1}}>
+                 <Typography variant='body2'>Already have an account?</Typography>
+                 <Link underline='none' sx={{ml:1}} component={RouterLink} to="/login" variant="body2">
+                 <Typography fontWeight='bold' fontSize='0.85rem'>Sign in</Typography>
+                </Link>
+                 </Box>)}
        
         </SectionStyle>
         </RootStyle>
         </Page>
   );
+
 }
+
+

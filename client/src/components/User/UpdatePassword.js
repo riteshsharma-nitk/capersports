@@ -1,18 +1,14 @@
 
 import React, {useState, useEffect } from "react";
-import Loading from "../Layout/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, updatePassword } from "../../actions/userAction";
 import { UPDATE_PASSWORD_RESET } from "../../constants/userConstants";
 import { useNavigate } from 'react-router-dom';
-import PasswordIcon from '@mui/icons-material/Password';
-import { Avatar, Button, CssBaseline, Grid, Stack, TextField, Typography } from "@mui/material";
-import { Box, Container } from "@mui/system";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import { useSnackbar } from 'notistack';
-
-
-const theme = createTheme();
+import LoadingScreen from "../../helper/LoadingScreen";
+import Page from "../../helper/Page";
 
 function UpdatePassword() {
   const { enqueueSnackbar } = useSnackbar();
@@ -59,13 +55,13 @@ function UpdatePassword() {
 
   return (
     <>
-    {loading ? (<Loading/>):(
-                <Grid container rowSpacing={2} sx={{p:2}}>
-                <Grid item md={12} xs={12}>
-                <Typography fontSize="1.5rem" fontWeight='bold'>Change password</Typography>
-                <br></br>
+    {loading ? (<LoadingScreen/>):(
+                <Grid container spacing={3}>
+                <Grid item md={4} xs={12}>
+                <Typography variant="h4">Change password</Typography>
+              
                 </Grid>
-                <Grid md={12} xs={12} display='flex' alignItems='center' justifyContent='center' sx={{boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px', borderRadius:2}}>
+                <Grid item md={12} xs={12} display='flex' alignItems='center' justifyContent='center' sx={{boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px', borderRadius:2}}>
                 <Box width='100%' component="form" onSubmit={updatePasswordSubmit} sx={{ m: 2 }}>
                 <Stack spacing={3} alignItems="flex-end">
                       <TextField
@@ -102,6 +98,7 @@ function UpdatePassword() {
                    
       
                   <Button
+                  size="large"
                     type="submit"
                     variant="contained"
                   >

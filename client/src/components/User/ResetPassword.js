@@ -1,29 +1,31 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
+import { Link as RouterLink } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { resetPassword, clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import Loading from '../Layout/Loader'
-import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import {useParams } from 'react-router-dom';
-import { Fragment } from 'react';
-import PasswordIcon from '@mui/icons-material/Password';
+import LoadingScreen from '../../helper/LoadingScreen';
+import Page from '../../helper/Page';
+import { Stack } from '@mui/material';
 
-const theme = createTheme();
+const RootStyle = styled('div')(({ theme }) => ({
+  display: 'flex',
+  minHeight: '100%',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: theme.spacing(12, 0),
+}));
 
 
 function ResetPassword() {
     const dispatch = useDispatch();
-    const Navigate = useNavigate();
 
   const { error, success, loading } = useSelector(
     (state) => state.forgotPassword
@@ -54,38 +56,24 @@ function ResetPassword() {
     if (success) {
       // NotificationManager.success("Password Updated Successfully");
 
-      Navigate("/login");
+      // Navigate("/login");
     }
   }, [dispatch, error, success]);
 
   
     return (
-        <Fragment>
-        {loading ? (<Loading/>):(
-            <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-              <CssBaseline />
-              <Box
-                sx={{
-                  marginTop: 2,
-                  marginBottom: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main', fontSize:'1.5rem' }}>
-                  <PasswordIcon />
-                </Avatar>
-                <Typography fontSize='1.5rem' fontWeight='medium'>
-                  Change Password
-                </Typography>
+      <Page title="Reset Password" sx={{ height: 1 }}>
+      {loading ? (<LoadingScreen/>):(
+        <RootStyle>
+            <Container>
+            <Box sx={{ maxWidth: 480, mx: 'auto' }}>
+              {!success ? (
+                <>
+                <Typography variant='h4'> Change Password </Typography>
                 <Box component="form" noValidate onSubmit={resetPasswordSubmit} sx={{ mt: 3 }}>
-                  <Grid container spacing={2}>
-                  
+                  <Stack spacing={3}>
                    
-                    <Grid item xs={12}>
-                      <TextField
+                    <TextField
                       type='password'
                         autoComplete="given-name"
                         name="newPassword"
@@ -97,9 +85,6 @@ function ResetPassword() {
                         label="New Password"
                         autoFocus
                       />
-                    </Grid>
-
-                    <Grid item xs={12}>
                       <TextField
                       type='password'
                         autoComplete="given-name"
@@ -112,27 +97,43 @@ function ResetPassword() {
                         label="Confirm Password"
                         autoFocus
                       />
-                    </Grid>
                    
       
-                  </Grid>
                   <Button
+                  size='large'
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ textTransform:'none', mt: 3, mb: 2, backgroundColor:"black", color:'white' }}
+                    sx={{ backgroundColor:"black", color:'white' }}
                   >
                     Update 
                   </Button>
+                  </Stack>
                  
                 </Box>
+                </>
+              ):(
+                <Box sx={{ textAlign: 'center' }}>
+
+                <Typography variant="h4" gutterBottom>
+                  Password changed successfully
+                </Typography>
+               
+
+                <Button size="large" variant="contained" component={RouterLink} to={'/login'} sx={{ mt: 5 }}>
+                  Login
+                </Button>
               </Box>
+           
+              )}
+                
+                </Box>
              
             </Container>
-          </ThemeProvider>
+            </RootStyle>
         )}
-    </Fragment>
+    </Page>
     );
   }
 
-export default ResetPassword
+export default ResetPassword;
