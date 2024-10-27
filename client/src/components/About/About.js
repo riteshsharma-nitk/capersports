@@ -1,4 +1,4 @@
-import { styled, Typography } from '@mui/material'
+import { styled } from '@mui/material'
 import React from 'react';
 import Page from '../../helper/Page';
 import AboutHero from './AboutHero';

@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ThemeProvider from './theme';
 import RtlLayout from './helper/RtlLayout';
 import MotionLazyContainer from './helper/animate/MotionLazyContainer';
 import NotistackProvider from './helper/NotistackProvider';
-import ThemeLocalization from './helper/ThemeLocalization';
 import MyRouter from "./routes";
 import { ProgressBarStyle } from "./helper/ProgressBar";
 import { ChartStyle } from "./helper/chart";
 import ScrollToTop from "./helper/ScrollToTop";
+import ThemeColorPresets from './helper/ThemeColorPresets';
 
 function App() {
   return (
     <ThemeProvider>
-          <RtlLayout>
+      <ThemeColorPresets>
+        <RtlLayout>
             <NotistackProvider>
               <MotionLazyContainer>
                 <ProgressBarStyle/>
@@ -22,6 +23,7 @@ function App() {
               </MotionLazyContainer>
             </NotistackProvider>
           </RtlLayout>
+          </ThemeColorPresets>
     </ThemeProvider>
  
     );

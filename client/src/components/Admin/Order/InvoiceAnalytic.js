@@ -1,13 +1,7 @@
 import PropTypes from 'prop-types';
-// @mui
 import { Stack, Typography, Box, CircularProgress } from '@mui/material';
 import { fShortenNumber } from '../../../utils/formatNumber';
 import Iconify from '../../../helper/Iconify';
-// utils
-// components
-
-
-// ----------------------------------------------------------------------
 
 InvoiceAnalytic.propTypes = {
   title: PropTypes.string,

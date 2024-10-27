@@ -35,15 +35,34 @@ import {
 
 
 export const getProduct =
- (keyword="", price=[0, 25000], category, ratings=0) => async (dispatch) => {
+ (keyword="", price, category, ratings) => async (dispatch) => {
     try{
+
+      let priceRange = [0, 25000];
+      let productRating = 0;
+
+      // price
+     if(price) {
+      if(price === 'below') priceRange = [0, 500];
+      else if(price === 'between') priceRange = [500, 1000]; 
+      else if(price === 'above') priceRange = [1000, 25000];
+     }
+
+     // rating
+     if(ratings){
+      if(ratings === 'up4Star') productRating = 4;
+      else if(ratings === 'up3Star') productRating = 3;
+      else if(ratings === 'up2Star') productRating = 2;
+      else if(ratings === 'up1Star') productRating = 1;
+     }
+
         dispatch({type:ALL_PRODUCT_REQUEST});
 
 
-        let link = `/api/v1/products?keyword=${keyword}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+        let link = `/api/v1/products?keyword=${keyword}&price[gte]=${priceRange[0]}&price[lte]=${priceRange[1]}&ratings[gte]=${productRating}`;
 
         if(category){
-          link = `/api/v1/products?keyword=${keyword}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
+          link = `/api/v1/products?keyword=${keyword}&price[gte]=${priceRange[0]}&price[lte]=${priceRange[1]}&category=${category}&ratings[gte]=${productRating}`;
         }
 
         const {data} = await axios.get(link);

@@ -1,30 +1,11 @@
 import PropTypes from 'prop-types'
-// @mui
 import { styled, useTheme } from '@mui/material/styles';
-import {
-  Box,
-  Card,
-  Grid,
-  Table,
-  Divider,
-  TableRow,
-  TableBody,
-  TableHead,
-  TableCell,
-  Typography,
-  TableContainer,
-  Stack,
-} from '@mui/material';
-
-// components
+import { Box, Card, Grid, Table, Divider, TableRow, TableBody, TableHead, TableCell, Typography, TableContainer, Stack } from '@mui/material';
 import Label from '../../../helper/Label';
 import Scrollbar from '../../../helper/Scrollbar';
-//
 import InvoiceToolbar from './InvoiceToolbar';
 import { fDate } from '../../../utils/formatTime';
 import Logo from '../../../helper/Logo';
-
-// ----------------------------------------------------------------------
 
 const RowResultStyle = styled(TableRow)(({ theme }) => ({
   '& td': {
@@ -33,44 +14,32 @@ const RowResultStyle = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-// ----------------------------------------------------------------------
-
 InvoiceDetails.propTypes = {
   invoice: PropTypes.object.isRequired,
 };
 
-export default function InvoiceDetails({ invoice }) {
+export default function InvoiceDetails({ invoice, setEdit, edit }) {
   const theme = useTheme();
 
   if (!invoice) {
     return null;
   }
 
-
-  const {
-    orderItems,
-    taxPrice,
-    orderStatus,
-    shippingInfo,
-    createdAt,
-    itemsPrice,
-    _id,
-    totalPrice,
-  } = invoice;
+  const { orderItems, orderStatus, shippingInfo, createdAt, itemsPrice, _id, totalPrice} = invoice;
   
 
   return (
     <>
-      <InvoiceToolbar order={invoice} />
-
+      <InvoiceToolbar order={invoice} edit = {edit} setEdit = {setEdit} />
       <Card sx={{ pt: 5, px: 5 }}>
-         <Grid container>
+        <Grid container>
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Stack alignItems='center' direction='row' spacing={1}>
             <Logo/>
             <Typography variant='h5'>CAPER SPORTS</Typography>
             </Stack>
           </Grid>
+          
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Box sx={{ textAlign: { sm: 'right' } }}>
               <Label
@@ -95,7 +64,7 @@ export default function InvoiceDetails({ invoice }) {
               Invoice from
             </Typography>
             <Typography variant="body2">{"Avinash Sharma"}</Typography>
-            <Typography variant="body2">{"SH-47, Noida, Sector 141, Noida,"}</Typography>
+            <Typography variant="body2">{"SH-47, Sector 141, Noida,"}</Typography>
             <Typography variant='body2'>{"Gautam Buddha Nagar, Uttar Pradesh, 201305"}</Typography>
             <Typography variant="body2">Phone: {"9999557455"}</Typography>
           </Grid>
@@ -224,19 +193,14 @@ export default function InvoiceDetails({ invoice }) {
                     <Typography variant="h6">{`₹${(totalPrice)}`}</Typography>
                   </TableCell>
                 </RowResultStyle>
-
               </TableBody>
-
-
-
         </Table>
+      </Scrollbar>
 
-
-        </Scrollbar>
         <Divider sx={{ mt: 5 }} />
 
-         <Grid container>
-        <Grid item xs={12} md={6} sx={{ py: 3 }}>
+        <Grid container>
+          <Grid item xs={12} md={6} sx={{ py: 3 }}>
             <Typography variant="body2">Caper Sports</Typography>
             <Typography variant='body2'>Canara Bank</Typography>
             <Typography variant='body2'>A/c no. - 5549201000080</Typography>
@@ -248,9 +212,8 @@ export default function InvoiceDetails({ invoice }) {
 
           <Grid item xs={12} md={6} sx={{ py: 3 }}>
           <Typography variant="h6">Thank you for your business!</Typography>
-
-            </Grid>
           </Grid>
+        </Grid>
 
         <Divider sx={{ mt: 5 }} />
 
@@ -271,10 +234,7 @@ export default function InvoiceDetails({ invoice }) {
             <Typography variant="subtitle2">Have a Question?</Typography>
             <Typography variant="body2">capersports.in@gmail.com</Typography>
           </Grid>
-        </Grid> 
-
-         
-        
+        </Grid>  
       </Card>
     </>
   );

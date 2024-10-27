@@ -1,12 +1,7 @@
 import { m } from 'framer-motion';
-// @mui
 import { styled } from '@mui/material/styles';
 import { Box, Container, Typography } from '@mui/material';
-// components
 import { MotionContainer, TextAnimate, varFade } from '../../helper/animate';
-import cover from '../../images/003.webp'
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(10, 0),
@@ -24,9 +19,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
     bottom: theme.spacing(10),
   },
 }));
-
-
-// ----------------------------------------------------------------------
 
 export default function AboutHero() {
   return (
