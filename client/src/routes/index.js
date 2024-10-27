@@ -1,22 +1,18 @@
-import { Suspense, lazy, useState, useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 
-
-
+// guards
 import GuestGuard from '../components/Guards/GuestGuard';
 import AuthGuard from '../components/Guards/AuthGuard';
 import RoleBasedGuard from '../components/Guards/RoleBasedGuard';
 
+// layous
 import MainLayout from '../components/Layout/Main/MainLayout';
-
-
+import DashboardLayout from '../components/Layout/Dashboard';
+import LogoOnlyLayout from '../components/Layout/LogoOnlyLayout';
 
 import LoadingScreen from '../helper/LoadingScreen';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from "@stripe/stripe-js";
 
-import DashboardLayout from '../components/Layout/Dashboard';
-import axios from 'axios';
 import store from '../store';
 import { loadUser } from '../actions/userAction';
 
@@ -25,30 +21,17 @@ const Loadable = (Component) => (props) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
     const { pathname } = useLocation();
 
-
     return (
         <Suspense fallback={<LoadingScreen isDashboard={pathname.includes('/dashboard')} />}>
           <Component {...props} />
         </Suspense>
-      );
-
+    );
 };
 
 export default function MyRouter(){
-
-    const [stripeApiKey, setStripeApiKey] = useState("");
-
-  async function getStripeApiKey() {
-    const { data } = await axios.get("/api/v1/stripeapikey");
-
-    setStripeApiKey(data.stripeApiKey);
-  }
-
-  useEffect(() => {
+    
+    useEffect(() => {
     store.dispatch(loadUser());
-    getStripeApiKey();
-
-
   },[]);
   
     return useRoutes([
@@ -260,7 +243,7 @@ export default function MyRouter(){
                     path:"/process/payment",
                      element:
                      <AuthGuard>
-                     <Elements stripe={loadStripe(stripeApiKey)}><Payment/> </Elements>
+                        <Payment/> 
                      </AuthGuard>
                        
 
@@ -322,7 +305,7 @@ const UsersList = Loadable(lazy(() => import( '../components/Admin/User/UsersLis
 // Main
 const Home = Loadable(lazy(() => import( '../components/Home/Home')));
 const About = Loadable(lazy(() => import( '../components/About/About')));
-const ComingSoon = Loadable(lazy(() => import( '../components/About/ComingSoon')));
+const ComingSoon = Loadable(lazy(() => import( '../components/ComingSoon')));
 const ContactUs = Loadable(lazy(() => import( '../components/Contact/ContactUs')));
 const NotFound = Loadable(lazy(() => import( '../components/Layout/NotFound')));
 const ForgotPassword = Loadable(lazy(() => import( '../components/User/ForgotPassword')));
@@ -330,7 +313,6 @@ const ResetPassword = Loadable(lazy(() => import( '../components/User/ResetPassw
 
 
 // 
-const LogoOnlyLayout = Loadable(lazy(()=> import('../components/Layout/LogoOnlyLayout')));
 const Cart = Loadable(lazy(()=> import( '../components/Cart/Cart')));
 const ConfirmOrder = Loadable(lazy(()=> import( '../components/Cart/ConfirmOrder')));
 const OrderSuccess = Loadable(lazy(()=> import( '../components/Cart/OrderSuccess')));
