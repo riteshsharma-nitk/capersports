@@ -14,11 +14,14 @@ const payment = require('./routes/api/payments')
 const cloudinary = require("cloudinary");
 const keys = require('./config/keys');
 
+
 var cors = require('cors')
 
 const app = express();
 
 app.use(cors())
+
+// Middleware for Errors
 
 // Body parser middleware
 app.use(bodyParser.json({limit:'50mb'}));
@@ -56,6 +59,8 @@ app.use('/api/v1', product);
 app.use('/api/v1', user);
 app.use('/api/v1', order);
 app.use('/api/v1', payment);
+
+// Error handler middleware (Last middleware to use)
 
 
 

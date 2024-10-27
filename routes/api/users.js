@@ -1,109 +1,71 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const passport = require('passport');
 const sendToken = require('../../utils/jwtToken');
 const sendEmail = require('../../utils/sendEmail')
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
-// Load Input Validation
-const validateRegisterInput = require('../../validation/register');
-const validateLoginInput = require('../../validation/login');
-
+const expressAsyncHandler = require('express-async-handler');
 const {isAuthenticatedUser, authorizeRoles} = require('../../middleware/auth')
-
-
-const keys = require('../../config/keys');
-
-// Load admin model (this is probably the same as importing mongoose & const User = mongoose.model("users"))
 const User = require('../../models/User');
 
 
 // @route   POST api/v1/register
 // @desc    Register user
 // @access  Public
-router.post('/register', async(req, res) => {
-    const { errors, isValid } = validateRegisterInput(req.body); // Destructuring
-
-    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-      folder: "avatars",
-      width: 150,
-      crop: "scale",
-    });
-
-
-    // Check Validation
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
-
-    User.findOne({ email: req.body.email }).then(user => {
+router.post('/register', expressAsyncHandler(async(req, res) => {
+  User.findOne({ email: req.body.email }).then(user => {
         if (user) {
-            errors.email = 'Email already exists';
-            return res.status(400).json(errors);
+            return res.status(400).send({ message: 'Email already exists'});
         } else {
-            const newUser = new User({
-                name: req.body.name,
-                email: req.body.email,
-                password: req.body.password,
-                avatar:{
-                    public_id:myCloud.public_id,
-                    url:myCloud.secure_url
-                }
+            const newUser = new User({ 
+              name: req.body.name,
+              email: req.body.email,
+              password: req.body.password,  
             });
+
             newUser
             .save()
             .then(user => {
-                sendToken(newUser, 201, res);
+                sendToken(user, 201, res);
             })
             .catch(err => console.log(err));
 
         }
     });
-});
+}));
 
 
 // @route   POST api/v1/login
 // @desc    Login User / Returning JWT Token
 // @access  Public
-router.post('/login', async(req, res) => {
-    const { errors, isValid } = validateLoginInput(req.body); // Destructuring
+router.post('/login', expressAsyncHandler(async(req, res) => {
+  const { email, password } = req.body;
 
-    // Check Validation
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
 
-    const email = req.body.email;
-    const password = req.body.password;
+  if (!email || !password) {
+    return res.status(400).send({ message: 'Please Enter Email & Password'});
+  }
+  
+  const user = await User.findOne({ email }).select("+password");
 
-    // Find  user by email
-    User.findOne({ email }).select("+password").then(user => {
-        // Check for user
-        if (!user) {
-            errors.email = 'User not found';
-            return res.status(404).json(errors);
-        }
+  if (!user) {
+    return res.status(401).send({ message: 'Invalid email or password'});
+  }
 
-        // Check Password
-         bcrypt.compare(password, user.password).then(isMatched => {
-            if (isMatched) {
-                // Sign Token: payload(user info), secret key, expiration
-                sendToken(user, 200, res);
-            } else {
-                errors.password = 'Password incorrect';
-                return res.status(400).json(errors);
-            }
-        });
-    });
-});
+  const isPasswordMatched = await user.comparePassword(password);
+
+  if (!isPasswordMatched) {
+    return res.status(401).send({message: 'Incorrect password'})
+  }
+
+  sendToken(user, 200, res);
+}));
+
 
 // @route   POST api/users/login
 // @desc    Log out User / Returning JWT Token
 // @access  Public
-
-router.post('/logout', async(req, res) => {
+router.post('/logout', expressAsyncHandler(async(req, res) => {
     res.cookie("token", null, {
         expires: new Date(Date.now()),
         httpOnly:true,
@@ -114,10 +76,10 @@ router.post('/logout', async(req, res) => {
         message:"Logged Out"
     })
 
-})
+}));
 
 // Forget password 
-router.post('/password/forgot', async(req, res)=>{
+router.post('/password/forgot', expressAsyncHandler(async(req, res)=>{
     const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
@@ -134,7 +96,7 @@ router.post('/password/forgot', async(req, res)=>{
 
   const resetPasswordUrl = `${req.protocol}://${req.get(
     "host"
-  )}/api/v1/password/reset/${resetToken}`;
+  )}/password/reset/${resetToken}`;
 
   const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
 
@@ -161,10 +123,10 @@ router.post('/password/forgot', async(req, res)=>{
     })
     
   }
-});
+}));
 
 // Reset paasword
-router.put('/password/reset/:token', async(req, res) =>{
+router.put('/password/reset/:token', expressAsyncHandler(async(req, res) =>{
     // creating token hash
   const resetPasswordToken = crypto
   .createHash("sha256")
@@ -199,20 +161,20 @@ await user.save();
 
 sendToken(user, 200, res);
 
-})
+}))
 
 
 // GET User details
-router.get('/me', isAuthenticatedUser, async(req, res) => {
+router.get('/me', isAuthenticatedUser, expressAsyncHandler(async(req, res) => {
     const user = await User.findById(req.user.id);
     res.status(200).json({
         success:true,
         user,
     })
-})
+}))
 
 // Change password
-router.put('/password/update',isAuthenticatedUser, async(req, res) => {
+router.put('/password/update',isAuthenticatedUser, expressAsyncHandler(async(req, res) => {
     const user = await User.findById(req.user.id).select("+password");
     const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
     
@@ -237,10 +199,10 @@ router.put('/password/update',isAuthenticatedUser, async(req, res) => {
   await user.save();
 
   sendToken(user, 200, res);
-})
+}))
 
 // update user profile
-router.put('/me/update', isAuthenticatedUser, async(req, res) => {
+router.put('/me/update', isAuthenticatedUser, expressAsyncHandler(async(req, res) => {
     const newUserData = {
         name: req.body.name,
         email: req.body.email,
@@ -274,20 +236,20 @@ router.put('/me/update', isAuthenticatedUser, async(req, res) => {
       res.status(200).json({
         success: true,
       });
-})
+}))
 
 // Get all users(admin)
-router.get('/admin/users', isAuthenticatedUser, authorizeRoles("admin"), async (req, res) => {
+router.get('/admin/users', isAuthenticatedUser, authorizeRoles("admin"), expressAsyncHandler(async(req, res) => {
     const users = await User.find();
   
     res.status(200).json({
       success: true,
       users,
     });
-  });
+  }));
   
   // Get single user (admin)
-  router.get('/admin/user/:id', isAuthenticatedUser, authorizeRoles("admin"), async (req, res) => {
+  router.get('/admin/user/:id', isAuthenticatedUser, authorizeRoles("admin"), expressAsyncHandler(async(req, res) => {
     const user = await User.findById(req.params.id);
   
     if (!user) {
@@ -302,10 +264,10 @@ router.get('/admin/users', isAuthenticatedUser, authorizeRoles("admin"), async (
       success: true,
       user,
     });
-  });
+  }));
   
   // update User Role -- Admin
-  router.put('/admin/user/:id', isAuthenticatedUser, authorizeRoles("admin"), async (req, res) => {
+  router.put('/admin/user/:id', isAuthenticatedUser, authorizeRoles("admin"), expressAsyncHandler(async(req, res) => {
     const newUserData = {
       name: req.body.name,
       email: req.body.email,
@@ -321,10 +283,10 @@ router.get('/admin/users', isAuthenticatedUser, authorizeRoles("admin"), async (
     res.status(200).json({
         success: true,
       });
-    });
+    }));
     
     // Delete User --Admin
-    router.delete('/admin/user/:id', isAuthenticatedUser, authorizeRoles("admin"), async (req, res, next) => {
+    router.delete('/admin/user/:id', isAuthenticatedUser, authorizeRoles("admin"), expressAsyncHandler(async(req, res, next) => {
       const user = await User.findById(req.params.id);
     
       if (!user) {
@@ -344,7 +306,7 @@ router.get('/admin/users', isAuthenticatedUser, authorizeRoles("admin"), async (
         success: true,
         message: "User Deleted Successfully",
       });
-    });
+    }));
 
 
 module.exports = router;

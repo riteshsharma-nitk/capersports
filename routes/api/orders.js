@@ -1,16 +1,15 @@
 const express = require('express');
+const expressAsyncHandler = require('express-async-handler');
 const router = express.Router()
 
 const {isAuthenticatedUser, authorizeRoles} = require('../../middleware/auth')
-const ApiFeatures = require('../../utils/apiFeatures')
 
 // Load models
 const Order = require('../../models/Order');
 const Product = require('../../models/Product');
-const User = require('../../models/User');
 
 // Create new Order
-router.post('/order/new', isAuthenticatedUser, async (req, res) => {
+router.post('/order/new', isAuthenticatedUser, expressAsyncHandler(async(req, res) => {
   const {
     shippingInfo,
     orderItems,
@@ -37,10 +36,10 @@ router.post('/order/new', isAuthenticatedUser, async (req, res) => {
     success: true,
     order,
   });
-});
+}));
 
 // get Single Order
-router.get('/order/:id', isAuthenticatedUser, async (req, res) => {
+router.get('/order/:id', isAuthenticatedUser, expressAsyncHandler(async(req, res) => {
   const order = await Order.findById(req.params.id).populate(
     "user",
     "name email"
@@ -57,21 +56,21 @@ router.get('/order/:id', isAuthenticatedUser, async (req, res) => {
     success: true,
     order,
   });
-});
+}));
 
 // get logged in user  Orders
-router.get('/orders/me', isAuthenticatedUser, async (req, res) => {
+router.get('/orders/me', isAuthenticatedUser, expressAsyncHandler(async(req, res) => {
   const orders = await Order.find({ user: req.user._id });
 
   res.status(200).json({
     success: true,
     orders,
   });
-});
+}));
 
 
 // get all Orders -- Admin
-router.get('/admin/orders', isAuthenticatedUser, authorizeRoles("admin"), async (req, res) => {
+router.get('/admin/orders', isAuthenticatedUser, authorizeRoles("admin"), expressAsyncHandler(async(req, res) => {
   const orders = await Order.find();
 
   let totalAmount = 0;
@@ -85,10 +84,10 @@ router.get('/admin/orders', isAuthenticatedUser, authorizeRoles("admin"), async 
     totalAmount,
     orders,
   });
-});
+}));
 
 // update Order Status -- Admin
-router.put('/admin/order/:id', isAuthenticatedUser,authorizeRoles("admin"), async (req, res) => {
+router.put('/admin/order/:id', isAuthenticatedUser,authorizeRoles("admin"), expressAsyncHandler(async(req, res) => {
   const order = await Order.findById(req.params.id);
 
   if (!order) {
@@ -120,7 +119,7 @@ router.put('/admin/order/:id', isAuthenticatedUser,authorizeRoles("admin"), asyn
   res.status(200).json({
     success: true,
   });
-});
+}));
 
 async function updateStock(id, quantity) {
   const product = await Product.findById(id);
@@ -131,7 +130,7 @@ async function updateStock(id, quantity) {
 }
 
 // delete Order -- Admin
-router.delete('/admin/order/:id',isAuthenticatedUser, async (req, res) => {
+router.delete('/admin/order/:id',isAuthenticatedUser, expressAsyncHandler(async(req, res) => {
   const order = await Order.findById(req.params.id);
 
   if (!order) {
@@ -146,6 +145,6 @@ router.delete('/admin/order/:id',isAuthenticatedUser, async (req, res) => {
   res.status(200).json({
     success: true,
   });
-});
+}));
 
 module.exports = router;

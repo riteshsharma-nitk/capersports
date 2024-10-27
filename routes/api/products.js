@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router()
 const cloudinary = require("cloudinary");
+const expressAsyncHandler = require('express-async-handler');
+
 
 const {isAuthenticatedUser, authorizeRoles} = require('../../middleware/auth')
 const ApiFeatures = require('../../utils/apiFeatures')
@@ -16,7 +18,7 @@ const Product = require('../../models/Product');
 // @desc Get all products
 // @access Public
 
-router.get('/products', async(req, res) => {
+router.get('/products', expressAsyncHandler(async(req, res) => {
     const productsCount = await Product.countDocuments();
     const apiFeature = new ApiFeatures(Product.find(), req.query)
     .search()
@@ -32,27 +34,27 @@ router.get('/products', async(req, res) => {
         productsCount,
         filteredProductsCount,
     })
-})
+}))
 
 
 // @route GET api/v1/admin/products
 // @desc Get all products for admin
 // @access private
-router.get("/admin/products", isAuthenticatedUser, authorizeRoles("admin"), async (req, res, next) => {
+router.get("/admin/products", isAuthenticatedUser, authorizeRoles("admin"), expressAsyncHandler(async(req, res, next) => {
   const products = await Product.find();
 
   res.status(200).json({
     success: true,
     products,
   });
-});
+}));
 
 
 // @route POST api/v1/product/new
 // @desc Add new product
 // @access Private
 
-router.post('/admin/product/new', isAuthenticatedUser, authorizeRoles("admin"), async(req, res) => {
+router.post('/admin/product/new', isAuthenticatedUser, authorizeRoles("admin"), expressAsyncHandler(async(req, res) => {
     const { errors, isValid } = validateProductInput(req.body); //Destructuring
 
     let images = [];
@@ -93,7 +95,7 @@ router.post('/admin/product/new', isAuthenticatedUser, authorizeRoles("admin"), 
                   product});
              })
              .catch(err => console.log(err));
-});
+}));
 
 
 module.exports = router;
@@ -102,7 +104,7 @@ module.exports = router;
 // @desc Update product details
 // @access Private
 
-router.put('/admin/product/:id', isAuthenticatedUser, authorizeRoles("admin"), async(req, res) => {
+router.put('/admin/product/:id', isAuthenticatedUser, authorizeRoles("admin"), expressAsyncHandler(async(req, res) => {
     const { errors, isValid } = validateProductInput(req.body); //Destructuring
 
     // Check validation
@@ -170,13 +172,13 @@ router.put('/admin/product/:id', isAuthenticatedUser, authorizeRoles("admin"), a
         product
     })
 
-})
+}));
 
 // @route DELETE api/v1/products/:id
 // @desc delete product
 // @access Private
 
-router.delete('/admin/product/:id', isAuthenticatedUser, authorizeRoles("admin"), async(req, res) => {
+router.delete('/admin/product/:id', isAuthenticatedUser, authorizeRoles("admin"), expressAsyncHandler(async(req, res) => {
     const product = await Product.findById(req.params.id);
     if(!product){
         return res.status(500).json({
@@ -190,14 +192,14 @@ router.delete('/admin/product/:id', isAuthenticatedUser, authorizeRoles("admin")
         success:true,
         message:"product deleted successfully"
     })
-})
+}));
 
 
 // @route GET api/v1/product/:id
 // @desc Get single product
 // @access Public
 
-router.get('/product/:id', async(req, res) => {
+router.get('/product/:id', expressAsyncHandler(async(req, res) => {
     const product = await Product.findById(req.params.id);
     if(!product){
         return res.status(500).json({
@@ -212,13 +214,13 @@ router.get('/product/:id', async(req, res) => {
         product
     })
 
-})
+}));
 
 
 // @route GET api/v1/review
 // @desc Add or update review
 // @access Private
-router.put('/review', isAuthenticatedUser, async (req, res) => {
+router.put('/review', isAuthenticatedUser, expressAsyncHandler(async(req, res) => {
     const { rating, comment, productId } = req.body;
   
     const review = {
@@ -258,14 +260,14 @@ router.put('/review', isAuthenticatedUser, async (req, res) => {
     res.status(200).json({
         success: true,
       });
-    });
+    }));
 
 
 
 // @route GET api/v1/reviews
 // @desc Get all review
 // @access Public
-router.get("/reviews", isAuthenticatedUser, async (req, res) => {
+router.get("/reviews", isAuthenticatedUser, expressAsyncHandler(async(req, res) => {
     const product = await Product.findById(req.query.id);
   
     if (!product) {
@@ -279,13 +281,13 @@ router.get("/reviews", isAuthenticatedUser, async (req, res) => {
       success: true,
       reviews: product.reviews,
     });
-  });
+  }));
 
 
 // @route GET api/v1/review/:id
 // @desc Delete review
 // @access Public
-router.delete('/review/:id', isAuthenticatedUser, async (req, res) => {
+router.delete('/review/:id', isAuthenticatedUser, expressAsyncHandler(async(req, res) => {
     const product = await Product.findById(req.query.productId);
   
     if (!product) {
@@ -333,7 +335,7 @@ router.delete('/review/:id', isAuthenticatedUser, async (req, res) => {
     res.status(200).json({
         success: true,
       });
-    });
+    }));
 
 
     module.exports = router;
