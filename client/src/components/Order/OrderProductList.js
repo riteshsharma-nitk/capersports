@@ -1,25 +1,15 @@
 import PropTypes from 'prop-types';
-// @mui
-import { styled } from '@mui/material/styles';
 import {
   Box,
   Table,
-  Divider,
   TableRow,
   TableBody,
   TableCell,
   TableHead,
   Typography,
-  IconButton,
   TableContainer,
 } from '@mui/material';
 import Image from '../../helper/Image';
-import Iconify from '../../helper/Iconify';
-
-
-// ----------------------------------------------------------------------
-
-// ----------------------------------------------------------------------
 
 OrderProductList.propTypes = {
   products: PropTypes.array.isRequired,
@@ -83,5 +73,5 @@ export default function OrderProductList({ products }) {
   );
 }
 
-// ----------------------------------------------------------------------
+
 

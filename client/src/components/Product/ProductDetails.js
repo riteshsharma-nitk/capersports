@@ -1,14 +1,11 @@
-import { Box, Button, Card, Container, Divider, Grid, ListItem, Rating, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, Container, Divider, Grid, Rating, Stack, TextField, Typography, useTheme } from '@mui/material';
 import { Dialog,  DialogActions, DialogContent, DialogTitle,} from '@mui/material';
-import React, { Fragment, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {clearErrors, getProductDetails, newReview} from '../../actions/productAction';
-import ReviewItems from './ReviewItems' ;
-import Loader from '../Layout/Loader';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-// import { NotificationManager } from 'react-notifications';
 import {NEW_REVIEW_RESET} from "../../constants/productConstants";
 import {styled} from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -16,11 +13,15 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { addItemsToCart } from "../../actions/cartAction";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { addItemsToWishlist } from '../../actions/wishlistAction';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ProductDetailsCarousel from './ProductDetailsCarousel';
 import Markdown from '../../helper/Markdown';
+import Page from '../../helper/Page';
+import Iconify from '../../helper/Iconify';
+import LoadingScreen from '../../helper/LoadingScreen';
+import Label from '../../helper/Label';
+import ProductDetailsReviewOverview from './ProductDetailsReviewOverview';
+import ProductDetailsReviewList from './ProductDetailsReviewList';
 
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
@@ -41,34 +42,19 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function ProductDetails() {
-  
+  const theme = useTheme();
   const dispatch = useDispatch();
 
-  const [expandedReview, setExpandedReview] = React.useState(false);
   const [expandedInformation, setExpandedInformation] = React.useState(false);
-  const handleExpandReviewClick = () => {
-    setExpandedReview(!expandedReview);
-  };
+ 
+  const {product, loading, error} = useSelector((state) => state.productDetails)
+  const { id } = useParams();
+
+  const { success, error: reviewError } = useSelector((state) => state.newReview);
 
   const handleExpandInformationClick = () => {
     setExpandedInformation(!expandedInformation);
   };
-
-
-  const {product, loading, error} = useSelector((state) => state.productDetails)
-  const { id } = useParams();
-
-  const { success, error: reviewError } = useSelector(
-      (state) => state.newReview
-  );
-
-  const options = {
-    size: "large",
-    value: product.ratings,
-    readOnly: true,
-    precision: 0.5,
-  };
-
 
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = React.useState('S');
@@ -83,7 +69,6 @@ export default function ProductDetails() {
 
   const addToCartHandler = () => {
     dispatch(addItemsToCart(id, quantity, size));
-    // NotificationManager.success("Item Added To Cart");
   };
 
   const submitReviewToggle = () => {
@@ -97,12 +82,9 @@ export default function ProductDetails() {
   
   const addToWishlistHandler = () => {
     dispatch(addItemsToWishlist(product._id));
-    // NotificationManager.success("Item Added To Wishlist");
     setLike(!like)
   };
   
-
-
 
   const reviewSubmitHandler = () => {
     const myForm = new FormData();
@@ -133,34 +115,50 @@ export default function ProductDetails() {
     dispatch(getProductDetails(id));
   }, [dispatch, id, error, reviewError, success]);
 
- 
-
-  // someJsonArray.map(({id}) => id)
-
-
   return (
-    <Fragment>
-      {loading? <Loader/> :
-      <Container sx={{mt:'100px'}} maxWidth='lg'>
-        <Card>
+    <Page title="Product Details">
+      {loading? <LoadingScreen/> :
+      <Container maxWidth='lg' sx={{mt:'88px'}}>
+      <Card>
         <Grid container>
         <Grid item xs={12} md={6} lg={7}>
         {product.images && <ProductDetailsCarousel product={product} />}
         </Grid>
         
-        <Grid item xs={12} md={6} lg={5} sx={{p:2}}>
-          <Typography variant='h4'>{product.name}</Typography>
-          <Typography variant='body2' >{product.category}</Typography>
-          <br></br>
-           
-           <Typography variant='h4'>{`MRP : ₹ ${product.price}`}</Typography>
+        <Grid item xs={12} md={6} lg={5}>
+        <RootStyle>
+        <Label
+          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+          color={product?.inStock ? 'success' : 'error'}
+          sx={{ textTransform: 'uppercase', mb:1}}
+        >
+          {product?.inStock ? 'IN STOCK' : 'OUT OF STOCK'}
+        </Label>
 
-           <br></br>
+        <Stack direction="column" spacing={2} sx={{ mb: 2 }}>
+
+          <Typography variant='h5'>{product.name}</Typography>
+          <Typography variant='subtitle1' >{`${product?.gender}'s ${product.category}`}</Typography>
+           
+          <Stack direction="row" spacing={0.5}>
+          <Typography variant="h4" sx={{ pl:2, mb:3 }}>MRP : </Typography>
+
+          {product?.priceSale?(
+          <>
+          <Typography variant='h4'>{` ₹${product?.priceSale}`}</Typography> 
+          <Typography variant="h4" sx={{ color: 'text.disabled', textDecoration:'line-through', pl:2, mb:3}}>{` ₹${product?.price}`}</Typography>
+          </>
+          ):
+          <Typography variant="h4" sx={{mb:3}}>{`MRP : ₹${product?.price}`}</Typography>
+          }
+          </Stack>
+          </Stack>
+
            <Divider sx={{ borderStyle: 'dashed' }} />
-           <br></br>
+
   
-           <Grid md={12} xs={12} sx={{m:1}}> 
-           <Typography variant="subtitle1" sx={{ mb: 1 }}>Select Size</Typography>
+           <Grid item md={12} xs={12}> 
+           <Typography variant="subtitle1" sx={{ mt: 1, mb:1 }}>Select Size</Typography>
           
      
      <ToggleButtonGroup
@@ -171,11 +169,12 @@ export default function ProductDetails() {
       fullWidth
       size='large'
     >
-      <ToggleButton  sx={{fontSize:'0.85rem'}}  value="S">S</ToggleButton>
-      <ToggleButton  sx={{fontSize:'0.85rem'}}  value="M">M</ToggleButton>
-      <ToggleButton  sx={{fontSize:'0.85rem'}}  value="L">L</ToggleButton>
-      <ToggleButton  sx={{fontSize:'0.85rem'}}  value="XL">XL</ToggleButton>
-      <ToggleButton  sx={{fontSize:'0.85rem'}} value="2XL">2XL</ToggleButton>
+      <ToggleButton value="S">S</ToggleButton>
+      <ToggleButton value="M">M</ToggleButton>
+      <ToggleButton value="L">L</ToggleButton>
+      <ToggleButton value="XL">XL</ToggleButton>
+      <ToggleButton value="2XL">2XL</ToggleButton>
+
     </ToggleButtonGroup>
    
 
@@ -190,22 +189,29 @@ export default function ProductDetails() {
   <Grid container>
 
 <Grid item md={6} xs={12} sx={{p:1}}>
-   <Button fullWidth  disabled={product.Stock < 1 ? true : false} onClick={addToCartHandler} 
+   <Button fullWidth  disabled={product?.inStock ? false : true} onClick={addToCartHandler} 
    size="large"
    color="warning"
    variant="contained"
+   startIcon={<Iconify icon={'ic:round-add-shopping-cart'} />}
+   sx={{ whiteSpace: 'nowrap' }}
  >
       Add to Bag
     </Button>
     </Grid>
     <Grid item md={6} xs={12} sx={{p:1}}>
 
-   <Button fullWidth  onClick={addToWishlistHandler} 
+   <Button 
+   fullWidth 
+  onClick={addToWishlistHandler} 
+  startIcon={like ? <Iconify icon={'icon-park-outline:like'} /> : <Iconify icon={'icon-park-solid:like'} />}
+  sx={{ whiteSpace: 'nowrap' }}
+
+
     size='large'
     variant='contained'>
-      Favourite&nbsp;
-      { like ? <FavoriteIcon sx={{fontSize:'0.95rem'}}/>:
-      <FavoriteBorderIcon sx={{fontSize:'0.95rem'}}/>}</Button>
+      Favourite
+</Button>
   
 
    </Grid>
@@ -222,45 +228,7 @@ export default function ProductDetails() {
          <Divider variant='middle'/>
 <br></br>
 
-         <CardActions disableSpacing>
-
-<ListItem disablePadding>
-
-<Typography  sx={{fontSize:'1.1rem'}} textAlign='left'  fontWeight='bold'>{`Reviews(${product.numOfReviews})`}</Typography>
-</ListItem>
-
-
-
-
-           <Rating sx={{fontSize:'1.5rem'}} {...options}/>
-  <ExpandMore
-      expand={expandedReview}
-      onClick={handleExpandReviewClick}
-      aria-expanded={expandedReview}
-      aria-label="show more"
-  >
-
-
-    <ExpandMoreIcon />
-
-  </ExpandMore>
-         </CardActions>
-
-
-         <Collapse in={expandedReview} timeout="auto" unmountOnExit>
-         <Button
-             onClick={submitReviewToggle}
-              sx={{textTransform:'none', fontWeight:'bold', backgroundColor:'black', fontSize:'0.95rem'}} variant='contained'>Submit Review</Button>
-
-         </Collapse>
-         <br></br>
-
-
-
-
-<br></br>
-         <Divider variant='middle'/>
-<br></br>
+    
 
          <CardActions disableSpacing>
          <Typography sx={{fontSize:'1.1rem'}} fontWeight="bold">Product Information</Typography>
@@ -282,6 +250,8 @@ export default function ProductDetails() {
          <Markdown children={product.information} />
 
          </Collapse>
+
+</RootStyle>
 
        </Grid>
 
@@ -317,10 +287,10 @@ export default function ProductDetails() {
              ></TextField>
            </DialogContent>
            <DialogActions>
-             <Button onClick={submitReviewToggle} color="secondary">
+             <Button size='large' variant='contained' onClick={submitReviewToggle} color="secondary">
                Cancel
              </Button>
-             <Button onClick={reviewSubmitHandler} color="primary">
+             <Button size='large' variant='contained' onClick={reviewSubmitHandler} color="primary">
                Submit
              </Button>
            </DialogActions>
@@ -328,54 +298,29 @@ export default function ProductDetails() {
         
         <br></br>
         
+
         <Card>
+          <Grid container>
         <Grid item md={12} xs={12}>
-         <Typography textAlign='center' sx={{mt:1, mb:1}} variant='h5' fontWeight="bold">Reviews</Typography>
-         <Divider/>
-        </Grid>
-         <Grid item md={12} xs={12}>
-      
-       {product.reviews && product.reviews[0] ? (
-
-           <Box sx={{ display: 'flex',
-           justifyContent:'flex-start',
-           overflow:'auto',
-           flexDirection:'row',
-           gap:'2vmax',
-         
-       
-           padding:1,
-           borderRadius:2}}>
-        {product.reviews && 
-           product.reviews.map((review) => 
-           
-           <ReviewItems key={review._id} review = {review} />
-          
-)}
-    
-    
-   
-    </Box>
-
-       ):(
-
-         <Box sx={{alignContent:'center', textAlign:'center', padding:"10px"}}>
-       <Typography fontWeight="medium" fontSize='1.5rem'>No review yet</Typography>
-       
+        <Box sx={{ pt: 2, pb:2, bgcolor: 'background.neutral' }}>
+         <Typography textAlign='center' variant='subtitle1'>{`Reviews (${product?.reviews?.length})`}</Typography>
          </Box>
- 
- 
-         
-       )
-     }
+         <Divider/>
+       
+       <ProductDetailsReviewOverview product={product} submitReviewToggle = {submitReviewToggle}/>
+       <Divider />
+
+       <ProductDetailsReviewList product={product} />
      
+     </Grid>
      </Grid>
      </Card>
      <br></br>
   
      </Container>
+    
        }
-    </Fragment>
+      </Page>
 
    
   )

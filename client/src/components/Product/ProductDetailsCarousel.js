@@ -1,17 +1,10 @@
-import Slider from 'react-slick';
-import PropTypes from 'prop-types';
- 
+import Slider from 'react-slick'; 
 import { useState, useRef, useEffect } from 'react';
-// @mui
 import { alpha, styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
-//
 import Image from '../../helper/Image';
 import LightboxModal from '../../helper/LightboxModal';
 import { CarouselArrowIndex } from '../../helper/carousel';
-
-// ----------------------------------------------------------------------
-
 const THUMB_SIZE = 64;
 
 const RootStyle = styled('div')(({ theme }) => ({

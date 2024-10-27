@@ -1,15 +1,11 @@
 import React, { Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link as RouterLink } from "react-router-dom";
-import {Box, Button, Card, CardContent, CardHeader, CardMedia, Container, Divider, Grid, Link, List, ListItem, ListItemText, Paper, Stack, Typography, useTheme} from '@mui/material'
+import {Box, Card, CardContent, CardHeader, Container, Grid,  Stack, Typography, useTheme} from '@mui/material'
 import { getOrderDetails, clearErrors } from "../../actions/orderAction";
-import Loader from "../Layout/Loader";
-// import { NotificationManager } from 'react-notifications';
 import { useParams } from "react-router-dom";
 import LoadingScreen from "../../helper/LoadingScreen";
 import Page from "../../helper/Page";
 import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
-import useSettings from "../../hooks/useSettings";
 import OrderProductList from "./OrderProductList";
 import Scrollbar from '../../helper/Scrollbar'
 import OrderBillingInfo from "./OrderBillingInfo";
@@ -18,8 +14,6 @@ import Label from '../../helper/Label';
 
 const OrderDetails = () => {
   const theme = useTheme();
-
-  const { themeStretch } = useSettings();
 
   const { order, error, loading } = useSelector((state) => state.orderDetails);
 
@@ -41,7 +35,7 @@ const OrderDetails = () => {
         <LoadingScreen />
       ) : (
         <Page title="Order:  Details">
-        <Container maxWidth={themeStretch ? false : 'lg'} sx={{pt:'88px'}}>
+        <Container maxWidth= 'lg' sx={{pt:'88px'}}>
           <HeaderBreadcrumbs
             heading="Order Details"
             links={[
@@ -85,11 +79,9 @@ const OrderDetails = () => {
       <CardHeader
         title="Order Summary"
        
-      />
-          <Grid container>
-         <Grid item xs={12} sm={12} sx={{ mb: 5 }}>
+       action={
 
-         <Box sx={{ textAlign: { sm: 'right' }, pr:2 }}>
+         (<Box sx={{ textAlign:'right' }}>
               <Label
                 variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                 color={
@@ -102,9 +94,10 @@ const OrderDetails = () => {
               >
                 {order.orderStatus}
               </Label>
+      
 
               <Typography variant="body2">{order && order._id}</Typography>
-            </Box>
+            </Box> )} />
             <CardContent>
             <Stack spacing={2}>
             <Stack direction="row" justifyContent="space-between">
@@ -132,8 +125,6 @@ const OrderDetails = () => {
                   
                 </Stack>
                 </CardContent>
-        </Grid>
-        </Grid>
               
                 </Card>  
 
