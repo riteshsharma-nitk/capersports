@@ -1,7 +1,6 @@
 import React from "react";
 import {Link as RouterLink} from 'react-router-dom'
-import ErrorIcon from '@mui/icons-material/Error';
-import { Box, Button, Container, Link, styled, Typography } from "@mui/material";
+import { Box, Button, Container, styled, Typography } from "@mui/material";
 import { MotionContainer } from "../../helper/animate";
 
 
