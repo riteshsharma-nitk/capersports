@@ -41,6 +41,14 @@ const typography = {
     fontSize: pxToRem(18),
     ...responsiveFontSizes({ sm: 19, md: 20, lg: 20 }),
   },
+
+  title1: {
+    fontWeight: 600,
+    lineHeight: 1.5,
+    fontSize: pxToRem(18),
+    ...responsiveFontSizes({ sm: 19, md: 20, lg: 20 }),
+  },
+
   h6: {
     fontWeight: 700,
     lineHeight: 28 / 18,

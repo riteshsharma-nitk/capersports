@@ -20,11 +20,26 @@ const ProductSchema = new Schema({
         
     },
 
-    Stock: {
+    priceSale: {
         type: Number,
-        required: [true, "Please Enter product Stock"],
-        maxLength: [4, "Stock cannot exceed 4 characters"],
-        default: 1,
+        required: false
+        
+    },
+
+    gender:{
+        type: String,
+        required: true,
+    },
+
+    code: {
+        type: Number,
+        required: false,
+    },
+
+    inStock: {
+        type: Boolean,
+        required: true,
+        default:true,
       },
 
     images: [
