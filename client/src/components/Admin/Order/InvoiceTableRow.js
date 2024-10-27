@@ -1,18 +1,13 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-// @mui
 import { useTheme } from '@mui/material/styles';
-import { Checkbox, TableRow, TableCell, Typography, Stack, Link, MenuItem } from '@mui/material';
-// utils
+import { Checkbox, TableRow, TableCell, Typography, Stack, MenuItem } from '@mui/material';
 import { fDate } from '../../../utils/formatTime';
 import createAvatar from '../../../utils/createAvatar';
-// components
 import Label from '../../../helper/Label';
 import Avatar from '../../../helper/Avatar';
 import { TableMoreMenu } from '../../../helper/table';
 import Iconify from '../../../helper/Iconify';
-
-// ----------------------------------------------------------------------
 
 InvoiceTableRow.propTypes = {
   row: PropTypes.object.isRequired,

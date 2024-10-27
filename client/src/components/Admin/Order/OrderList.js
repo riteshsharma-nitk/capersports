@@ -1,23 +1,11 @@
-import React, { Fragment, useEffect } from "react";
-import { DataGrid } from '@mui/x-data-grid';
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link as RouterLink } from "react-router-dom";
 import sumBy from 'lodash/sumBy';
-
-import { Card, Container, Divider, FormControlLabel, Grid, IconButton, Link, Stack, Switch, Table, TableBody, TableContainer, TablePagination, Tabs, Tooltip, Typography } from "@mui/material";
-import { Button } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Card, Container, Divider, FormControlLabel, IconButton, Stack, Switch, Table, TableBody, TableContainer, TablePagination, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import useTable, { getComparator, emptyRows } from '../../../hooks/useTable';
-
-import {
-  deleteOrder,
-  getAllOrders,
-  clearErrors,
-} from "../../../actions/orderAction";
+import useTable, { emptyRows } from '../../../hooks/useTable';
+import { deleteOrder, getAllOrders, clearErrors } from "../../../actions/orderAction";
 import { DELETE_ORDER_RESET } from "../../../constants/orderConstants";
-import Sidebar from "../Sidebar";
 import { Box } from "@mui/system";
 import Page from "../../../helper/Page";
 import HeaderBreadcrumbs from "../../../helper/HeaderBreadcrumbs";
@@ -25,7 +13,6 @@ import Iconify from "../../../helper/Iconify";
 import useSettings from "../../../hooks/useSettings";
 import Scrollbar from '../../../helper/Scrollbar';
 import InvoiceAnalytic from "./InvoiceAnalytic";
-
 import { useTheme } from '@mui/material/styles';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from "../../../helper/table";
 import InvoiceTableRow from "./InvoiceTableRow";
@@ -38,8 +25,6 @@ const TABLE_HEAD = [
   { id: 'status', label: 'Status', align: 'left' },
   { id: '' },
 ];
-
-
 
 const OrderList = () => {
   const theme = useTheme();
@@ -124,14 +109,6 @@ const OrderList = () => {
     const getLengthByStatus = (status) => rows.filter((item) => item.status === status).length;
     const getTotalPriceByStatus = (status) => sumBy(rows.filter((item) => item.status === status),'amount');
     const getPercentByStatus = (status) => (getLengthByStatus(status) / rows.length) * 100;
-
-    const TABS = [
-      { value: 'all', label: 'All', color: 'info', count: rows.length },
-      { value: 'processing', label: 'Processing', color: 'success', count: getLengthByStatus('processing') },
-      { value: 'shipped', label: 'Shipped', color: 'warning', count: getLengthByStatus('shipped') },
-      { value: 'delivered', label: 'Delivered', color: 'error', count: getLengthByStatus('delivered') },
-    ];
-
 
 
   return (
@@ -286,12 +263,7 @@ const OrderList = () => {
               sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
             />
           </Box>
-
           </Card>
-      
-
-         
-      
       </Container>
       </Page>
 

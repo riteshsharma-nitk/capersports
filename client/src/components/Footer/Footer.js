@@ -2,11 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Grid, IconButton, Link, Stack, styled, useTheme } from '@mui/material';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import YouTubeIcon from '@mui/icons-material/YouTube';
+import { Grid, Link, Stack, styled, useTheme } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import {Link as RouterLink} from 'react-router-dom'
 import logo from '../../images/logo.png'

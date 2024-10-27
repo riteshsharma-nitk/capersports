@@ -1,11 +1,7 @@
 import { Outlet } from 'react-router-dom';
-// @mui
 import { styled } from '@mui/material/styles';
 import Logo from '../../helper/Logo';
-// components
 
-
-// ----------------------------------------------------------------------
 
 const HeaderStyle = styled('header')(({ theme }) => ({
   top: 0,
@@ -19,7 +15,6 @@ const HeaderStyle = styled('header')(({ theme }) => ({
   }
 }));
 
-// ----------------------------------------------------------------------
 
 export default function LogoOnlyLayout() {
   return (

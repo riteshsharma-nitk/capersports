@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as Yup from 'yup';
 import { clearErrors, updateProduct, getProductDetails,} from "../../../actions/productAction";
@@ -6,24 +6,16 @@ import { useParams } from 'react-router-dom';
 import {useNavigate} from "react-router-dom";
 import { UPDATE_PRODUCT_RESET } from "../../../constants/productConstants";
 import { Card, Container, Grid, InputAdornment, Stack, Typography } from '@mui/material';
-import { createTheme, styled } from '@mui/material/styles';
-import useSettings from "../../../hooks/useSettings";
+import { styled } from '@mui/material/styles';
 import Page from "../../../helper/Page";
-import HeaderBreadcrumbs from "../../../helper/HeaderBreadcrumbs";
+import HeaderBreadcrumbs from '../../../helper/HeaderBreadcrumbs';
 import { yupResolver } from '@hookform/resolvers/yup';
-
-import {
-    FormProvider,
-    RHFSelect,
-    RHFEditor,
-    RHFTextField,
-    RHFUploadMultiFile,
-  } from '../../../helper/hook-form';
-
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import { LoadingButton } from '@mui/lab';
-  
+import { FormProvider, RHFSelect, RHFEditor, RHFTextField, RHFUploadMultiFile, RHFRadioGroup, RHFSwitch} from '../../../helper/hook-form';
+
+const GENDER_OPTION = ['Men', 'Women', 'Kids'];
 
 const CATEGORY_OPTION = [
   { group:'Clothing', classify:['T-Shirts', 'Hoodies', 'Sweatshirts', 'Jackets', 'Tracksuits', 'Shorts', 'Socks', 'Trouser', 'Cap', 'Basketball Kit'] }]
@@ -35,7 +27,6 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   }));
 
 const UpdateProduct = () => {
-    const { themeStretch } = useSettings();
     const { enqueueSnackbar } = useSnackbar();
 
     const dispatch = useDispatch();
@@ -49,8 +40,6 @@ const UpdateProduct = () => {
         information: Yup.string().required('Information is required'),
         images: Yup.array().min(1, 'Images is required'),
         price: Yup.number().moreThan(0, 'Price should not be $0.00'),
-        category: Yup.string().required('Category is required'),
-        Stock:Yup.number().required('Stock is required')
       });
 
       const defaultValues = useMemo(
@@ -58,9 +47,12 @@ const UpdateProduct = () => {
           name: product?.name || '',
           description: product?.description || '',
           information: product?.information || '',
+          code: product?.code || '',
           images: product?.images?.map(({url})=>url) || [],
+          priceSale: product?.priceSale || 0,
           price: product?.price || 0,
-          Stock: product?.Stock || 0,
+          inStock: true,
+          gender: product?.gender || GENDER_OPTION[2],
           category: product?.category || '',
         }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,8 +77,6 @@ const UpdateProduct = () => {
       const values = watch();
       
       
-
-    
     const {id} = useParams();
     const productId = id;
 
@@ -121,18 +111,9 @@ const UpdateProduct = () => {
 
     ]);
 
- 
-
-  
-
-    const onSubmit = async () => {
-        try {
-        
-          await new Promise((resolve) => setTimeout(resolve, 500));
-    
-           console.log(values)
-       
-          dispatch(updateProduct(productId, values));
+    const onSubmit = async (data) => {
+        try {       
+          dispatch(updateProduct(productId, data));
           reset();
           enqueueSnackbar('Update success!');
           navigate('/admin/products');
@@ -185,19 +166,19 @@ const UpdateProduct = () => {
 
 
     return (
-    <Page title="Ecommerce: Update a new product">
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-      <HeaderBreadcrumbs
+    <Page title="Update a product">
+      <Container maxWidth='lg'>
+<HeaderBreadcrumbs
           heading={'Edit product'}
           links={[
-            { name: 'Dashboard', href: '/admin/dashboard' },
-            {
-              name: 'Caper Sports',
-              href: '/products',
-            },
-            { name: product.name },
-          ]}
-        />
+          { name: 'Dashboard', href: '/admin/dashboard' },
+          {
+            name: 'Caper Sports',
+            href: '/products',
+          },
+          { name: 'Edit Product'},
+        ]}
+      />
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
 
     <Grid container spacing={3}>
@@ -235,9 +216,21 @@ const UpdateProduct = () => {
        <Grid item xs={12} md={4}>
           <Stack spacing={3}>
             <Card sx={{ p: 3 }}>
-            <Stack spacing={3} mt={2}>
+            <RHFSwitch name="inStock" label="In stock" />
 
-            <RHFTextField name="Stock" label="Stock" />
+            <Stack spacing={3} mt={2}>
+            <RHFTextField name="code" label="HSN/SAC Code" />
+
+            <div>
+                  <LabelStyle>Gender</LabelStyle>
+                  <RHFRadioGroup
+                    name="gender"
+                    options={GENDER_OPTION}
+                    sx={{
+                      '& .MuiFormControlLabel-root': { mr: 4 },
+                    }}
+                  />
+                </div>
 
             <RHFSelect name="category" label="Category">
                   {CATEGORY_OPTION.map((category) => (
@@ -269,6 +262,19 @@ const UpdateProduct = () => {
                     type: 'number',
                   }}
                 />
+
+                <RHFTextField
+                  name="priceSale"
+                  label="Sale Price"
+                  placeholder="0.00"
+                  value={getValues('priceSale') === 0 ? '' : getValues('priceSale')}
+                  onChange={(event) => setValue('priceSale', Number(event.target.value))}
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                    type: 'number',
+                  }}
+                />
                 </Stack>
                 </Card>
 
@@ -276,26 +282,11 @@ const UpdateProduct = () => {
              Save Changes
             </LoadingButton>
             </Stack>
-            
-
-
-
-
-              </Grid>
+          </Grid>
        </Grid>
        </FormProvider>
-
-
-
-
-
-
-       
-           
-        
-            </Container>
-            </Page>
-       
+      </Container>
+    </Page>       
     );
 };
 

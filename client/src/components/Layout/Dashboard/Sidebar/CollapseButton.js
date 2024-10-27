@@ -1,11 +1,6 @@
 import PropTypes from 'prop-types';
-// @mui
 import { Box } from '@mui/material';
 import { IconButtonAnimate } from '../../../../helper/animate';
-// components
-
-
-// ----------------------------------------------------------------------
 
 CollapseButton.propTypes = {
   collapseClick: PropTypes.bool,

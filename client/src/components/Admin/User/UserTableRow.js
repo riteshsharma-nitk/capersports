@@ -1,15 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-// @mui
-import { useTheme } from '@mui/material/styles';
 import { Avatar, Checkbox, TableRow, TableCell, Typography, MenuItem } from '@mui/material';
 import Iconify from '../../../helper/Iconify';
-import Label from '../../../helper/Label';
 import { TableMoreMenu } from '../../../helper/table';
-// components
-
-
-// ----------------------------------------------------------------------
 
 UserTableRow.propTypes = {
   row: PropTypes.object,
@@ -20,7 +13,6 @@ UserTableRow.propTypes = {
 };
 
 export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
-  const theme = useTheme();
 
   const { name, avatar, role, email, id } = row;
 

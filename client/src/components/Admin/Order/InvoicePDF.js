@@ -1,13 +1,7 @@
 import PropTypes from 'prop-types';
 import { Page, View, Text, Image, Document } from '@react-pdf/renderer';
-// utils
-import { fCurrency } from '../../../utils/formatNumber';
 import { fDate } from '../../../utils/formatTime';
-//
 import styles from './InvoiceStyle';
-
-// ----------------------------------------------------------------------
-
 InvoicePDF.propTypes = {
   invoice: PropTypes.object.isRequired,
 };
@@ -28,7 +22,10 @@ export default function InvoicePDF({ invoice }) {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={[styles.gridContainer, styles.mb40]}>
+          <View style={[styles.gridContainer, styles.mbTitle40]}>
           <Image source="/logo/logo_full.png" style={{ height: 32 }} />
+          <Text style={styles.h3Title}>CAPER SPORTS</Text>
+          </View>
           <View style={{ alignItems: 'flex-end', flexDirection: 'column' }}>
             <Text style={styles.h3}>{orderStatus}</Text>
             <Text> {_id} </Text>
@@ -39,28 +36,25 @@ export default function InvoicePDF({ invoice }) {
           <View style={styles.col6}>
             <Text style={[styles.overline, styles.mb8]}>Invoice from</Text>
             <Text style={styles.body1}>{"Avinash Sharma"}</Text>
-            <Text style={styles.body1}>{"SH-47, Noida, Sector 141, Noida,"}</Text>
+            <Text style={styles.body1}>{"SH-47, Sector 141, Noida,"}</Text>
             <Text style={styles.body1}>{"Gautam Buddha Nagar, Uttar Pradesh, 201305"}</Text>
             <Text style={styles.body1}>{"9999557455"}</Text>
           </View>
-          </View>
+         
 
-          {/* <View style={styles.col6}>
+          <View style={styles.col6}>
             <Text style={[styles.overline, styles.mb8]}>Invoice to</Text>
-            <Text style={styles.body1}>{invoiceTo.name}</Text>
-            <Text style={styles.body1}>{invoiceTo.address}</Text>
-            <Text style={styles.body1}>{invoiceTo.phone}</Text>
+            <Text style={styles.body1}>{"Ritesh Sharma"}</Text>
+            <Text style={styles.body1}>{shippingInfo?.address}</Text>
+            <Text style={styles.body1}>{shippingInfo?.phoneNo}</Text>
           </View>
         </View>
+        
 
         <View style={[styles.gridContainer, styles.mb40]}>
           <View style={styles.col6}>
             <Text style={[styles.overline, styles.mb8]}>Date create</Text>
-            <Text style={styles.body1}>{fDate(createDate)}</Text>
-          </View>
-          <View style={styles.col6}>
-            <Text style={[styles.overline, styles.mb8]}>Due date</Text>
-            <Text style={styles.body1}>{fDate(dueDate)}</Text>
+            <Text style={styles.body1}>{createdAt && fDate(createdAt)}</Text>
           </View>
         </View>
 
@@ -70,11 +64,15 @@ export default function InvoicePDF({ invoice }) {
           <View style={styles.tableHeader}>
             <View style={styles.tableRow}>
               <View style={styles.tableCell_1}>
-                <Text style={styles.subtitle2}>#</Text>
+                <Text style={styles.subtitle2}>Item #</Text>
               </View>
 
               <View style={styles.tableCell_2}>
                 <Text style={styles.subtitle2}>Description</Text>
+              </View>
+
+              <View style={styles.tableCell_3}>
+                <Text style={styles.subtitle2}>HSN/SAC Code</Text>
               </View>
 
               <View style={styles.tableCell_3}>
@@ -85,6 +83,10 @@ export default function InvoicePDF({ invoice }) {
                 <Text style={styles.subtitle2}>Unit price</Text>
               </View>
 
+              <View style={styles.tableCell_3}>
+                <Text style={styles.subtitle2}>Discount</Text>
+              </View>
+
               <View style={[styles.tableCell_3, styles.alignRight]}>
                 <Text style={styles.subtitle2}>Total</Text>
               </View>
@@ -92,15 +94,18 @@ export default function InvoicePDF({ invoice }) {
           </View>
 
           <View style={styles.tableBody}>
-            {items.map((item, index) => (
-              <View style={styles.tableRow} key={item.id}>
+            {orderItems && orderItems.map((item, index) => (
+              <View style={styles.tableRow} key={index}>
                 <View style={styles.tableCell_1}>
                   <Text>{index + 1}</Text>
                 </View>
 
                 <View style={styles.tableCell_2}>
-                  <Text style={styles.subtitle2}>{item.title}</Text>
-                  <Text>{item.description}</Text>
+                  <Text style={styles.subtitle2}>{item?.name}</Text>
+                </View>
+
+                <View style={styles.tableCell_3}>
+                  <Text>{"6211"}</Text>
                 </View>
 
                 <View style={styles.tableCell_3}>
@@ -111,8 +116,12 @@ export default function InvoicePDF({ invoice }) {
                   <Text>{item.price}</Text>
                 </View>
 
+                <View style={styles.tableCell_3}>
+                  <Text>{""}</Text>
+                </View>
+
                 <View style={[styles.tableCell_3, styles.alignRight]}>
-                  <Text>{fCurrency(item.price * item.quantity)}</Text>
+                  <Text>{`₹${(item.price * item.quantity)}`}</Text>
                 </View>
               </View>
             ))}
@@ -121,23 +130,28 @@ export default function InvoicePDF({ invoice }) {
               <View style={styles.tableCell_1} />
               <View style={styles.tableCell_2} />
               <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3} />
+
               <View style={styles.tableCell_3}>
                 <Text>Subtotal</Text>
               </View>
               <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text>{fCurrency(subTotalPrice)}</Text>
+                <Text>{`₹${(itemsPrice)}`}</Text>
               </View>
             </View>
 
             <View style={[styles.tableRow, styles.noBorder]}>
               <View style={styles.tableCell_1} />
               <View style={styles.tableCell_2} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3} />
               <View style={styles.tableCell_3} />
               <View style={styles.tableCell_3}>
                 <Text>Discount</Text>
               </View>
               <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text>{fCurrency(-discount)}</Text>
+                <Text>{"0"}</Text>
               </View>
             </View>
 
@@ -145,38 +159,95 @@ export default function InvoicePDF({ invoice }) {
               <View style={styles.tableCell_1} />
               <View style={styles.tableCell_2} />
               <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3} />
               <View style={styles.tableCell_3}>
-                <Text>Taxes</Text>
+                <Text>IGST(0.00%)</Text>
               </View>
               <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text>{fCurrency(taxes)}</Text>
+                <Text>{0}</Text>
               </View>
             </View>
 
             <View style={[styles.tableRow, styles.noBorder]}>
               <View style={styles.tableCell_1} />
               <View style={styles.tableCell_2} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3}>
+                <Text>CGST(2.50%)</Text>
+              </View>
+              <View style={[styles.tableCell_3, styles.alignRight]}>
+                <Text>{itemsPrice && `₹${(itemsPrice)*0.025}`}</Text>
+              </View>
+            </View>
+
+            <View style={[styles.tableRow, styles.noBorder]}>
+              <View style={styles.tableCell_1} />
+              <View style={styles.tableCell_2} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3}>
+                <Text>SGST(2.50%)</Text>
+              </View>
+              <View style={[styles.tableCell_3, styles.alignRight]}>
+                <Text>{itemsPrice && `₹${(itemsPrice)*0.025}`}</Text>
+              </View>
+            </View>
+
+            <View style={[styles.tableRow, styles.noBorder]}>
+              <View style={styles.tableCell_1} />
+              <View style={styles.tableCell_2} />
+              <View style={styles.tableCell_3} />
+              <View style={styles.tableCell_3} />
               <View style={styles.tableCell_3} />
               <View style={styles.tableCell_3}>
                 <Text style={styles.h4}>Total</Text>
               </View>
               <View style={[styles.tableCell_3, styles.alignRight]}>
-                <Text style={styles.h4}>{fCurrency(totalPrice)}</Text>
+                <Text style={styles.h4}>{`₹${(totalPrice)}`}</Text>
               </View>
             </View>
           </View>
         </View>
 
+        <View style={[styles.gridContainer, styles.bankDetailBox]}>
+          <View style={styles.col6}>
+
+          <Text style={styles.body1}>Caper Sports</Text>
+          <Text style={styles.body1}>Canara Bank</Text>
+          <Text style={styles.body1}>A/c no. - 5549201000080</Text>
+          <Text style={styles.body1}>IFSC - CNRB0005549</Text>
+          <Text style={styles.body1}>Sector 45, Noida</Text>
+          <Text style={styles.body1}>Uttar Pradesh - 201303</Text>
+          <Text style={styles.body1}>Make all cheque payable to CAPER SPORTS.</Text>
+          </View>
+
+          <View style={styles.col6}>
+            <Text style={styles.subtitle2}>Thank you for your business!</Text>
+          </View>
+          </View>
+
+
+
         <View style={[styles.gridContainer, styles.footer]}>
           <View style={styles.col8}>
-            <Text style={styles.subtitle2}>NOTES</Text>
-            <Text>We appreciate your business. Should you need us to add VAT or extra notes let us know!</Text>
+            <Text style={styles.subtitle2}>TERMS & CONDITION</Text>
+            <Text>• Certified that the particular given above are correct and amount indicated is
+            representative of of the price actually charged and that there is no flow of 
+            additional consideration directly or indirectly from the buyer.</Text>
+            <Text>• Goods once sold will not be taken back.</Text>
+            <Text>• Interest will be charged @ 18% per annum if the payment is not made on the due date.</Text>
+            <Text>• All disputes subject to Uttar Pradesh Jurisdiction only.</Text>
+
           </View>
           <View style={[styles.col4, styles.alignRight]}>
             <Text style={styles.subtitle2}>Have a Question?</Text>
-            <Text>support@abcapp.com</Text>
+            <Text>capersports.in@gmail.com</Text>
           </View>
-        </View> */}
+        </View>
       </Page>
     </Document>
   );

@@ -1,12 +1,14 @@
 import { m } from 'framer-motion';
 // @mui
-import { alpha, useTheme, styled } from '@mui/material/styles';
-import { Box, Card, Container, Typography } from '@mui/material';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box, Typography } from '@mui/material';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import {Badge, Link } from '@mui/material';
 // components
 import Image from '../../helper/Image';
 import { MotionViewport, varFade } from '../../helper/animate';
 import React, { useRef } from 'react'
-import Banner from '../../images/Banner.webp'
+import Banner from '../../images/Banner.png'
 import { CarouselArrows } from '../../helper/carousel';
 import Slider from 'react-slick';
 
@@ -18,6 +20,11 @@ const RootStyle = styled('div')(({ theme }) => ({
     paddingBottom: theme.spacing(15),
   },
 }));
+
+const LinkStyle = styled(Link)(({ theme }) => ({
+}));
+
+
 function HomePromotion() {
   const carouselRef = useRef(null);
   const theme = useTheme();
@@ -52,8 +59,11 @@ function HomePromotion() {
       <Box sx={{ position: 'relative' }}>
         <CarouselArrows filled onNext={handleNext} onPrevious={handlePrevious}>
           <Slider ref={carouselRef} {...settings}>
-          <Box component={m.div} variants={varFade().in} sx={{ p: 6, }}>
+          <Box component={m.div} variants={varFade().in} sx={{ pl:2, pr:2 }}>
+          <LinkStyle  key={'Products'} underline='none' component={RouterLink} to={'/product/63bc06b7e4fc52935f4a7fcb'}>
             <Image alt="dark mode" src={Banner} />
+            </LinkStyle>
+            
 </Box>
            
           </Slider>

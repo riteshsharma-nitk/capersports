@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import {removeItemsFromCart } from "../../actions/cartAction";
 import { useSelector, useDispatch } from "react-redux";

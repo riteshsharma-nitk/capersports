@@ -1,12 +1,6 @@
-// @mui
 import { Button, Typography, TextField, Stack } from '@mui/material';
-// components
 import { MotionViewport, varFade } from '../../helper/animate';
-
 import { m } from 'framer-motion';
-
-
-// ----------------------------------------------------------------------
 
 export default function ContactForm() {
   return (

@@ -1,17 +1,12 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Typography, Stepper, StepLabel, Step, Grid, Container } from"@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import Page from "../../helper/Page";
 import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
-import Cart from "./Cart";
-import Shipping from "./Shipping";
-import Payment from "./Payment";
-import useSettings from "../../hooks/useSettings";
 
 const CheckoutSteps = ({ activeStep }) => {
-  const { themeStretch } = useSettings();
 
   const steps = [
     {
@@ -33,8 +28,8 @@ const CheckoutSteps = ({ activeStep }) => {
   };
 
   return (
-    <Page title="Ecommerce: Checkout">
-      <Container maxWidth={themeStretch ? false : 'lg' }  sx={{mt:'100px'}}>
+    <Page title="Checkout">
+      <Container maxWidth='lg' sx={{mt:'100px'}}>
       <HeaderBreadcrumbs
           heading="Checkout"
           links={[

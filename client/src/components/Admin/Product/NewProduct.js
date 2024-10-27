@@ -15,6 +15,8 @@ import {
   RHFEditor,
   RHFTextField,
   RHFUploadMultiFile,
+  RHFSwitch,
+  RHFRadioGroup,
 } from '../../../helper/hook-form';
 
 import { useSnackbar } from "notistack";
@@ -30,8 +32,10 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }));
 
+const GENDER_OPTION = ['Men', 'Women', 'Kids'];
+
 const CATEGORY_OPTION = [
-  { group:'Clothing', classify:['T-Shirts', 'Hoodies', 'Sweatshirts', 'Jackets', 'Tracksuits', 'Shorts', 'Socks', 'Trouser', 'Cap', 'Basketball Kit'] }]
+  { group:'Clothing', classify:['T-shirts', 'Hoodies', 'Sweatshirts', 'Jackets', 'Tracksuits', 'Shorts', 'Socks', 'Trouser', 'Cap', 'Basketball Kit'] }]
 
 
 function NewProduct() {
@@ -49,9 +53,7 @@ function NewProduct() {
       description: Yup.string().required('Description is required'),
       information: Yup.string().required('Information is required'),
       images: Yup.array().min(1, 'Images is required'),
-      price: Yup.number().moreThan(0, 'Price should not be $0.00'),
-      category: Yup.string().required('Category is required'),
-      Stock:Yup.number().required('Stock is required')
+      price: Yup.number().moreThan(0, 'Price should not be ₹0.00'),
     });
 
     const defaultValues = useMemo(
@@ -59,10 +61,13 @@ function NewProduct() {
         name: '',
         description:  '',
         information:  '',
+        code: '',
         images: [],
         price:  0,
-        Stock: 0,
-        category: '',
+        priceSale: 0,
+        inStock: true,
+        gender: GENDER_OPTION[2],
+        category: CATEGORY_OPTION[0].classify[0],
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
@@ -84,6 +89,7 @@ function NewProduct() {
     } = methods;
 
     const values = watch();
+  
 
       
       useEffect(() => {
@@ -99,11 +105,10 @@ function NewProduct() {
       }, [dispatch, error, success]);
 
 
-      const onSubmit = async () => {
+      const onSubmit = async (data) => {
         try {
         
-          await new Promise((resolve) => setTimeout(resolve, 500));
-           dispatch(createProduct(values));
+           dispatch(createProduct(data));
            reset();
           enqueueSnackbar('Create success!');
           navigate('/admin/products');
@@ -139,8 +144,9 @@ function NewProduct() {
                       base64Image: localStorage.getItem(file.path),
                     })
                   )
-                )
-            },[setValue]
+                );
+            },
+            [setValue]
       )
 
       const handleRemoveAll = () => {
@@ -155,7 +161,7 @@ function NewProduct() {
       
   return (
 
-    <Page title="Ecommerce: Create a new product">
+    <Page title="Create a new product">
     <Container maxWidth={themeStretch ? false : 'lg'}>
     <HeaderBreadcrumbs
         heading={'Create product'}
@@ -205,9 +211,26 @@ function NewProduct() {
      <Grid item xs={12} md={4}>
         <Stack spacing={3}>
           <Card sx={{ p: 3 }}>
+          <RHFSwitch name="inStock" label="In stock" />
+
           <Stack spacing={3} mt={2}>
 
-          <RHFTextField name="Stock" label="Stock" />
+
+          <RHFTextField name="code" label="HSN/SAC Code" />
+
+
+          <div>
+                  <LabelStyle>Gender</LabelStyle>
+                  <RHFRadioGroup
+                    name="gender"
+                    options={GENDER_OPTION}
+                    sx={{
+                      '& .MuiFormControlLabel-root': { mr: 4 },
+                    }}
+                  />
+                </div>
+
+
           <RHFSelect name="category" label="Category">
                   {CATEGORY_OPTION.map((category) => (
                     <optgroup key={category.group} label={category.group}>
@@ -237,11 +260,24 @@ function NewProduct() {
                   type: 'number',
                 }}
               />
+
+              <RHFTextField
+                  name="priceSale"
+                  label="Sale Price"
+                  placeholder="0.00"
+                  value={getValues('priceSale') === 0 ? '' : getValues('priceSale')}
+                  onChange={(event) => setValue('priceSale', Number(event.target.value))}
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                    type: 'number',
+                  }}
+                />
               </Stack>
               </Card>
 
               <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
-           Save Changes
+           Create Product
           </LoadingButton>
           </Stack>
           

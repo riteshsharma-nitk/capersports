@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-// @mui
+
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar } from '@mui/material';
 import cssStyles from '../../../../utils/cssStyles';
@@ -10,18 +10,7 @@ import useOffSetTop from '../../../../hooks/useOffSetTop';
 import { IconButtonAnimate } from '../../../../helper/animate';
 import Iconify from '../../../../helper/Iconify';
 import UserOptions from '../../Dashboard/UserOptions';
-import MenuDesktop from '../../Main/Header/MenuDesktop';
 import { useSelector } from 'react-redux';
-// hooks
-
-// utils
-
-// config
-
-// components
-
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'isCollapse' && prop !== 'isOffset' && prop !== 'verticalLayout',

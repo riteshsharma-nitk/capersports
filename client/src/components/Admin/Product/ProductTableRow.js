@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { sentenceCase } from 'change-case';
-// @mui
 import { useTheme } from '@mui/material/styles';
 import { TableRow, Checkbox, TableCell, Typography, MenuItem } from '@mui/material';
 import Image from '../../../helper/Image';
@@ -9,12 +7,6 @@ import { fDate } from '../../../utils/formatTime';
 import Label from '../../../helper/Label';
 import { TableMoreMenu } from '../../../helper/table';
 import Iconify from '../../../helper/Iconify';
-// utils
-
-
-//
-
-// ----------------------------------------------------------------------
 
 ProductTableRow.propTypes = {
   row: PropTypes.object,
@@ -27,7 +19,7 @@ ProductTableRow.propTypes = {
 export default function ProductTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { name, id, createdAt, stock, price, image } = row;
+  const { name, id, createdAt, inStock, price, image } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -58,11 +50,11 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
           color={
-            (stock === 0 && 'error') || (stock <= 1 && 'warning') || 'success'
+            (inStock === false && 'error') || (inStock === true && 'warning') || 'success'
           }
           sx={{ textTransform: 'capitalize' }}
         >
-          {stock}
+          {inStock === true ?'IN STOCK':'OUT OF STOCK'}
         </Label>
       </TableCell>
 

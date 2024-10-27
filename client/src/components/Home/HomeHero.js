@@ -1,12 +1,15 @@
-import { Box, Grid, styled} from '@mui/material'
+import { Box, styled} from '@mui/material'
 import React from 'react'
 import { m } from 'framer-motion';
 import { MotionContainer, varFade } from '../../helper/animate'
-import image1 from '../../images/003.webp'
-import image2 from '../../images/005.webp'
-import image3 from '../../images/007.webp'
+import image1 from '../../images/006-1.png'
+import image2 from '../../images/014-1.png'
+import image3 from '../../images/020-1.png'
+import image4 from '../../images/029-1.png'
+import image5 from '../../images/044-1.png'
 import useResponsive from '../../hooks/useResponsive'
 import Image from '../../helper/Image';
+import { alignProperty } from '@mui/material/styles/cssUtils';
 
 
 const RootStyle = styled(m.div)(({ theme }) => ({
@@ -26,7 +29,70 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
   margin: 'auto',
   position: 'absolute',
   [theme.breakpoints.up('lg')]: {
+    top:'18%',
     right: '8%',
+    width: 'auto',
+    height: '100%',
+  },
+}));
+
+const HeroImgStyle1 = styled(m.img)(({ theme }) => ({
+  zIndex: 2,
+  width: '100%',
+  margin: 'auto',
+  position: 'absolute',
+  [theme.breakpoints.up('lg')]: {
+    top:'0%',
+    left: '0%',
+    width: 'auto',
+    height: '100%',
+  },
+}));
+const HeroImgStyle2 = styled(m.img)(({ theme }) => ({
+  zIndex: 4,
+  width: '100%',
+  margin: 'auto',
+  position: 'absolute',
+  [theme.breakpoints.up('lg')]: {
+    top:'5%',
+    left: '14%',
+    width: 'auto',
+    height: '100%',
+  },
+}));
+const HeroImgStyle3 = styled(m.img)(({ theme }) => ({
+  zIndex: 8,
+  width: '20%',
+  margin: 'auto',
+  position: 'absolute',
+  [theme.breakpoints.up('lg')]: {
+    top:'10%',
+    left:'0%',
+    right:'0%',
+    width: 'auto',
+    height: '100%',
+  },
+}));
+const HeroImgStyle4 = styled(m.img)(({ theme }) => ({
+  zIndex: 2,
+  width: '100%',
+  margin: 'auto',
+  position: 'absolute',
+  [theme.breakpoints.up('lg')]: {
+    top:'5%',
+    right: '14%',
+    width: 'auto',
+    height: '100%',
+  },
+}));
+const HeroImgStyle5 = styled(m.img)(({ theme }) => ({
+  zIndex: -4,
+  width: '100%',
+  margin: 'auto',
+  position: 'absolute',
+  [theme.breakpoints.up('lg')]: {
+    top:'0%',
+    right: '0%',
     width: 'auto',
     height: '100%',
   },
@@ -41,34 +107,40 @@ export default function HomeHero() {
     
     {isDesktop && 
        <Box sx={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-        <m.div variants={varFade().inLeft}>
-          <Image
-          alt="design1"
-          src={image1}
-          />
-        </m.div>
-   
-      <m.div variants={varFade().inDown}>
-          <Image
-          alt="design2"
+         <HeroImgStyle1
+          alt="hero"
           src={image2}
-          />
-        </m.div>
-     
-      <m.div variants={varFade().inRight}>
-          <Image
-          alt="design3"
+          variants={varFade().inLeft}
+        />
+
+<HeroImgStyle2
+          alt="hero"
           src={image3}
-          />
-        </m.div>
+          variants={varFade().inLeft}
+        />
+
+<HeroImgStyle3
+          alt="hero"
+          src={image4}
+          variants={varFade().inDown}
+        />
+
+<HeroImgStyle4
+          alt="hero"
+          src={image1}
+          variants={varFade().inRight}
+        />
+
+<HeroImgStyle5
+          alt="hero"
+          src={image5}
+          variants={varFade().inRight}
+        />
+       
+       
+      
       </Box>
      
-
- 
-   
-
-    
-
   }
 
     {!isDesktop && 

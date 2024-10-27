@@ -1,15 +1,10 @@
-import React, { Fragment, useState } from "react";
-import CartItemCard from "./CartItemCard";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addItemsToCart, removeItemsFromCart } from "../../actions/cartAction";
-import { Button, Card, CardHeader, Container, createTheme, Divider, Grid, Paper, ThemeProvider, Typography } from"@mui/material";
+import { Button, Card, CardHeader, Container, Grid, Typography } from"@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from 'react-router-dom';
-
-import { Box } from "@mui/material";
 import Page from "../../helper/Page";
-import useSettings from "../../hooks/useSettings";
-import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
 import Scrollbar from "../../helper/Scrollbar";
 import CartProductList from '../../components/Cart/CartProductList'
 import EmptyContent from "../../helper/EmptyContent";
@@ -17,27 +12,24 @@ import EmptyCartIcon from "../../assets/illustration/illustration_empty_cart.svg
 import CheckoutSummary from "./CheckoutSummary";
 import CheckoutSteps from "./CheckoutSteps";
 import Iconify from "../../helper/Iconify";
-
+import { sum } from "lodash";
 
 const Cart = () => {
-  const { themeStretch } = useSettings();
 
-  const theme = createTheme()
   const dispatch = useDispatch();
-  const { cartItems } = useSelector((state) => state.cart);
   const navigate = useNavigate();
 
+  const { cartItems } = useSelector((state) => state.cart);
+  const [ discount, setDiscount ] = useState(0)
+
   const isEmptyCart = cartItems.length === 0;
+  const subtotal = sum(cartItems?.map((item) => item?.quantity * item?.price));
 
-
-  const subtotal = cartItems.reduce(
-  (acc, item) => acc + item.quantity * item.price, 0)
-
-  const total = subtotal;
-  var discount = 0;
+  const [total, setTotal] = useState(subtotal)
 
   const handleApplyDiscount = (value) => {
-    discount = value;
+    setDiscount(value)
+    setTotal(total - value)
   };
   
 
@@ -46,8 +38,6 @@ const Cart = () => {
     if (stock <= quantity) {
       return;
     }
-
-
     dispatch(addItemsToCart(id, newQty, size));
   };
 
@@ -69,16 +59,13 @@ const Cart = () => {
 
   return (
     <Page title="Checkout : Caper Sports">
-       <Container maxWidth={themeStretch ? false : 'lg'}>
-  
-<CheckoutSteps activeStep={0}/>
-
-
-<Grid container spacing={3}>
-<Grid item xs={12} md={8}>
-<Card sx={{ mb: 3 }}>
-<CardHeader
-            title={
+       <Container maxWidth='lg'>
+        <CheckoutSteps activeStep={0}/>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={8}>
+            <Card sx={{ mb: 3 }}>
+              <CardHeader
+              title={
               <Typography variant="h6">
                 Cart items
                 <Typography component="span" sx={{ color: 'text.secondary' }}>

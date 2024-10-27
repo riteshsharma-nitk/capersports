@@ -1,33 +1,20 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { Box, Card, CardContent, CardMedia, Container, createTheme, Divider, FormControl, Grid, InputLabel, Link, List, ListItem, ListItemText, MenuItem, Paper, Select, ThemeProvider, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Container, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Page from "../../../helper/Page";
-
 import useSettings from "../../../hooks/useSettings";
 import HeaderBreadcrumbs from "../../../helper/HeaderBreadcrumbs";
-import Iconify from "../../../helper/Iconify";
 import LoadingScreen from '../../../helper/LoadingScreen'
-
-import {
-  getOrderDetails,
-  clearErrors,
-  updateOrder,
-} from "../../../actions/orderAction";
+import { getOrderDetails, clearErrors, updateOrder } from "../../../actions/orderAction";
 import { useSelector, useDispatch } from "react-redux";
-import Loader from "../../Layout/Loader";
 import { Button } from "@mui/material";
 import { UPDATE_ORDER_RESET } from "../../../constants/orderConstants";
-import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import Sidebar from "../Sidebar";
 import Invoice from "./InvoiceDetails";
-const theme = createTheme();
 const ProcessOrder = () => {
   const { themeStretch } = useSettings();
-
+  const [ edit, setEdit ]= useState(false)
   const { order, error, loading } = useSelector((state) => state.orderDetails);
   const { error: updateError, isUpdated } = useSelector((state) => state.order);
-  const navigate = useNavigate();
 
   const {id} = useParams();
   const dispatch = useDispatch();
@@ -42,11 +29,8 @@ const ProcessOrder = () => {
     myForm.set("status", status);
 
     dispatch(updateOrder(id, myForm));
+    setEdit(!edit)
   };
-
-
-
-
 
   useEffect(() => {
     
@@ -67,7 +51,7 @@ const ProcessOrder = () => {
     <>
     {loading ? (<LoadingScreen/>) : (
     <Page title="Order: View">
-    <Container maxWidth={themeStretch ? false : 'lg'}>
+    <Container maxWidth='lg'>
       <HeaderBreadcrumbs
         heading="Order Details"
         links={[
@@ -80,10 +64,11 @@ const ProcessOrder = () => {
         ]}
       />
 
-        {<Invoice invoice={order} />}
+        {<Invoice invoice={order} edit = {edit} setEdit={setEdit} />}
 
          <br></br>
             
+            {edit && 
         <Box component='form' onSubmit={updateOrderSubmitHandler}>
           <FormControl fullWidth>
             <InputLabel>Choose category</InputLabel>
@@ -121,15 +106,11 @@ const ProcessOrder = () => {
                   >
                     Process
                   </Button>
-                </Box>
+                </Box>}
           
             </Container>
-            </Page>)}
-
-        
-          
-        </>
-        
+            </Page>)} 
+        </>      
   );
 };
 

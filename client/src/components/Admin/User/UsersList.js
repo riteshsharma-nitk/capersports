@@ -1,24 +1,17 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { DataGrid } from '@mui/x-data-grid';
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link as RouterLink } from "react-router-dom";
-import { Box, Card, Container, FormControlLabel, Grid, IconButton, Link, Switch, Table, TableBody, TableContainer, TablePagination, Tooltip, Typography } from "@mui/material";
+import { Box, Card, Container, FormControlLabel, IconButton, Switch, Table, TableBody, TableContainer, TablePagination, Tooltip } from "@mui/material";
 import { Button } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
 import { getAllUsers, clearErrors, deleteUser } from "../../../actions/userAction";
 import { DELETE_USER_RESET } from "../../../constants/userConstants";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../Sidebar";
-import EditIcon from '@mui/icons-material/Edit';
 import Page from "../../../helper/Page";
-import useSettings from "../../../hooks/useSettings";
 import HeaderBreadcrumbs from "../../../helper/HeaderBreadcrumbs";
 import Iconify from "../../../helper/Iconify";
 import Scrollbar from "../../../helper/Scrollbar";
 import {TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions} from '../../../helper/table'
 import useTable, { emptyRows } from "../../../hooks/useTable";
 import UserTableRow from "./UserTableRow";
-import UserTableToolbar from "./UserTableToolbar";
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
@@ -26,12 +19,6 @@ const TABLE_HEAD = [
   { id: 'role', label: 'Role', align: 'left' },
   { id: 'email', label: 'Email', align: 'center' },
   { id: '' },
-];
-
-const ROLE_OPTIONS = [
-  'all',
-  'admin',
-  'user',
 ];
 
 
@@ -55,7 +42,6 @@ const UsersList = () => {
     onChangePage,
     onChangeRowsPerPage,
   } = useTable();
-  const { themeStretch } = useSettings();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -111,13 +97,13 @@ const UsersList = () => {
         role: item.role,
         email: item.email,
         name: item.name,
-        avatar: item.avatar.url
+        avatar: item?.avatar?.url
       });
     });
 
   return (
     <Page title="User: List">
-      <Container maxWidth={themeStretch ? false : 'lg'}>
+      <Container maxWidth='lg'>
       <HeaderBreadcrumbs
           heading="User List"
           links={[
@@ -221,23 +207,6 @@ const UsersList = () => {
           </Box>
     
      </Card>
-
-
-    {/* <Grid backgroundColor='#f5f5f5' container rowSpacing={2} borderRadius={2} padding={2}>
-    <Grid  item md={12} xs={12}>
-      <Typography fontSize='1.5rem' textAlign='center'>All Users</Typography>
-      </Grid>
-      <Grid item md={12} xs={12}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            className="productListTable"
-            autoHeight
-          />
-        </Grid>
-        </Grid> */}
         </Container>
       </Page>
   );

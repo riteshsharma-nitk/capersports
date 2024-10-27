@@ -1,29 +1,21 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Avatar, Box, Button, Card, Container, createTheme, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, ThemeProvider, Typography } from "@mui/material";
-import PersonIcon from '@mui/icons-material/Person';
+import { Box, Button, Card, Container, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useParams } from "react-router";
 import { UPDATE_USER_RESET } from "../../../constants/userConstants";
 import LoadingScreen from '../../../helper/LoadingScreen'
-
-
 import {
   getUserDetails,
   updateUser,
   clearErrors,
 } from "../../../actions/userAction";
-import Sidebar from "../Sidebar";
-import Loader from "../../Layout/Loader";
 import { useNavigate } from "react-router";
 import Page from "../../../helper/Page";
-import useSettings from "../../../hooks/useSettings";
 import HeaderBreadcrumbs from "../../../helper/HeaderBreadcrumbs";
 
 
 const UpdateUser = () => {
-  const { themeStretch } = useSettings();
 
-    const theme = createTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,9 +27,9 @@ const UpdateUser = () => {
     isUpdated,
   } = useSelector((state) => state.profile);
 
-  const [name, setName] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
-  const [role, setRole] = useState(user.role);
+  const [name, setName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [role, setRole] = useState(user?.role || '');
 
   const {id} = useParams();
   const  userId = id;
@@ -82,13 +74,13 @@ const UpdateUser = () => {
       loading ? (<LoadingScreen/>):(
     
     <Page title="User: Create a new user">
-            <Container maxWidth={themeStretch ? false : 'lg'}>
+            <Container maxWidth= 'lg'>
             <HeaderBreadcrumbs
           heading={'Edit user'}
           links={[
             { name: 'Dashboard', href: '/admin/dashboard' },
             { name: 'User', href: '/admin/users' },
-            { name : name },
+            { name : name || 'Update user' },
           ]}
         />
         
@@ -130,7 +122,7 @@ const UpdateUser = () => {
                 <InputLabel>Choose Role</InputLabel>
                 <Select
                  fontSize='1rem'
-                label='Choose Role'
+                 label='Choose Role'
                  value={role} onChange={(e) => setRole(e.target.value)}>
                   <MenuItem  value="">Choose Role</MenuItem>
                   <MenuItem  value="admin">Admin</MenuItem>

@@ -1,32 +1,20 @@
 import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom';
-// import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-// @mui
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { Box, Stack, Button, Dialog, Tooltip, IconButton, DialogActions, CircularProgress } from '@mui/material';
-// hooks
 import useToggle from '../../../hooks/useToggle';
-// routes
-
-// components
-
-//
-// import InvoicePDF from './InvoicePDF';
 import Iconify from '../../../helper/Iconify';
-
-
-// ----------------------------------------------------------------------
+import InvoicePDF from './InvoicePDF';
 
 InvoiceToolbar.propTypes = {
   order: PropTypes.object.isRequired,
 };
 
-export default function InvoiceToolbar({ order }) {
-  const navigate = useNavigate();
-
+export default function InvoiceToolbar({ order, setEdit, edit }) {
+  
   const { toggle: open, onOpen, onClose } = useToggle();
-
+  
   const handleEdit = () => {
-    navigate('/admin/orders');
+    setEdit(!edit)
   };
 
   return (
@@ -51,7 +39,7 @@ export default function InvoiceToolbar({ order }) {
             </IconButton>
           </Tooltip>
 
-          {/* <PDFDownloadLink
+          <PDFDownloadLink
             document={<InvoicePDF invoice={order} />}
             fileName={order?._id}
             style={{ textDecoration: 'none' }}
@@ -63,36 +51,22 @@ export default function InvoiceToolbar({ order }) {
                 </IconButton>
               </Tooltip>
             )}
-          </PDFDownloadLink>  */}
-        
-
-          <Tooltip title="Print">
-            <IconButton>
-              <Iconify icon={'eva:printer-fill'} />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="Send">
-            <IconButton>
-              <Iconify icon={'ic:round-send'} />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="Share">
-            <IconButton>
-              <Iconify icon={'eva:share-fill'} />
-            </IconButton>
-          </Tooltip>
+          </PDFDownloadLink>
         </Stack>
-
+        
+        {order?.orderStatus != 'Delivered' && 
+        
         <Button
           color="inherit"
           variant="outlined"
           startIcon={<Iconify icon={'eva:checkmark-fill'} />}
           sx={{ alignSelf: 'flex-end' }}
         >
-          Mark as Delivered
-        </Button>
+          {order?.orderStatus === 'Processing' &&  'Mark as Shipped'}
+          {order?.orderStatus === 'Shipped' &&  'Mark as Delivered'}
+
+
+        </Button>}
       </Stack>
 
       <Dialog fullScreen open={open}>
@@ -110,11 +84,11 @@ export default function InvoiceToolbar({ order }) {
               </IconButton>
             </Tooltip>
           </DialogActions>
-          {/* <Box sx={{ flexGrow: 1, height: '100%', overflow: 'hidden' }}>
+          <Box sx={{ flexGrow: 1, height: '100%', overflow: 'hidden' }}>
              <PDFViewer width="100%" height="100%" style={{ border: 'none' }}>
-               <InvoicePDF order={order} /> 
+               <InvoicePDF invoice={order} /> 
             </PDFViewer>
-          </Box> */}
+          </Box>
         </Box>
       </Dialog>
     </>

@@ -1,16 +1,10 @@
 import { useState } from 'react';
-// @mui
 import { styled } from '@mui/material/styles';
-import { Input, Slide, Button, InputAdornment, ClickAwayListener } from '@mui/material';
+import { Input, Slide, InputAdornment, ClickAwayListener } from '@mui/material';
 import cssStyles from '../../../../utils/cssStyles';
 import { IconButtonAnimate } from '../../../../helper/animate';
 import Iconify from '../../../../helper/Iconify';
-// utils
 
-// components
-
-
-// ----------------------------------------------------------------------
 
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;

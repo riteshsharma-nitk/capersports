@@ -1,11 +1,5 @@
-// routes
 
 import SvgIconStyle from "../../../../helper/SvgIconStyle";
-
-// components
-
-
-// ----------------------------------------------------------------------
 
 const getIcon = (name) => <SvgIconStyle src={`/icons/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
@@ -27,8 +21,7 @@ const ICONS = {
 };
 
 const navConfig = [
-  // GENERAL
-  // ----------------------------------------------------------------------
+
   {
     subheader: 'general',
     items: [
@@ -36,12 +29,11 @@ const navConfig = [
     ],
   },
 
-  // MANAGEMENT
-  // ----------------------------------------------------------------------
+
   {
     subheader: 'management',
     items: [
-      // USER
+    
       {
         title: 'user',
         path: 'admin',
@@ -51,9 +43,9 @@ const navConfig = [
         ],
       },
 
-      // E-COMMERCE
+   
       {
-        title: 'e-commerce',
+        title: 'products',
         path: 'admin',
         icon: ICONS.cart,
         children: [
@@ -62,7 +54,7 @@ const navConfig = [
         ],
       },
 
-      // ORDERS
+   
       {
         title: 'orders',
         path: 'admin',
@@ -72,7 +64,7 @@ const navConfig = [
         ],
       },
 
-      // REVIEWS
+    
       {
         title: 'reviews',
         path: 'admin',

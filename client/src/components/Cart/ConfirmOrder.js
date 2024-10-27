@@ -1,15 +1,12 @@
 import React, { Fragment } from "react";
-import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { Link, Box, Card, CardContent, CardMedia, Container, Grid, List, ListItem, ListItemText, Paper, Typography, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import {Divider} from "@mui/material";
 
 const ConfirmOrder = () => {
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user);
-  const navigate = useNavigate();
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.quantity * item.price,
@@ -34,7 +31,7 @@ const ConfirmOrder = () => {
 
     sessionStorage.setItem("orderInfo", JSON.stringify(data));
 
-    navigate("/process/payment");
+    // navigate("/process/payment");
   };
 
   return (

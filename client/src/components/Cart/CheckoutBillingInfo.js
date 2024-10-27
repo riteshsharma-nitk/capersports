@@ -1,20 +1,7 @@
-import PropTypes from 'prop-types';
-// @mui
 import { Card, Button, Typography, CardHeader, CardContent } from '@mui/material';
-import { useSelector } from 'react-redux';
 import Iconify from '../../helper/Iconify';
-// redux
 
-// components
-
-
-// ----------------------------------------------------------------------
-
-
-
-export default function CheckoutBillingInfo({ order }) {
-
-
+export default function CheckoutBillingInfo({ order, user }) {
   return (
     <Card sx={{ mb: 3 }}>
       <CardHeader
@@ -27,17 +14,17 @@ export default function CheckoutBillingInfo({ order }) {
       />
       <CardContent>
         <Typography variant="subtitle2" gutterBottom>
-        {order?.name}
+        {user?.name}
           <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
            {''}
           </Typography>
         </Typography>
 
         <Typography variant="body2" gutterBottom>
-         {order?.shippingInfo?.address}
+       {`${order?.address}, ${order?.city}, ${order?.state}, ${order?.country}, Pincode-${order?.pinCode}`}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-        {order?.shippingInfo?.phoneNo}
+        {order?.phoneNo}
         </Typography>
       </CardContent>
     </Card>

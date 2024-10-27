@@ -1,21 +1,61 @@
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
+import * as Yup from 'yup';
+
 import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Container, Grid, Paper, Typography } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import {Link as RouterLink} from 'react-router-dom'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import { clearErrors } from "../../actions/orderAction";
+import { clearErrors, createOrder } from "../../actions/orderAction";
 import { useNavigate } from "react-router";
-import Page from "../../helper/Page";
-import useSettings from "../../hooks/useSettings";
 import Iconify from "../../helper/Iconify";
 import CheckoutDelivery from "./CheckoutDelivery";
 import CheckoutPaymentMethods from './CheckoutPaymentMethods'
 import CheckoutBillingInfo from "./CheckoutBillingInfo";
 import CheckoutSummary from "./CheckoutSummary";
+import { FormProvider } from "../../helper/hook-form";
+
+const PAYMENT_OPTIONS = [
+  {
+    value: 'credit_card',
+    title: 'Credit / Debit Card',
+    description: 'We support Mastercard, Visa, Discover and Stripe.',
+    icons: [
+      'https://minimal-assets-api.vercel.app/assets/icons/ic_mastercard.svg',
+      'https://minimal-assets-api.vercel.app/assets/icons/ic_visa.svg',
+    ],
+  },
+  {
+    value: 'cash',
+    title: 'Cash on Delivery',
+    description: 'Pay with cash when your order is delivered.',
+    icons: [],
+  },
+];
+
+const CARDS_OPTIONS = [
+  { value: 'Visa1', label: '**** **** **** 1212 - Ritesh Sharma' },
+  { value: 'MasterCard', label: '**** **** **** 4545 - Abhishek Sharma' },
+];
+
+const DELIVERY_OPTIONS = [
+  {
+    value: 0,
+    title: 'Standard delivery (Free)',
+    description: 'Delivered in two weeks',
+  },
+  {
+    value: 2,
+    title: 'Fast delivery (₹200)',
+    description: 'Delivered in a week',
+  },
+];
+
 
 const Payment = () => {
-  const { themeStretch } = useSettings();
+  const navigate = useNavigate();
 
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
 
@@ -25,8 +65,19 @@ const Payment = () => {
   const { user } = useSelector((state) => state.user);
   const { error } = useSelector((state) => state.newOrder);
 
-  const paymentData = {
-    amount: Math.round(orderInfo?.totalPrice * 100),
+  const PaymentSchema = Yup.object().shape({
+    payment: Yup.string().required('Payment is required!'),
+  });
+
+  const defaultValues = {
+    delivery: 0,
+    payment: '',
+  };
+
+  
+
+  const handleApplyShipping = (value) => {
+    
   };
 
   const order = {
@@ -39,6 +90,33 @@ const Payment = () => {
     totalPrice: orderInfo.totalPrice,
   };
 
+  const methods = useForm({
+    resolver: yupResolver(PaymentSchema),
+    defaultValues,
+  });
+
+  
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+
+  const onSubmit = async () => {
+    try {
+      order.paymentInfo = {
+        id: user?._id,
+        status: 'Paid',
+      };
+  
+      dispatch(createOrder(order));
+      navigate("/success")
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   useEffect(() => {
     if (error) {
       dispatch(clearErrors());
@@ -46,15 +124,14 @@ const Payment = () => {
   }, [dispatch, error]);
 
   return (
-    <Page title="Ecommerce: Checkout">
-    <Container maxWidth={themeStretch ? false : 'lg' }  sx={{mt:'88px'}}>
+    <Container maxWidth='lg'>
       <CheckoutSteps activeStep={2} />
 
-      <form>
+      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-        <CheckoutDelivery  />
-        <CheckoutPaymentMethods  />
+        <CheckoutDelivery  onApplyShipping={handleApplyShipping} deliveryOptions={DELIVERY_OPTIONS}/>
+        <CheckoutPaymentMethods cardOptions={CARDS_OPTIONS} paymentOptions={PAYMENT_OPTIONS} />
           <Button
           component={RouterLink}
           to="/shipping"
@@ -67,7 +144,7 @@ const Payment = () => {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <CheckoutBillingInfo order = {order}/>
+          <CheckoutBillingInfo order = {shippingInfo} user = {user}/>
 
           <CheckoutSummary
             enableEdit
@@ -81,12 +158,12 @@ const Payment = () => {
           </Button>
         </Grid>
       </Grid>
-    </form>
+    </FormProvider>
 
 
       
     </Container>
-    </Page>
+
   );
 };
 

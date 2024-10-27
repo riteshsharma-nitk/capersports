@@ -1,6 +1,4 @@
 import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {Box, Link, Stack} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
@@ -24,8 +22,14 @@ const ProductCard = ({product, loading}) => {
    
              <Typography variant='subtitle2' color='text.secondary'>{product.category}</Typography>
              <Stack direction="row" spacing={0.5}>
-             <Typography sx={{fontSize:'1rem', color:'black'}} fontWeight={500}>{`MRP : ₹ ${product.price}`}</Typography>
-             </Stack>
+             {product?.priceSale?(
+          <>
+          <Typography variant='subtitle1'>{`₹${product?.priceSale}`}</Typography> 
+          <Typography variant="subtitle1" sx={{ color: 'text.disabled'}}>{`MRP : ₹${product?.price}`}</Typography>
+          </>
+          ):
+          <Typography variant="subtitle1">{`MRP : ₹${product?.price}`}</Typography>
+          }             </Stack>
              </Stack>
              </Stack>
           

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, getProduct } from '../../actions/productAction';
 import ProductCard from './ProductCard';
-import { Box, Button, Container, Link, styled, Typography, useTheme } from '@mui/material';
+import { Box, Button, styled, Typography, useTheme } from '@mui/material';
 import {Link as RouterLink} from 'react-router-dom'
 import { m } from 'framer-motion';
 import { MotionViewport, varFade } from '../../helper/animate';

@@ -1,30 +1,26 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { saveShippingInfo } from "../../actions/cartAction";
 import { Country, State } from "country-state-city";
 import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useNavigate } from "react-router";
-import { Box, ButtonBase, Card, MenuItem, Select } from "@mui/material";
-import {Button, Container, FormControl, Grid, InputLabel, Paper, TextField, Typography } from "@mui/material";
+import { Box, Card, MenuItem, Select } from "@mui/material";
+import {Button, Container, FormControl, Grid, InputLabel, TextField, Typography } from "@mui/material";
 import Iconify from "../../helper/Iconify";
 import { Link as RouterLink } from 'react-router-dom';
 import CheckoutSummary from "./CheckoutSummary";
 import Page from "../../helper/Page";
-import HeaderBreadcrumbs from "../../helper/HeaderBreadcrumbs";
-import useSettings from "../../hooks/useSettings";
+import { sum } from "lodash";
 
 
 
 const Shipping = () => {
-  const { themeStretch } = useSettings();
 
   const { cartItems } = useSelector((state) => state.cart);
+  const [ discount, setDiscount ] = useState(200)
 
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.quantity * item.price, 0)
-  
-    const total = subtotal;
-    var discount = 0;
+  const subtotal = sum(cartItems?.map((item) => item?.quantity * item?.price));
+  const [total, setTotal] = useState(subtotal-200)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,9 +34,9 @@ const Shipping = () => {
   const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
 
 
-  const shippingCharges = subtotal > 1000 ? 0 : 200;
+  const shippingCharges = 0;
 
-  const tax = subtotal * 0.05;
+  const tax = 0;
 
   const totalPrice = subtotal + tax + shippingCharges;
 
@@ -71,15 +67,9 @@ const Shipping = () => {
     navigate("/process/payment");
   };
 
-
-
-
- 
-
-
   return (
-    <Page title="Ecommerce: Checkout">
-    <Container maxWidth={themeStretch ? false : 'lg' }  sx={{mt:'100px'}}>
+    <Page title="Checkout">
+    <Container maxWidth= 'lg' sx={{mt:'100px'}}>
 
     <CheckoutSteps activeStep={1} />
 

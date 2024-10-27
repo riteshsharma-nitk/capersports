@@ -1,18 +1,9 @@
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
-// @mui
 import { styled } from '@mui/material/styles';
 import { Box, Link, Typography } from '@mui/material';
 import MyAvatar from '../../../../helper/MyAvatar';
 import { useSelector } from 'react-redux';
-// hooks
-
-// routes
-
-// components
-
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',

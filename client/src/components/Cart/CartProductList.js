@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-// @mui
 import { styled } from '@mui/material/styles';
 import {
   Box,
@@ -16,9 +15,6 @@ import {
 import Image from '../../helper/Image';
 import Iconify from '../../helper/Iconify';
 
-
-// ----------------------------------------------------------------------
-
 const IncrementerStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -29,7 +25,6 @@ const IncrementerStyle = styled('div')(({ theme }) => ({
   border: `solid 1px ${theme.palette.grey[500_32]}`,
 }));
 
-// ----------------------------------------------------------------------
 
 CheckoutProductList.propTypes = {
   products: PropTypes.array.isRequired,
@@ -51,17 +46,6 @@ export default function CheckoutProductList({ products, onDelete, onIncreaseQuan
             <TableCell align="right" />
           </TableRow>
         </TableHead>
-
-        {/* 
-         product: data.product._id,
-      name: data.product.name,
-      price: data.product.price,
-      image: data.product.images[0].url,
-      stock: data.product.Stock,
-      category: data.product.category,
-      size,
-      quantity,
-         */}
 
         <TableBody>
           {products.map((cartItem) => {

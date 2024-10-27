@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-// @mui
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import { HEADER, NAVBAR } from '../../../config';
@@ -9,14 +8,6 @@ import useSettings from '../../../hooks/useSettings'
 import useResponsive from '../../../hooks/useResponsive';
 import DashboardHeader from './Header';
 import NavbarVertical from './Sidebar/NavbarVertical'
-// hooks
-
-// config
-
-//
-
-
-// ----------------------------------------------------------------------
 
 const MainStyle = styled('main', {
   shouldForwardProp: (prop) => prop !== 'collapseClick',
@@ -45,8 +36,6 @@ export default function DashboardLayout() {
   const { collapseClick, isCollapse } = useCollapseDrawer();
 
   const { themeLayout } = useSettings();
-
-  const isDesktop = useResponsive('up', 'lg');
 
   const [open, setOpen] = useState(false);
 

@@ -1,9 +1,9 @@
-// imports
-import React, { useEffect } from 'react';
-import {styled} from '@mui/material';
+import React from 'react';
+import { styled } from '@mui/material';
 import HomeHero from './HomeHero';
 import HomeFeatureProduct from './HomeFeatureProduct';
 import HomePromotion from './HomePromotion';
+import Page from '../../helper/Page';
 
 const RootStyle = styled('div')(() => ({
   height: '100%',
@@ -17,31 +17,15 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 
 const Home = () => {
-  useEffect(() => {
-    document.title = 'Home | Caper Sports' 
-}, [])
-  
-  
   return (
-    <>
-
-  
-        <RootStyle>
-                   <HomeHero/>
-
-           <ContentStyle>
-       
-        <HomePromotion/>
-        <HomeFeatureProduct/>
-          
-           
-        </ContentStyle>  
-        </RootStyle>
-      </>
-              
-   
- 
-  
+  <Page title="Home">
+  <RootStyle>
+    <HomeHero/>
+    <ContentStyle>
+      <HomePromotion/>
+      <HomeFeatureProduct/>
+    </ContentStyle>  
+  </RootStyle></Page>
   ) 
 }
 

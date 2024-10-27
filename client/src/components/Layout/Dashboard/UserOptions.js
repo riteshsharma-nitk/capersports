@@ -7,7 +7,6 @@ import Avatar from '@mui/material/Avatar';
 import MenuItem from '@mui/material/MenuItem';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import Logout from '@mui/icons-material/Logout';
 import {useNavigate } from 'react-router';
 import { logout } from "../../../actions/userAction"
@@ -75,7 +74,7 @@ export default function UserOptions({user}) {
           >
             <Avatar 
             alt="Avatar Preview" 
-            src={user.avatar.url}>{(user.name).substr(0,1)}</Avatar>
+            src={user?.avatar?.url}>{(user.name).substr(0,1)}</Avatar>
           </IconButton>
     </Box>
          

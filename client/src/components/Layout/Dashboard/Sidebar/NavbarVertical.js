@@ -1,18 +1,12 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-// @mui
 import { styled, useTheme } from '@mui/material/styles';
 import { Box, Stack, Drawer } from '@mui/material';
 import {NavSectionVertical} from '../../../../helper/nav-section'
-
-// hooks
 import useCollapseDrawer from '../../../../hooks/useCollapseDrawer';
 import useResponsive from '../../../../hooks/useResponsive';
-
-// utils
 import cssStyles from '../../../../utils/cssStyles';
-
 import navConfig from './NavConfig';
 import NavbarAccount from './SidebarAccount';
 import CollapseButton from './CollapseButton';

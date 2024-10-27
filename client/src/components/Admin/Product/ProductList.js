@@ -1,20 +1,15 @@
 import React from 'react'
-import {Fragment, useEffect} from 'react'
-import { DataGrid } from '@mui/x-data-grid';
+import {useEffect} from 'react'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import {clearErrors, getAdminProduct, deleteProduct} from '../../../actions/productAction'
 import {Link as RouterLink} from 'react-router-dom'
-import {Box, Button, Card, Container, FormControlLabel, Grid, IconButton, Link, Switch, Table, TableBody, TableContainer, TablePagination, Tooltip, Typography} from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Sidebar from '../Sidebar'
+import {Box, Button, Card, Container, FormControlLabel, IconButton, Switch, Table, TableBody, TableContainer, TablePagination, Tooltip} from '@mui/material'
 import { DELETE_PRODUCT_RESET } from "../../../constants/productConstants";
 import { useNavigate } from 'react-router-dom';
 import Page from '../../../helper/Page';
 import HeaderBreadcrumbs from '../../../helper/HeaderBreadcrumbs';
 import Iconify from '../../../helper/Iconify';
-import useSettings from '../../../hooks/useSettings';
 import Scrollbar from '../../../helper/Scrollbar';
 import useTable, { emptyRows } from '../../../hooks/useTable';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../helper/table';
@@ -50,9 +45,6 @@ export default function ProductList() {
   } = useTable({
     defaultOrderBy: 'createdAt',
   });
-
-  const { themeStretch } = useSettings();
-
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -99,7 +91,7 @@ export default function ProductList() {
     products.forEach((item) => {
       rows.push({
         id: item._id,
-        stock: item.Stock,
+        inStock: item?.inStock,
         price: item.price,
         name: item.name,
         createdBy:item.user,
@@ -115,8 +107,8 @@ export default function ProductList() {
 
 
   return (
-    <Page title="Ecommerce: Product List">
-    <Container maxWidth={themeStretch ? false : 'lg'}>
+    <Page title="Product List">
+    <Container maxWidth='lg'>
       <HeaderBreadcrumbs
         heading="Product List"
         links={[
@@ -221,9 +213,6 @@ export default function ProductList() {
             />
           </Box>
       </Card>
-     
-      
-    
         </Container>
       </Page>
   );

@@ -1,37 +1,21 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { DataGrid } from '@mui/x-data-grid';
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  clearErrors,
-  getAllReviews,
-  deleteReviews,
-} from "../../../actions/productAction";
-import { Avatar, Button, Card, Container, CssBaseline, Divider, FormControlLabel, Grid, IconButton, Paper, Stack, Switch, Table, TableBody, TableContainer, TablePagination, TextField, Tooltip, Typography } from "@mui/material";
-
-import ReviewsIcon from '@mui/icons-material/Reviews';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { clearErrors, getAllReviews, deleteReviews } from "../../../actions/productAction";
+import { Button, Card, Container, FormControlLabel, IconButton, Stack, Switch, Table, TableBody, TableContainer, TablePagination, TextField, Tooltip } from "@mui/material";
 import { DELETE_REVIEW_RESET } from "../../../constants/productConstants";
 import { useNavigate } from "react-router";
 import Box from '@mui/material/Box';
-import Sidebar from "../Sidebar";
-
-import { createTheme, ThemeProvider } from '@mui/material';
 import Page from "../../../helper/Page";
 import HeaderBreadcrumbs from "../../../helper/HeaderBreadcrumbs";
-import useSettings from "../../../hooks/useSettings";
 import Scrollbar from "../../../helper/Scrollbar";
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from "../../../helper/table";
 import Iconify from "../../../helper/Iconify";
 import useTable, { emptyRows } from "../../../hooks/useTable";
 import ReviewTableRow from "./ReviewTableRow";
-const theme = createTheme();
 
 
 const ProductReviews = () => {
-  const { themeStretch } = useSettings();
-
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
 
@@ -130,7 +114,7 @@ const ProductReviews = () => {
   return (
 
     <Page title="Reviews: View">
-    <Container maxWidth={themeStretch ? false : 'lg'}>
+    <Container maxWidth='lg'>
       <HeaderBreadcrumbs
         heading="Product reviews"
         links={[
@@ -251,20 +235,6 @@ const ProductReviews = () => {
               sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
             />
           </Box>
-             
-
-        {/* {reviews && reviews.length > 0 ? (
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSize={10}
-              disableSelectionOnClick
-              className="productListTable"
-              autoHeight
-            />
-          ) : (
-            <Typography textAlign='center' variant="h5">No Reviews Found</Typography>
-          )} */}
          
           </Container>
           </Page>
