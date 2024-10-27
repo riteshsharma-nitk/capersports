@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Button, AppBar, Toolbar, Container } from '@mui/material';
+import { Box, AppBar, Toolbar, Typography } from '@mui/material';
 import { HEADER } from '../../../../config';
 import useOffSetTop from '../../../../hooks/useOffSetTop';
 import useResponsive from '../../../../hooks/useResponsive';
@@ -64,9 +64,24 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
             p:2
           }}
         >
-            <Logo />
-  
+
+          
+          
+            {/* <Typography fontSize={25} fontWeight='bold'
+            sx={{
+              marginLeft:2,
+              ...(isHome && { color: 'common.white' }),
+              ...(isOffset && { color: 'text.primary' }),
+              '&.active': {
+                color: 'primary.main',
+              },
+            }}>
+          CAPER SPORTS
+        </Typography>  */}
+
+
             <Box sx={{ flexGrow: 1 }} />
+           
   
             {isDesktop && <MenuDesktop isOffset={isOffset} isHome={isHome} />}
   

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 
 import * as React from 'react';
-import { styled, useTheme, alpha } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../actions/userAction"
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {Badge, Box, Divider, Drawer, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Avatar, Collapse, Grid } from '@mui/material';
+import {Badge, Divider, Drawer, Link, List, ListItemButton, ListItemIcon, ListItemText, Avatar, Collapse } from '@mui/material';
 import { useSelector } from 'react-redux';
 import Searchbar from '../../Dashboard/Header/Searchbar';
 import Iconify from '../../../../helper/Iconify';
@@ -22,11 +22,7 @@ const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-
-  const drawerWidth = 240;
-
  
-  
   MenuMobile.propTypes = {
     isOffset: PropTypes.bool,
     isHome: PropTypes.bool,
@@ -35,8 +31,6 @@ const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
   
 
   export default function MenuMobile({isOffset, isHome}) {
-  const theme = useTheme();
-
   const dispatch = useDispatch();
   const Navigate=useNavigate()
 
@@ -141,7 +135,7 @@ if (user?.role === "admin") {
       }}>
       <ListItemButton onClick={() => setOpenUserMenu(!openUserMenu)}>
        <ListItemIcon>
-            <Avatar sx={{width:22, height:22}} alt="Avatar Preview" src={user.avatar.url}>{(user.name).substr(0,1)}</Avatar>
+            <Avatar sx={{width:22, height:22}} alt="Avatar Preview" src={user?.avatar?.url}>{(user.name).substr(0,1)}</Avatar>
        </ListItemIcon>
         <ListItemText disableTypography primary={`Hi, ${(user.name).split(' ')[0]}`}/>
        </ListItemButton>

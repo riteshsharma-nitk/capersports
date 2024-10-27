@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Grid, IconButton, Link, Stack, styled, useTheme } from '@mui/material';
+import { Grid, Link, Stack, styled, useTheme } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import {Link as RouterLink} from 'react-router-dom'
 import logo from '../../../../images/logo.png'
@@ -17,7 +17,7 @@ function Copyright() {
     component="p"
     variant="body2"
     sx={{
-      mt: 10,
+      mt: 5,
       pb: 5,
       fontSize: 13,
       textAlign: { xs: 'center', md: 'left' },
@@ -57,6 +57,7 @@ const LINKS = [
   {
     headline: 'Contact',
     children: [
+      { name: '9999557455', href: '' },
       { name: 'capersports.in@gmail.com', href: '/support' },
       { name: 'Uttar Pradesh, India', href: '/location' },
     ],
@@ -68,16 +69,16 @@ export default function MainFooter() {
   return (
     <RootStyle>
       <Divider/>
-      <Container sx={{ pt: 10 }}>
+      <Container sx={{ pt: 5 }}>
         <Grid
           container
           justifyContent={{ xs: 'center', md: 'space-between' }}
           sx={{ textAlign: { xs: 'center', md: 'left' } }}
         >
           <Grid item xs={12} sx={{ mb: 3 }}>
-          <Link component={RouterLink} to="/">
-                <Box component='img' src={logo} sx={{height:40}}></Box>
-              </Link>
+            <Grid md={4} xs={12}>
+                <Box justifyContent='center' component='img' src={logo} sx={{height:40, marginLeft:{md:8, xs:20}}}></Box>
+            </Grid>
           </Grid>
           <Grid item xs={8} md={3}>
             <Typography variant="body2" sx={{ pr: { md: 5 } }}>

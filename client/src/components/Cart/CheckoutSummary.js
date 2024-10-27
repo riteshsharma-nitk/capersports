@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-// @mui
 import {
   Box,
   Card,
@@ -13,12 +12,6 @@ import {
   InputAdornment,
 } from '@mui/material';
 import Iconify from '../../helper/Iconify';
-// utils
-
-// components
-
-
-// ----------------------------------------------------------------------
 
 CheckoutSummary.propTypes = {
   total: PropTypes.number,

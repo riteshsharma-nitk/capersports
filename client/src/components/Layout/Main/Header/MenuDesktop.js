@@ -2,8 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import {Badge, Link, useTheme } from '@mui/material';
-import { styled, alpha } from '@mui/material/styles';
+import {Badge, Box, Link } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 import { useSelector } from 'react-redux';
 import {useNavigate} from 'react-router-dom'
@@ -12,6 +12,7 @@ import Searchbar from '../../Dashboard/Header/Searchbar';
 import UserOptions from '../../Dashboard/UserOptions';
 import Iconify from '../../../../helper/Iconify';
 import { IconButtonAnimate } from '../../../../helper/animate';
+import Logo from '../../../../helper/Logo';
 
 const pages = [
   { name:'Home',     link:'/' },
@@ -24,6 +25,8 @@ const LinkStyle = styled(Link)(({ theme }) => ({
   ...theme.typography.subtitle1,
   color: theme.palette.text.primary,
   marginRight: theme.spacing(5),
+  justifyContent: "center",
+  marginTop:12,
   transition: theme.transitions.create('opacity', {
     duration: theme.transitions.duration.shorter,
   }),
@@ -42,7 +45,6 @@ MenuDesktop.propTypes = {
 };
 
 export default function MenuDesktop({isOffset, isHome}) {
-  const { pathname } = useLocation();
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [keyword, setKeyword] = React.useState("");
   const navigate=useNavigate()
@@ -60,22 +62,31 @@ export default function MenuDesktop({isOffset, isHome}) {
 }
 
   return (
-  <>
-  <Stack direction='row' alignItems='center'>
+    <div style={{ width: '100%' }}>
+  <Box sx={{
+    display: 'flex',
+    justifyContent: 'space-between',
+         
+  }}>
+  <Stack direction='row' alignItems='flex-start' width='50%'>
   { pages.map((page) => (
   <LinkStyle  key={page.name} underline='none' component={RouterLink} to={page.link}
   sx={{
-    ...(isHome && { color: 'common.white' }),
+    ...(isHome && { color: 'text.primary' }),
     ...(isOffset && { color: 'text.primary' }),
     '&.active': {
       color: 'primary.main',
+      
     },
   }}
   >
           {page.name}
         </LinkStyle> ))}
-
-
+        </Stack>
+<Stack alignContent='center' width='30%'>
+<Logo/>
+</Stack >
+<Stack direction="row-reverse" alignItems='flex-end' width='25%'>
           <form onSubmit={searchSubmitHandler}>
           <Searchbar setKeyword={setKeyword}/>
           </form> 
@@ -86,7 +97,7 @@ export default function MenuDesktop({isOffset, isHome}) {
           <Link component={RouterLink} to="/cart">
             <IconButtonAnimate>
             <Badge badgeContent={cartItems.length} color="secondary">
-             <Iconify icon={'ic:sharp-add-shopping-cart'} width={22} height={22}/>
+             <Iconify icon={'ic:sharp-add-shopping-cart'} width={24} height={24}/>
             </Badge>
             </IconButtonAnimate>
 
@@ -100,7 +111,9 @@ export default function MenuDesktop({isOffset, isHome}) {
 
            </Link>):(<UserOptions user={user}/>)}
            </Stack>
-         </>
+          
+         </Box>
+         </div>
   );
 }
 
