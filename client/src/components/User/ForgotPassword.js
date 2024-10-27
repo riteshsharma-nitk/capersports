@@ -1,20 +1,27 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import { Link as RouterLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { forgotPassword, clearErrors } from '../../actions/userAction';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import Loading from '../Layout/Loader'
-import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import { useEffect } from 'react';
-const theme = createTheme();
+import LoadingScreen from '../../helper/LoadingScreen';
+import Page from '../../helper/Page';
+import { SentIcon } from '../../assets';
+
+const RootStyle = styled('div')(({ theme }) => ({
+  display: 'flex',
+  minHeight: '100%',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: theme.spacing(12, 0),
+}));
 
 function ForgotPassword() {
     const dispatch = useDispatch();
@@ -45,27 +52,21 @@ function ForgotPassword() {
       }
     }, [dispatch, error, message]);
     return (
-      <Box display='flex' sx={{marginTop:1 }}> 
-      {loading ? (<Loading/>):(
-            <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-              <CssBaseline />
-              <Box
-                sx={{
-                  marginTop: 2,
-                  marginBottom: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                  <ChangeCircleIcon fontSize='1.5rem'/>
-                </Avatar>
-                <Typography fontSize='1.5rem' fontWeight='medium'>
-                  Forgot Password
+      <Page title="Forgot Password" sx={{ height: 1 }}>
+      {loading ? (<LoadingScreen/>):(
+            
+            <RootStyle>
+              <Container>
+              <Box sx={{ maxWidth: 480, mx: 'auto' }}>
+                {!message ? (
+                  <>
+                   <Typography variant="h3" paragraph> Forgot your password? </Typography>
+                <Typography sx={{ color: 'text.secondary', mb: 5 }}>
+                  Please enter the email address associated with your account and We will email you a link to reset your
+                  password.
                 </Typography>
                 <Box component="form" noValidate onSubmit={forgotPasswordSubmit} sx={{ mt: 3 }}>
+
                     <Grid item xs={12}>
                       <TextField
                       type='email'
@@ -73,7 +74,6 @@ function ForgotPassword() {
                         fullWidth
                         name="email"
                         label="Email Address"
-                        fontSize='1rem'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
@@ -85,7 +85,7 @@ function ForgotPassword() {
       
                   
                   <Button
-                  fontSize='1rem'
+                  size='large'
                     type="submit"
                     fullWidth
                     variant="contained"
@@ -94,13 +94,39 @@ function ForgotPassword() {
                     Send
                   </Button>
                 </Box>
-              </Box>
+                <Button fullWidth size="large" component={RouterLink} to='/login' sx={{ mt: 1 }}>
+                  Back
+                </Button>
+                  </>
+
+                ):(
+                  <Box sx={{ textAlign: 'center' }}>
+                  <SentIcon sx={{ mb: 5, mx: 'auto', height: 160 }} />
+  
+                  <Typography variant="h3" gutterBottom>
+                    Request sent successfully
+                  </Typography>
+                  <Typography>
+                    We have sent a confirmation email to &nbsp;
+                    <strong>{email}</strong>
+                    <br />
+                    Please check your email.
+                  </Typography>
+  
+                  <Button size="large" variant="contained" component={RouterLink} to={'/login'} sx={{ mt: 5 }}>
+                    Back
+                  </Button>
+                </Box>
+                )}
              
-            </Container>
-          </ThemeProvider>
+                </Box>
+                </Container>
+                </RootStyle>
+               
+             
         )}
-      </Box>
+      </Page>
     );
   }
 
-export default ForgotPassword
+export default ForgotPassword;

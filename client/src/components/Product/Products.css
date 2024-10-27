@@ -1,99 +1,13 @@
-
-div {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit;
-  vertical-align: baseline;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    padding: 0;
-  }
-  
-  .page-item {
-    background-color: rgb(255, 255, 255);
-    list-style: none;
-    border: 1px solid rgba(0, 0, 0, 0.178);
-    padding: 0.5vmax 1vmax;
-    transition: all 0.3s;
-    cursor: pointer;
-    font-size: smaller;
-  }
-  .page-item:first-child {
-    border-radius: 5px 0 0 5px;
-  }
-  
-  .page-item:last-child {
-    border-radius: 0 5px 5px 0;
-  }
-  .page-link {
-    text-decoration: none;
-   
-    color: rgb(80, 80, 80);
-    transition: all 0.3s;
-  }
-  
-  .page-item:hover {
-    background-color: rgb(230, 230, 230);
-  }
-  
-  .page-item:hover .page-link {
-    color: rgb(0, 0, 0);
-  }
-  
-  .pageItemActive {
-    background-color: rgb(29, 1, 25);
-  }
-  
-  .pageLinkActive {
-    color: white;
-  }
-  
-  .container{
-    position: static;
-    padding-left: 0px;
-    padding-right: 0px;
-    width: 100%;
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
   .sidebar{
-    height: 75vh;
+    height: 72vh;
     position: sticky;
-    
     overflow-y: scroll;
-    flex-grow: 1;
-
   }
 
   .sidebar_body{
     height: 85vh;
     position: static;
-   
-
   }
-
-  .header{
-    width: 100%;
-    margin-left: 25px;
-    margin-right: 25px;
-    margin-top: 24px;
-    margin-bottom: 18px;
-    background: #ffffff;
-    display: flex;
-    justify-content: space-between;
-}
-
-
-.body_wrapper{
-  display: flex;
-  margin-bottom: 2%;
-}
-
 
 .product_wrapper {
     padding-right: 48px;
@@ -101,9 +15,7 @@ div {
     width: 100%;
     height: 85vh;
     position: sticky;
-    overflow-y: scroll;
-    flex-grow: 1;
-    
+    overflow-y: scroll;    
 }
 
 .product_grid{
@@ -113,43 +25,14 @@ div {
  
 }
 
-#mobileFilterButton{
-  display: none;
-}
-
 @media screen and (max-width: 600px) {
-
   .product_wrapper{
     padding-right: 10px;
     padding-left: 10px;
 
-  }
-
-  #desktopFilterButton{
-    display: none;
-  }
-
-  #mobileFilterButton{
-    display: flex;
-  }
-
-  .header{
-   
-    margin-left: 0px;
-    margin-right: 0px;
-   
+  }   
 }
 
 
- 
-}
 
 
-.mobileSideBar{
-  max-height: 500px;
-  position: sticky;
-  overflow-y: scroll;
-  padding: 25px;
- 
-
-}

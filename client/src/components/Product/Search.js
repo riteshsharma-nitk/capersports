@@ -1,6 +1,4 @@
-import { IconButton, TextField } from '@mui/material';
 import React, { useState } from 'react'
-import SearchIcon from '@mui/icons-material/Search';
 import {useNavigate} from 'react-router-dom'
 
 export default function Search() {
